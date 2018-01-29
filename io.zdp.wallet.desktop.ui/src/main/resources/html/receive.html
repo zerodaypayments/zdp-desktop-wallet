@@ -1,0 +1,26 @@
+<html style="background:black;color:white;">
+	<head style="background:black;color:white;">
+
+	</head>
+	<body>
+		<div style="margin-top: 0;background:white;color:black;padding:10px 10px 10px 10px;border-radius:6px;">
+		
+			#foreach( $addr in $addresses )		
+				<table width="100%" border='0'>
+					<tr>
+						<td>
+							<div style='background:black;color:white;font-size:14px;padding:10px 10px 10px 10px;'>$addr.address</div>
+							<br/>
+							<div>Balance: <b>$addr.balanceGrouped</b></div>
+						</td>
+	
+						<td width="160" height="160" align="center">
+							<img src="http://api.zdp.io/api/address/qr/160/${addr.address}.jpg" />
+						</td>
+					</tr>
+				</table>
+			#end
+			
+		</div>
+	</body>
+</html>
