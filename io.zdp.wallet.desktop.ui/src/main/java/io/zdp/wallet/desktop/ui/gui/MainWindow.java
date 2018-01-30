@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MenuItem;
-import java.awt.Point;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -51,8 +50,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.desktop.DesktopWallet;
-import io.zdp.wallet.desktop.api.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
@@ -65,7 +64,6 @@ import io.zdp.wallet.desktop.ui.gui.view.AddressBookView;
 import io.zdp.wallet.desktop.ui.gui.view.HomeView;
 import io.zdp.wallet.desktop.ui.gui.view.ReceiveView;
 import io.zdp.wallet.desktop.ui.gui.view.SendView;
-import io.zdp.wallet.desktop.ui.job.UpdateWalletBalances;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component
@@ -105,9 +103,6 @@ public class MainWindow {
 	private TrayIcon trayIcon;
 
 	private JLabel statusLabel;
-
-	@Autowired
-	private UpdateWalletBalances updateWalletBalances;
 
 	@Autowired
 	private AddressBookView addressBookView;
@@ -496,7 +491,7 @@ public class MainWindow {
 
 	public void updateFrame(Wallet w) {
 
-		frame.setTitle(i18n.get("app.window.title") + " - " + w.getName());
+		frame.setTitle(i18n.get("app.window.title"));
 
 	}
 
@@ -555,8 +550,7 @@ public class MainWindow {
 			btnSync.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnSync.addActionListener(e -> {
 				try {
-					updateWalletBalances.update();
-					showSystemTrayMessage(MessageType.INFO, "Wallet synchronized");
+					showSystemTrayMessage(MessageType.INFO, "TODO Wallet synchronized");
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

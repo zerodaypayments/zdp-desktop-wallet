@@ -1,7 +1,7 @@
 package io.zdp.wallet.api.domain;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -14,13 +14,13 @@ public class WalletAddress implements Serializable {
 
 	private byte[] publicKey;
 
-	private BigInteger balance;
+	private BigDecimal balance;
 
-	public BigInteger getBalance() {
+	public BigDecimal getBalance() {
 		return balance;
 	}
 
-	public void setBalance(BigInteger balance) {
+	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
 

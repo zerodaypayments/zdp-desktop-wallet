@@ -4,6 +4,7 @@ import java.awt.FileDialog;
 import java.awt.Window;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import javax.swing.JDialog;
@@ -14,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.wallet.desktop.api.domain.Wallet;
+import io.zdp.common.crypto.CryptoUtils;
+import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
@@ -80,15 +83,25 @@ public class CreateNewWallet {
 
 			log.debug("Save new wallet: " + walletFile);
 
-			Wallet w = walletService.create(walletFile, "new wallet", pass);
-			
-			mainWindow.setWallet(w, walletFile, pass);
+			try {
 
-			if (parent != mainWindow.getFrame()) {
-				parent.dispose();
+				String seed = CryptoUtils.generateRandomNumber(512);
+
+				Wallet w = WalletService.create(seed, walletFile, pass);
+				
+				walletService.setCurrentWallet(w, walletFile, pass);
+
+				mainWindow.setWallet(w, walletFile, pass);
+
+				if (parent != mainWindow.getFrame()) {
+					parent.dispose();
+				}
+
+				Alert.info("New wallet was created!");
+
+			} catch (Exception e) {
+				log.error("Error: ", e);
 			}
-
-			Alert.info("New wallet was created!");
 
 		});
 

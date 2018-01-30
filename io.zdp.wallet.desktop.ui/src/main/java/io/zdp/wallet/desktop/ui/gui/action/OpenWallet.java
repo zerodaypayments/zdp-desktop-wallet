@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.wallet.desktop.api.domain.Wallet;
+import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
@@ -74,7 +75,7 @@ public class OpenWallet {
 				return;
 			}
 
-			Wallet wallet = this.walletService.load(walletFile, pass);
+			Wallet wallet = WalletService.load(walletFile, pass);
 
 			if (wallet != null) {
 

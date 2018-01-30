@@ -41,14 +41,14 @@ public class ReceiveView {
 
 		new QTextComponentContextMenu(panel.html);
 
-		if (this.walletService.getCurrentWallet().getMyAddresses().isEmpty()) {
+		if (this.walletService.getCurrentWallet().getAddresses().isEmpty()) {
 
 			panel.html.setText("There are no addresses in this wallet yet");
 
 		} else {
 
 			Map<String, Object> events = new HashMap<>();
-			events.put("addresses", walletService.getCurrentWallet().getMyAddresses());
+			events.put("addresses", walletService.getCurrentWallet().getAddresses());
 			String html = velocity.process(events, "/html/receive.html");
 
 			panel.html.setText(html);

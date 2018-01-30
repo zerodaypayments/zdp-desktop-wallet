@@ -28,42 +28,7 @@ public class WalletInfoPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        txtWalletName = new javax.swing.JTextField();
-        btnUpdateName = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        txtTotalWalletBalance = new javax.swing.JTextField();
-        btnRefreshBalances = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textRecentEvents = new javax.swing.JEditorPane();
-        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-
-        jLabel1.setText("Wallet name:");
-
-        txtWalletName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtWalletNameActionPerformed(evt);
-            }
-        });
-
-        btnUpdateName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check.png"))); // NOI18N
-        btnUpdateName.setText("Update");
-
-        jLabel3.setText("Total wallet balance:");
-
-        txtTotalWalletBalance.setEditable(false);
-
-        btnRefreshBalances.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh_24.png"))); // NOI18N
-        btnRefreshBalances.setText("Refresh balances");
-
-        textRecentEvents.setEditable(false);
-        textRecentEvents.setContentType("text/html"); // NOI18N
-        textRecentEvents.setText("<html>\n  <head>\n\n  </head>\n  <body>\n  \t<table width=\"100%\">\n  \t\t<tr>\n  \t\t\t<td width=\"150\">\n  \t\t\t\t<b>11 Oct 2018 12:13 AM</b>\n  \t\t\t</td>\n  \t\t\t<td>\n  \t\t\t\t<h2>Wallet created</h2>\n  \t\t\t</td>\n  \t\t</tr>\n  \t</table>\n  </body>\n</html>\n");
-        jScrollPane2.setViewportView(textRecentEvents);
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("<html> <h1>Recent events</h1> </html>");
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("<html> <h1>Home</h1> </html>");
@@ -74,73 +39,20 @@ public class WalletInfoPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtWalletName, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                                    .addComponent(txtTotalWalletBalance))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnRefreshBalances, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
-                                    .addComponent(btnUpdateName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addContainerGap())
-                    .addComponent(jLabel2)))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel5)
-                    .addContainerGap()))
+                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(txtWalletName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnUpdateName))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(txtTotalWalletBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnRefreshBalances))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(16, 16, 16)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(493, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(493, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtWalletNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtWalletNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtWalletNameActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnRefreshBalances;
-    public javax.swing.JButton btnUpdateName;
-    public javax.swing.JLabel jLabel1;
-    public javax.swing.JLabel jLabel2;
-    public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel5;
-    public javax.swing.JScrollPane jScrollPane2;
-    public javax.swing.JEditorPane textRecentEvents;
-    public javax.swing.JTextField txtTotalWalletBalance;
-    public javax.swing.JTextField txtWalletName;
     // End of variables declaration//GEN-END:variables
 }

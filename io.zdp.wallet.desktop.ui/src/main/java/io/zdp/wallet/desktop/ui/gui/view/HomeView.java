@@ -1,6 +1,7 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
 import java.awt.BorderLayout;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.zdp.common.utils.StringHelper;
-import io.zdp.wallet.desktop.api.domain.WalletAddress;
+import io.zdp.wallet.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -53,13 +54,14 @@ public class HomeView {
 
 		JPanel panel = new JPanel(new BorderLayout());
 
-		if (this.walletService.getCurrentWallet().getMyAddresses().isEmpty() == false) {
-
+		/*
+		if (this.walletService.getCurrentWallet().getAddresses().isEmpty() == false) {
 			WalletInfoPanel walletInfoPanel = new WalletInfoPanel();
 			new QTextComponentContextMenu(walletInfoPanel.txtWalletName);
+			*/
 
-			walletInfoPanel.txtWalletName.addFocusListener(new TextComponentFocuser());
-			walletInfoPanel.txtWalletName.setText(walletService.getCurrentWallet().getName());
+//			walletInfoPanel.txtWalletName.addFocusListener(new TextComponentFocuser());
+//			walletInfoPanel.txtWalletName.setText(walletService.getCurrentWallet().getName());
 
 			// walletInfoPanel.txtWalletDate.setText(walletService.getCurrentWallet().getDateAsString());
 			// walletInfoPanel.txtWalletDate.addFocusListener(new
@@ -67,20 +69,19 @@ public class HomeView {
 			// new QTextComponentContextMenu(walletInfoPanel.txtWalletDate);
 
 			// Total wallet balance
-			double totalWalletBalance = 0;
-			for (WalletAddress addr : this.walletService.getCurrentWallet().getMyAddresses()) {
-				totalWalletBalance += addr.getBalance();
+			/*
+			BigDecimal totalWalletBalance = 0;
+			for (WalletAddress addr : this.walletService.getCurrentWallet().getAddresses()) {
+				totalWalletBalance = totalWalletBalance.add(addr.getBalance());
 			}
 
-			walletInfoPanel.txtTotalWalletBalance.setText(StringHelper.format(totalWalletBalance));
+			walletInfoPanel.txtTotalWalletBalance.setText(totalWalletBalance.toString());
 			new QTextComponentContextMenu(walletInfoPanel.txtTotalWalletBalance);
 			walletInfoPanel.txtTotalWalletBalance.addFocusListener(new TextComponentFocuser());
-
 			// Recent events
 			Map<String, Object> events = new HashMap<>();
 			events.put("events", walletService.getCurrentWallet().getWalletEvents());
 			String eventsHtml = velocity.process(events, "/html/recentEvents.html");
-
 			SwingHelper.setFontForJText(walletInfoPanel.textRecentEvents);
 			walletInfoPanel.textRecentEvents.setText(eventsHtml);
 			new QTextComponentContextMenu(walletInfoPanel.textRecentEvents);
@@ -119,6 +120,7 @@ public class HomeView {
 			panel.add(homePanel, BorderLayout.CENTER);
 
 		}
+			 */
 		
 		return panel;
 

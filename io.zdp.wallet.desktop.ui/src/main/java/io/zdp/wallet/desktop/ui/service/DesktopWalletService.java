@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.DesktopWallet;
-import io.zdp.wallet.desktop.api.domain.Wallet;
 
 @Service
 public class DesktopWalletService extends WalletService {
@@ -64,7 +64,7 @@ public class DesktopWalletService extends WalletService {
 	}
 
 	public void saveCurrentWallet() {
-		this.save(currentWallet, currentWalletPassword);
+		super.save(currentWalletFile, currentWallet, currentWalletPassword);
 	}
 
 	public Wallet getCurrentWallet() {

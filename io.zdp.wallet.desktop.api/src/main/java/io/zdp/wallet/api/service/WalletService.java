@@ -1,7 +1,7 @@
 package io.zdp.wallet.api.service;
 
 import java.io.File;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.security.KeyPair;
 import java.util.Date;
 
@@ -27,13 +27,11 @@ public class WalletService {
 
 		final Wallet w = new Wallet();
 		w.setDateCreated(new Date());
-		w.setSequence(0);
+		w.setUuid(DigestUtils.sha256Hex(privKey));
 
 		if (StringUtils.isBlank(privKey)) {
-			privKey = CryptoUtils.generateRandomNumber(512);
+			privKey = CryptoUtils.generateRandomNumber(256);
 		}
-
-		w.setUuid(DigestUtils.sha256Hex(privKey));
 
 		w.setSeed(privKey);
 
@@ -45,12 +43,19 @@ public class WalletService {
 	public static synchronized WalletAddress getNewAddress(File file, Wallet wallet, char[] pass) throws Exception {
 
 		WalletAddress addr = new WalletAddress();
-		String seed = wallet.getSeed() + wallet.getSequence();
-		wallet.setSequence(wallet.getSequence() + 1);
+
+		String seed = null;
+
+		if (wallet.getAddresses().isEmpty()) {
+			seed = DigestUtils.sha512Hex(wallet.getSeed());
+		} else {
+			seed = DigestUtils.sha512Hex(wallet.getAddresses().get(wallet.getAddresses().size() - 1).getPrivateKey());
+		}
 
 		KeyPair keys = CryptoUtils.generateKeys(seed);
 
-		addr.setBalance(BigInteger.ZERO);
+		addr.setBalance(BigDecimal.ZERO);
+
 		addr.setPrivateKey(keys.getPrivate().getEncoded());
 		addr.setPublicKey(keys.getPublic().getEncoded());
 

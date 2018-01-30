@@ -17,11 +17,11 @@ import org.springframework.web.client.RestTemplate;
 
 import io.zdp.api.model.AddressDetailsResponse;
 import io.zdp.client.ZdpClient;
-import io.zdp.wallet.desktop.api.domain.WalletAddress;
-import io.zdp.wallet.desktop.api.domain.Wallet;
-import io.zdp.wallet.desktop.api.domain.WalletEvent;
+import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
+import io.zdp.wallet.desktop.ui.domain.WalletEvent;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Service
@@ -67,7 +67,7 @@ public class AddressService {
 	public WalletAddress createNewAddress() {
 
 		WalletAddress address = null;
-
+/*
 		try {
 
 			URI uri = new URI(apiCentralUrl + apiUrlAddressNew);
@@ -82,12 +82,12 @@ public class AddressService {
 		} catch (URISyntaxException e) {
 			log.error("Error: ", e);
 		}
-
+*/
 		return address;
 	}
 	
 	public void generateNewAddress(Runnable successCallback) {
-
+/*
 		SwingHelper.async(mainWindow.getFrame(), "Getting new address", () -> {
 			
 			try {
@@ -121,7 +121,7 @@ public class AddressService {
 				Alert.error("Cannot connect to the network");
 			}
 		});
-
+*/
 	}
 	
 

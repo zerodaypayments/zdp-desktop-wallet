@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.zdp.wallet.api.service.WalletService;
+
 @SuppressWarnings("serial")
 public class Wallet implements Serializable {
 
@@ -16,7 +18,15 @@ public class Wallet implements Serializable {
 
 	protected String seed;
 
-	protected int sequence;
+	public WalletAddress getByPublicKeyHash(String address) {
+		for (WalletAddress addr : this.addresses) {
+			if (WalletService.getPublicKeyHash(addr).equals(address)) {
+				return addr;
+			}
+		}
+
+		return null;
+	}
 
 	public String getSeed() {
 		return seed;
@@ -50,17 +60,9 @@ public class Wallet implements Serializable {
 		this.dateCreated = dateCreated;
 	}
 
-	public int getSequence() {
-		return sequence;
-	}
-
-	public void setSequence(int sequence) {
-		this.sequence = sequence;
-	}
-
 	@Override
 	public String toString() {
-		return "Wallet [uuid=" + uuid + ", addresses=" + addresses + ", dateCreated=" + dateCreated + ", seed=" + seed + ", sequence=" + sequence + "]";
+		return "Wallet [uuid=" + uuid + ", addresses=" + addresses + ", dateCreated=" + dateCreated + ", seed=" + seed + "]";
 	}
 
 	@Override

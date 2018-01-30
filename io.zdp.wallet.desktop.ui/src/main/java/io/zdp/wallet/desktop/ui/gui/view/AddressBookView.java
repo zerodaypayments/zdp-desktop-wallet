@@ -7,10 +7,12 @@ import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
 import javax.swing.event.HyperlinkEvent;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.wallet.desktop.api.domain.WalletAddress;
+import io.zdp.wallet.api.domain.WalletAddress;
+import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -48,10 +50,10 @@ public class AddressBookView {
 		SwingHelper.setFontForJText(myAddressesPanel.html);
 
 		// Populate my addresses from wallet
-		if (walletService.getCurrentWallet().getMyAddresses().isEmpty() == false) {
+		if (walletService.getCurrentWallet().getAddresses().isEmpty() == false) {
 
 			Map<String, Object> events = new HashMap<>();
-			events.put("addresses", walletService.getCurrentWallet().getMyAddresses());
+			events.put("addresses", walletService.getCurrentWallet().getAddresses());
 			String html = velocity.process(events, "/html/myAddresses.html");
 
 			SwingHelper.setFontForJText(myAddressesPanel.html);
@@ -75,11 +77,11 @@ public class AddressBookView {
 							dialog.dispose();
 						});
 
-						WalletAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(e.getDescription().substring("secret:".length()));
+						WalletAddress addr = walletService.getCurrentWallet().getByPublicKeyHash(e.getDescription().substring("secret:".length()));
 
-						dialog.setTitle("Secret key for address " + addr.getAddress());
+						dialog.setTitle("Secret key for address " + WalletService.getPublicKeyHash(addr));
 
-						panel.txtSecretKey.setText(addr.getSeed());
+						panel.txtSecretKey.setText(Base64.encodeBase64String(addr.getPrivateKey()));
 						new QTextComponentContextMenu(panel.txtSecretKey);
 						panel.txtSecretKey.addFocusListener(new TextComponentFocuser());
 
