@@ -62,7 +62,7 @@
 
 		<dependency>
 			<groupId>io.zdp</groupId>
-			<artifactId>io.zdp.wallet.desktop.api</artifactId>
+			<artifactId>io.zdp.wallet.api</artifactId>
 			<version>1.0</version>
 		</dependency>
 

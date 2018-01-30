@@ -27,7 +27,7 @@ import io.zdp.client.ZdpClient;
 import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.common.crypto.Signer;
 import io.zdp.common.utils.StringHelper;
-import io.zdp.wallet.desktop.api.domain.MyAddress;
+import io.zdp.wallet.desktop.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.common.JTextFieldLimit;
@@ -96,12 +96,12 @@ public class SendView {
 		sendPanel.selectorFromAddress.setModel(addressModel);
 		sendPanel.selectorFromAddress.addItemListener(e -> {
 			String selectedAddress = sendPanel.selectorFromAddress.getSelectedItem().toString();
-			MyAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(selectedAddress);
+			WalletAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(selectedAddress);
 			addressBalanceHolder.setValue(addr.getBalance());
 			sendPanel.txtAddressBalance.setText(addr.getBalanceGrouped());
 		});
 
-		for (MyAddress addr : walletService.getCurrentWallet().getMyAddresses()) {
+		for (WalletAddress addr : walletService.getCurrentWallet().getMyAddresses()) {
 			addressModel.addElement(addr.getAddress());
 		}
 
@@ -184,7 +184,7 @@ public class SendView {
 				return;
 			}
 
-			MyAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(from);
+			WalletAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(from);
 
 			if (amount > addr.getBalance()) {
 				Alert.warn("This address only has " + addr.getBalanceGrouped());
@@ -217,7 +217,7 @@ public class SendView {
 				try {
 					
 					log.debug("TODO actual transfer");
-					MyAddress fromAddress = walletService.getCurrentWallet().getMyAddressByUuid(panel.txtFrom.getText());
+					WalletAddress fromAddress = walletService.getCurrentWallet().getMyAddressByUuid(panel.txtFrom.getText());
 					PrivateKey privKey = Signer.generatePrivateKey(fromAddress.getPrivateKey());
 					double amountToSend = Double.parseDouble(panel.txtAmount.getText());
 					

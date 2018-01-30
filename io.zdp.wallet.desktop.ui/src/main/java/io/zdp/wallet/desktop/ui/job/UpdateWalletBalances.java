@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import io.zdp.api.model.BalanceResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.common.crypto.Signer;
-import io.zdp.wallet.desktop.api.domain.MyAddress;
+import io.zdp.wallet.desktop.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
@@ -38,7 +38,7 @@ public class UpdateWalletBalances {
 
 		if (walletService.getCurrentWallet() != null) {
 
-			List<MyAddress> myAddresses = walletService.getCurrentWallet().getMyAddresses();
+			List<WalletAddress> myAddresses = walletService.getCurrentWallet().getMyAddresses();
 
 			if (myAddresses.isEmpty() == false) {
 
@@ -46,7 +46,7 @@ public class UpdateWalletBalances {
 
 				final Map<String, PrivateKey> map = new HashMap<>();
 
-				for (MyAddress addr : myAddresses) {
+				for (WalletAddress addr : myAddresses) {
 
 					final String address = addr.getAddress();
 
@@ -69,7 +69,7 @@ public class UpdateWalletBalances {
 				final List<BalanceResponse> addressesBalances = zdp.getAddressesBalances(map);
 
 				for (final BalanceResponse b : addressesBalances) {
-					final MyAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(b.getAddress());
+					final WalletAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(b.getAddress());
 					final double currentBalance = addr.getBalance();
 					final double newBalance = b.getBalance();
 					if (newBalance != currentBalance) {

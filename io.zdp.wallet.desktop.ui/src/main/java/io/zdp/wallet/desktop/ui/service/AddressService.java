@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import io.zdp.api.model.AddressDetailsResponse;
 import io.zdp.client.ZdpClient;
-import io.zdp.wallet.desktop.api.domain.MyAddress;
+import io.zdp.wallet.desktop.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.api.domain.Wallet;
 import io.zdp.wallet.desktop.api.domain.WalletEvent;
 import io.zdp.wallet.desktop.ui.common.Alert;
@@ -64,9 +64,9 @@ public class AddressService {
 		return null;
 	}
 
-	public MyAddress createNewAddress() {
+	public WalletAddress createNewAddress() {
 
-		MyAddress address = null;
+		WalletAddress address = null;
 
 		try {
 
@@ -74,7 +74,7 @@ public class AddressService {
 			log.debug("Create new address: " + uri);
 			AddressDetailsResponse resp = restTemplate.postForObject(uri, null, AddressDetailsResponse.class);
 
-			address = new MyAddress();
+			address = new WalletAddress();
 			address.setAddress(resp.getAddress());
 			address.setPrivateKey(resp.getPrivateKey());
 			address.setSeed(resp.getSecret());
@@ -97,7 +97,7 @@ public class AddressService {
 				// Alert.info("New address was generated");
 				mainWindow.showSystemTrayMessage(MessageType.INFO, "New address was generated: " + newAddress.getAddress());
 
-				MyAddress a = new MyAddress();
+				WalletAddress a = new WalletAddress();
 				a.setAddress(newAddress.getAddress());
 				a.setDescription("newly generated address");
 				a.setPrivateKey(newAddress.getPrivateKey());

@@ -1,4 +1,4 @@
-package io.zdp.wallet.desktop.api.domain;
+package io.zdp.wallet.desktop.ui.domain;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

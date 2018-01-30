@@ -11,11 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.zdp.wallet.api.service.WalletService;
+import io.zdp.wallet.desktop.DesktopWallet;
 import io.zdp.wallet.desktop.api.domain.Wallet;
-import io.zdp.wallet.desktop.api.service.impl.WalletServiceImpl;
 
 @Service
-public class DesktopWalletService extends WalletServiceImpl {
+public class DesktopWalletService extends WalletService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -39,7 +40,7 @@ public class DesktopWalletService extends WalletServiceImpl {
 	public void init() {
 	}
 
-	public Wallet getRecentWallet() {
+	public DesktopWallet getRecentWallet() {
 
 		if (StringUtils.isNotBlank(configurationService.getConfiguration().getLastWalletFile())) {
 

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.zdp.common.utils.StringHelper;
-import io.zdp.wallet.desktop.api.domain.MyAddress;
+import io.zdp.wallet.desktop.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -68,7 +68,7 @@ public class HomeView {
 
 			// Total wallet balance
 			double totalWalletBalance = 0;
-			for (MyAddress addr : this.walletService.getCurrentWallet().getMyAddresses()) {
+			for (WalletAddress addr : this.walletService.getCurrentWallet().getMyAddresses()) {
 				totalWalletBalance += addr.getBalance();
 			}
 

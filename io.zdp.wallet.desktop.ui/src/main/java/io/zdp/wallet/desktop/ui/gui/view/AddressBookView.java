@@ -10,7 +10,7 @@ import javax.swing.event.HyperlinkEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.wallet.desktop.api.domain.MyAddress;
+import io.zdp.wallet.desktop.api.domain.WalletAddress;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -75,7 +75,7 @@ public class AddressBookView {
 							dialog.dispose();
 						});
 
-						MyAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(e.getDescription().substring("secret:".length()));
+						WalletAddress addr = walletService.getCurrentWallet().getMyAddressByUuid(e.getDescription().substring("secret:".length()));
 
 						dialog.setTitle("Secret key for address " + addr.getAddress());
 
