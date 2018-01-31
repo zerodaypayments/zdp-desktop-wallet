@@ -40,7 +40,7 @@ public class NetworkStatusCheckingJob {
 			connected = true;
 			mainWindow.setStatusMessage("Connected to network", Icons.getIcon("check.png"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error: " + e.getMessage());
 			mainWindow.setStatusMessage("Network not available...", Icons.getIcon("cancel.png"));
 			connected = false;
 		}

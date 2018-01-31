@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import io.zdp.wallet.api.service.WalletService;
 
 @SuppressWarnings("serial")
+@XmlRootElement
 public class Wallet implements Serializable {
 
 	protected String uuid;
@@ -32,6 +36,7 @@ public class Wallet implements Serializable {
 		return seed;
 	}
 
+	@XmlElement
 	public void setSeed(String seed) {
 		this.seed = seed;
 	}

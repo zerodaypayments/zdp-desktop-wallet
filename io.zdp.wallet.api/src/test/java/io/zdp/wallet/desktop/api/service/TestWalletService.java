@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.domain.WalletAddress;
 import io.zdp.wallet.api.service.WalletService;
 import junit.framework.TestCase;
 
@@ -35,7 +34,7 @@ public class TestWalletService extends TestCase {
 		System.out.println(w1);
 
 		{
-			Wallet w2 = WalletService.load(file, privKey.toCharArray());
+			Wallet w2 = WalletService.load(file, privKey);
 			System.out.println(w2);
 
 			assertEquals(w1, w2);

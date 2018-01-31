@@ -87,7 +87,7 @@ public class CreateNewWallet {
 
 				String seed = CryptoUtils.generateRandomNumber(512);
 
-				Wallet w = WalletService.create(seed, walletFile, pass);
+				Wallet w = WalletService.create(seed, walletFile);
 				
 				walletService.setCurrentWallet(w, walletFile, pass);
 

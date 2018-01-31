@@ -3,11 +3,15 @@ package io.zdp.wallet.api.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
 import io.zdp.wallet.api.service.WalletService;
 
 @SuppressWarnings("serial")
+@XmlRootElement
 public class WalletAddress implements Serializable {
 
 	private byte[] privateKey;
@@ -20,6 +24,7 @@ public class WalletAddress implements Serializable {
 		return balance;
 	}
 
+	@XmlElement
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
 	}
@@ -40,9 +45,13 @@ public class WalletAddress implements Serializable {
 		this.publicKey = publicKey;
 	}
 
+	public String getAddress() {
+		return WalletService.getPublicKeyHash(this);
+	}
+
 	@Override
 	public String toString() {
-		return "WalletAddress [privateKey=" + DigestUtils.sha512Hex(privateKey) + ", address=" + WalletService.getPublicKeyHash(this) + ", balance=" + balance + "]";
+		return "WalletAddress [privateKey=" + DigestUtils.sha512Hex(privateKey) + ", address=" + getAddress() + ", balance=" + balance + "]";
 	}
 
 }
