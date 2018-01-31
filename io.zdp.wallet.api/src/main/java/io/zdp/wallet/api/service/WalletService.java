@@ -23,19 +23,20 @@ public class WalletService {
 
 	private static final Logger log = LoggerFactory.getLogger(WalletService.class);
 
-	public static Wallet create(String privKey, File file, char[] password) throws Exception {
+	public static Wallet create(String privKey, File file) throws Exception {
 
 		final Wallet w = new Wallet();
 		w.setDateCreated(new Date());
-		w.setUuid(DigestUtils.sha256Hex(privKey));
 
 		if (StringUtils.isBlank(privKey)) {
 			privKey = CryptoUtils.generateRandomNumber(256);
 		}
 
+		w.setUuid(DigestUtils.sha256Hex(privKey));
+
 		w.setSeed(privKey);
 
-		save(file, w, password);
+		save(file, w, privKey.toCharArray());
 
 		return w;
 	}

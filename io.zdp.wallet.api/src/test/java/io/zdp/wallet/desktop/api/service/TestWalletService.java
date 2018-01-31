@@ -21,13 +21,11 @@ public class TestWalletService extends TestCase {
 
 		File file = new File("1.wallet");
 
-		char[] pass = "pass123".toCharArray();
-
 		String privKey = CryptoUtils.generateRandomNumber(256);
 		
 		System.out.println(privKey);
 
-		Wallet w1 = WalletService.create(privKey, file, pass);
+		Wallet w1 = WalletService.create(privKey, file);
 
 		assertNotNull(w1);
 		assertTrue(w1.getAddresses().isEmpty());
@@ -37,17 +35,10 @@ public class TestWalletService extends TestCase {
 		System.out.println(w1);
 
 		{
-			Wallet w2 = WalletService.load(file, pass);
+			Wallet w2 = WalletService.load(file, privKey.toCharArray());
 			System.out.println(w2);
 
 			assertEquals(w1, w2);
-		}
-
-		{
-			for (int i = 0; i < 10000; i++) {
-				WalletAddress addr1 = WalletService.getNewAddress(file, w1, pass);
-				System.out.println(addr1);
-			}
 		}
 
 	}

@@ -1,0 +1,5 @@
+Usage: java -jar zdp.jar [command] [arguments]
+
+Commands:
+	wallet create  
+		
