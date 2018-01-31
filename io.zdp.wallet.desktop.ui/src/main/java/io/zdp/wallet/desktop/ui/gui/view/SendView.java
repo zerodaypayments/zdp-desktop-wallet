@@ -75,7 +75,7 @@ public class SendView {
 
 		new Thread(() -> {
 			try {
-				float f = zdp.getFee();
+				BigDecimal f = zdp.getFee();
 				log.debug("Got fee: " + f);
 				feeHolder.setValue(f);
 

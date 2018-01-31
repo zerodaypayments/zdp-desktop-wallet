@@ -41,18 +41,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.bitcoinj</groupId>
-			<artifactId>bitcoinj-core</artifactId>
-			<version>0.14.5</version>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
 			<groupId>io.zdp</groupId>
 			<artifactId>io.zdp.common</artifactId>
 			<version>1.0</version>

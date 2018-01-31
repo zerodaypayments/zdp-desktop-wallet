@@ -22,7 +22,7 @@ public class DesktopWalletService extends WalletService {
 
 	private Wallet currentWallet;
 	private File currentWalletFile;
-	private char[] currentWalletPassword;
+	private String currentWalletPassword;
 
 	@Value("${api.central.url}")
 	private String apiCentralUrl;
@@ -51,7 +51,7 @@ public class DesktopWalletService extends WalletService {
 		return null;
 	}
 
-	public void setCurrentWallet(Wallet w, File file, char[] pass) {
+	public void setCurrentWallet(Wallet w, File file, String pass) {
 
 		this.currentWallet = w;
 		this.currentWalletFile = file;

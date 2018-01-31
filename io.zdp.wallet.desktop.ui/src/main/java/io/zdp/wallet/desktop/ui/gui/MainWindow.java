@@ -479,7 +479,7 @@ public class MainWindow {
 
 	}
 
-	public void setWallet(Wallet w, File walletFile, char[] pass) {
+	public void setWallet(Wallet w, File walletFile, String pass) {
 
 		walletService.setCurrentWallet(w, walletFile, pass);
 
