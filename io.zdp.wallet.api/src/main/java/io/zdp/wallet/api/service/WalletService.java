@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.security.KeyPair;
+import java.security.PublicKey;
 import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
@@ -73,18 +74,23 @@ public class WalletService {
 
 	}
 
+	public static String getPublicKeyHash(final PublicKey pubKey) {
+		return getPublicKeyHash(pubKey.getEncoded());
+	}
+
 	public static String getPublicKeyHash(final WalletAddress addr) {
-
-		final byte[] addressHash = DigestUtils.sha512(addr.getPublicKey());
-
+		return getPublicKeyHash(addr.getPublicKey());
+	}
+	
+	public static String getPublicKeyHash(final byte[] pubKey) {
+		final byte[] addressHash = DigestUtils.sha512(pubKey);
 		final String addressBase58 = Base58.encode(addressHash);
-
 		return addressBase58;
-
 	}
 
 	// Save Wallet in XML format
-	// Switching to XML from JSON as easier to support changes in the wallet format in the future
+	// Switching to XML from JSON as easier to support changes in the wallet format
+	// in the future
 	public static synchronized void save(final File file, final Wallet wallet, final String walletSeed) {
 
 		try {
