@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.zdp.common.crypto.CryptoUtils;
+import io.zdp.common.crypto.Signer;
 import io.zdp.common.utils.ZIPHelper;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.domain.WalletAddress;
@@ -36,7 +37,7 @@ public class WalletService {
 		w.setDateCreated(new Date());
 
 		if (StringUtils.isBlank(privKey)) {
-			privKey = CryptoUtils.generateRandomNumber(256);
+			privKey = CryptoUtils.generateRandomNumber256bits();
 		}
 
 		w.setUuid(DigestUtils.sha256Hex(privKey));
@@ -74,22 +75,13 @@ public class WalletService {
 
 	}
 
-	public static String getPublicKeyHash(final PublicKey pubKey) {
-		return getPublicKeyHash(pubKey.getEncoded());
-	}
-
 	public static String getPublicKeyHash(final WalletAddress addr) {
-		return getPublicKeyHash(addr.getPublicKey());
-	}
-	
-	public static String getPublicKeyHash(final byte[] pubKey) {
-		final byte[] addressHash = DigestUtils.sha512(pubKey);
-		final String addressBase58 = Base58.encode(addressHash);
-		return addressBase58;
+		return Signer.getPublicKeyHash(addr.getPublicKey());
 	}
 
 	// Save Wallet in XML format
-	// Switching to XML from JSON as easier to support changes in the wallet format
+	// Switching to XML from JSON as easier to support changes in the wallet
+	// format
 	// in the future
 	public static synchronized void save(final File file, final Wallet wallet, final String walletSeed) {
 

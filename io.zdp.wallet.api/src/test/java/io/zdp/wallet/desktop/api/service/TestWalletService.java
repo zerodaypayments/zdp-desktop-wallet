@@ -20,7 +20,7 @@ public class TestWalletService extends TestCase {
 
 		File file = new File("1.wallet");
 
-		String privKey = CryptoUtils.generateRandomNumber(256);
+		String privKey = CryptoUtils.generateRandomNumber256bits();
 		
 		System.out.println(privKey);
 
