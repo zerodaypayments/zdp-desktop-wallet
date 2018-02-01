@@ -218,7 +218,7 @@ public class SendView {
 
 					String fromAddressHash = WalletService.getPublicKeyHash(fromAddress);
 
-					TransferResponse transferResponse = zdp.transfer(privKey, fromAddressHash, panel.txtTo.getText(), amountToSend, panel.txtSenderRef.getText(), panel.txtRecepientRef.getText());
+					TransferResponse transferResponse = null;//zdp.transfer(privKey, fromAddressHash, panel.txtTo.getText(), amountToSend, panel.txtSenderRef.getText(), panel.txtRecepientRef.getText());
 
 					if (transferResponse == null || false == transferResponse.isSubmitted()) {
 						mainWindow.showSystemTrayMessage(MessageType.ERROR, "Ttransaction failed " + transferResponse == null ? "" : transferResponse.getError());

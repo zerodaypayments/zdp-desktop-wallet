@@ -1,10 +1,5 @@
 package io.zdp.wallet.desktop.ui.service;
 
-import java.awt.TrayIcon.MessageType;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,13 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import io.zdp.api.model.AddressDetailsResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.domain.WalletAddress;
-import io.zdp.wallet.desktop.ui.common.Alert;
-import io.zdp.wallet.desktop.ui.common.SwingHelper;
-import io.zdp.wallet.desktop.ui.domain.WalletEvent;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Service

@@ -121,7 +121,7 @@ public class CreateNewWallet {
 	private void generateWalletInfo(WalletCreationPanel panel) {
 
 		try {
-			String seed = CryptoUtils.generateRandomNumber(256);
+			String seed = CryptoUtils.generateRandomNumber256bits();
 			panel.txtSeed.setText(seed);
 
 			Language l = Language.ENGLISH;
