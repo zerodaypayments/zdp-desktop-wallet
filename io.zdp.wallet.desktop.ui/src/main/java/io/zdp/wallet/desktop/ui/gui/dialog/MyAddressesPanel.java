@@ -40,7 +40,7 @@ public class MyAddressesPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(html);
 
         btnAddExistingAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_24.png"))); // NOI18N
-        btnAddExistingAddress.setText("Add existing address by secret number");
+        btnAddExistingAddress.setText("Add existing address by private key");
 
         btnGenerateNewAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_24.png"))); // NOI18N
         btnGenerateNewAddress.setText("Generate new address");
@@ -58,7 +58,7 @@ public class MyAddressesPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAddExistingAddress)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 323, Short.MAX_VALUE)
                         .addComponent(btnGenerateNewAddress))
                     .addComponent(jLabel2))
                 .addContainerGap())

@@ -54,17 +54,15 @@ public class WalletService {
 		String seed = null;
 
 		if (wallet.getAddresses().isEmpty()) {
-			seed = DigestUtils.sha512Hex(wallet.getSeed());
+			seed = DigestUtils.sha256Hex(wallet.getSeed());
 		} else {
-			seed = DigestUtils.sha512Hex(wallet.getAddresses().get(wallet.getAddresses().size() - 1).getPrivateKey());
+			seed = DigestUtils.sha256Hex(wallet.getAddresses().get(wallet.getAddresses().size() - 1).getPrivateKey());
 		}
 
 		KeyPair keys = CryptoUtils.generateKeys(seed);
 
 		addr.setBalance(BigDecimal.ZERO);
-
-		addr.setPrivateKey(keys.getPrivate().getEncoded());
-		addr.setPublicKey(keys.getPublic().getEncoded());
+		addr.setSeed(seed);
 
 		wallet.getAddresses().add(addr);
 		save(file, wallet, pass);
@@ -75,34 +73,6 @@ public class WalletService {
 
 	public static String getPublicKeyHash(final WalletAddress addr) {
 		return Signer.getPublicKeyHash(addr.getPublicKey());
-	}
-
-	// Save Wallet in XML format
-	// Switching to XML from JSON as easier to support changes in the wallet
-	// format
-	// in the future
-	public static synchronized void save(final File file, final Wallet wallet, final String walletSeed) {
-
-		try {
-
-			// Generate XML
-			final StringWriter sw = new StringWriter();
-			getWalletMarshaller().marshal(wallet, sw);
-
-			// Compress XML into byte array
-			final byte[] compressed = ZIPHelper.compress(sw.toString());
-
-			// RSA-encrypt compressed byte array
-			final KeyPair keys = CryptoUtils.generateKeys(walletSeed);
-
-			final byte[] encrypted = CryptoUtils.encrypt(keys.getPrivate(), compressed);
-
-			FileUtils.writeByteArrayToFile(file, encrypted);
-
-		} catch (Exception e) {
-			log.error("Error: ", e);
-		}
-
 	}
 
 	private static Marshaller getWalletMarshaller() throws JAXBException, PropertyException {
@@ -118,6 +88,34 @@ public class WalletService {
 		return jaxbUnmarshaller;
 	}
 
+	// Save Wallet in XML format
+	// Switching to XML from JSON as easier to support changes in the wallet
+	// format
+	// in the future
+	public static synchronized void save(final File file, final Wallet wallet, final String walletSeed) {
+
+		try {
+
+			// Generate XML
+			final StringWriter sw = new StringWriter();
+			getWalletMarshaller().marshal(wallet, sw);
+
+			// TODO remove debugging logging
+			System.out.println(sw);
+
+			// Compress XML into byte array
+			final byte[] compressed = ZIPHelper.compress(sw.toString());
+
+			final byte[] encrypted = CryptoUtils.encryptLargeData(walletSeed, compressed);
+
+			FileUtils.writeByteArrayToFile(file, encrypted);
+
+		} catch (Exception e) {
+			log.error("Error: ", e);
+		}
+
+	}
+
 	public static synchronized Wallet load(final File file, final String walletSeed) {
 
 		try {
@@ -125,12 +123,12 @@ public class WalletService {
 			// Read decrypted file content to byte array
 			final byte[] content = FileUtils.readFileToByteArray(file);
 
-			// Decrypt content to compressed byte array
-			final KeyPair keys = CryptoUtils.generateKeys(walletSeed);
-
-			final byte[] decryptedCompressed = CryptoUtils.decrypt(keys.getPublic(), content);
+			final byte[] decryptedCompressed = CryptoUtils.decryptLargeData(walletSeed, content);
 
 			final byte[] xml = ZIPHelper.decompressAsBytes(decryptedCompressed);
+
+			// TODO remove debugging logging
+			System.out.println(new String(xml));
 
 			final Wallet wallet = (Wallet) getWalletUnmarshaller().unmarshal(new ByteArrayInputStream(xml));
 

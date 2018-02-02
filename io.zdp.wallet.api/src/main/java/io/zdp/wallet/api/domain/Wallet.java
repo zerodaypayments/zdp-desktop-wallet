@@ -18,6 +18,10 @@ public class Wallet implements Serializable {
 
 	protected List<WalletAddress> addresses = new ArrayList<>();
 
+	protected List<RecepientAddress> recepientAddresses = new ArrayList<>();
+
+	protected List<WalletTransaction> transactions = new ArrayList<>();
+
 	protected Date dateCreated;
 
 	protected String seed;
@@ -30,6 +34,22 @@ public class Wallet implements Serializable {
 		}
 
 		return null;
+	}
+
+	public List<RecepientAddress> getRecepientAddresses() {
+		return recepientAddresses;
+	}
+
+	public void setRecepientAddresses(List<RecepientAddress> recepientAddresses) {
+		this.recepientAddresses = recepientAddresses;
+	}
+
+	public List<WalletTransaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<WalletTransaction> transactions) {
+		this.transactions = transactions;
 	}
 
 	public String getSeed() {
@@ -67,7 +87,7 @@ public class Wallet implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Wallet [uuid=" + uuid + ", addresses=" + addresses + ", dateCreated=" + dateCreated + ", seed=" + seed + "]";
+		return "Wallet [uuid=" + uuid + ", addresses=" + addresses + ", recepientAddresses=" + recepientAddresses + ", transactions=" + transactions + ", dateCreated=" + dateCreated + ", seed=" + seed + "]";
 	}
 
 	@Override

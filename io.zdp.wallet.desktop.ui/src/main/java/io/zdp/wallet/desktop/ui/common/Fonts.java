@@ -6,7 +6,7 @@ public class Fonts {
 
 	public static Font getMainFont() throws Exception {
 		Font font = Font.createFont(Font.PLAIN, Fonts.class.getResourceAsStream("/fonts/DejaVuSerif-Bold.ttf"));
-		font = font.deriveFont(16.0f);
+		font = font.deriveFont(14.0f);
 		return font;
 	}
 

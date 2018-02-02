@@ -412,7 +412,7 @@ public class MainWindow {
 
 			menu.addSeparator();
 
-			JMenuItem menuOpenWallet = new JMenuItem("Open wallet", Icons.getIcon("24/open.png"));
+			JMenuItem menuOpenWallet = new JMenuItem("Open wallet", Icons.getIcon("folder.png"));
 			menuOpenWallet.setMnemonic('O');
 			menuOpenWallet.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 			menuOpenWallet.addActionListener(e -> {

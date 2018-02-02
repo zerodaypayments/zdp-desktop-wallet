@@ -1,14 +1,14 @@
-package io.zdp.wallet.desktop.ui.domain;
+package io.zdp.wallet.api.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 @SuppressWarnings("serial")
+@XmlRootElement
 public class RecepientAddress implements Serializable {
 
 	private String address;
-
-	private Date date;
 
 	private String description;
 
@@ -18,14 +18,6 @@ public class RecepientAddress implements Serializable {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public String getDescription() {
@@ -38,7 +30,7 @@ public class RecepientAddress implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RecepientAddress [address=" + address + ", date=" + date + ", description=" + description + "]";
+		return "RecepientAddress [address=" + address + ", description=" + description + "]";
 	}
 
 }

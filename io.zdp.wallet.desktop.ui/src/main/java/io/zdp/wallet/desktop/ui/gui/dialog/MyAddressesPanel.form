@@ -22,7 +22,7 @@
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="btnAddExistingAddress" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="300" max="32767" attributes="0"/>
+                      <EmptySpace pref="323" max="32767" attributes="0"/>
                       <Component id="btnGenerateNewAddress" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
@@ -70,7 +70,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/icons/add_24.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Add existing address by secret number"/>
+        <Property name="text" type="java.lang.String" value="Add existing address by private key"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnGenerateNewAddress">

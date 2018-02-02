@@ -31,7 +31,6 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnGenerateNewAddress = new javax.swing.JButton();
-        btnAddExistingAddress = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btnFAQ = new javax.swing.JButton();
         btnOnlineHelp = new javax.swing.JButton();
@@ -44,9 +43,6 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
 
         btnGenerateNewAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_48.png"))); // NOI18N
         btnGenerateNewAddress.setText("<html><h2>Generate new address</h2></html>");
-
-        btnAddExistingAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_secure_48.png"))); // NOI18N
-        btnAddExistingAddress.setText("<html><h2>Add an existing address (by secret number)</h2></html>");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("<html><h1>Useful links</h1></html>");
@@ -65,9 +61,8 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
                     .addComponent(btnGenerateNewAddress)
-                    .addComponent(btnAddExistingAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
                     .addComponent(jLabel3)
                     .addComponent(btnOnlineHelp)
                     .addComponent(btnFAQ))
@@ -82,21 +77,18 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(btnGenerateNewAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnAddExistingAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(96, 96, 96)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnOnlineHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnFAQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnAddExistingAddress;
     public javax.swing.JButton btnFAQ;
     public javax.swing.JButton btnGenerateNewAddress;
     public javax.swing.JButton btnOnlineHelp;

@@ -77,42 +77,9 @@ public class AddressService {
 		return address;
 	}
 	
-	public void generateNewAddress(Runnable successCallback) {
-/*
-		SwingHelper.async(mainWindow.getFrame(), "Getting new address", () -> {
-			
-			try {
-
-				AddressDetailsResponse newAddress = zdp.getAddress();
-
-				// Alert.info("New address was generated");
-				mainWindow.showSystemTrayMessage(MessageType.INFO, "New address was generated: " + newAddress.getAddress());
-
-				WalletAddress a = new WalletAddress();
-				a.setAddress(newAddress.getAddress());
-				a.setDescription("newly generated address");
-				a.setPrivateKey(newAddress.getPrivateKey());
-				a.setSeed(newAddress.getSecret());
-				a.setBalance(newAddress.getBalance());
-
-				this.walletService.getCurrentWallet().getMyAddresses().add(a);
-
-				WalletEvent e = new WalletEvent();
-				e.setDate(new Date());
-				e.setType(WalletEvent.ADDRESS_GENERATED);
-				e.setMessage(a.getAddress());
-				this.walletService.getCurrentWallet().getWalletEvents().add(e);
-
-				this.walletService.saveCurrentWallet();
-
-				successCallback.run();
-
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				Alert.error("Cannot connect to the network");
-			}
-		});
-*/
+	public void generateNewAddress() {
+		walletService.generateNewAddress();
+		mainWindow.showAddressBook();
 	}
 	
 

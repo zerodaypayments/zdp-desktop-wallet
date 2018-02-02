@@ -1,5 +1,6 @@
 package io.zdp.wallet.desktop.ui.service;
 
+import java.awt.TrayIcon.MessageType;
 import java.io.File;
 
 import javax.annotation.PostConstruct;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.domain.WalletAddress;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.DesktopWallet;
+import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Service
 public class DesktopWalletService extends WalletService {
@@ -35,6 +38,9 @@ public class DesktopWalletService extends WalletService {
 
 	@Autowired
 	private ConfigurationService configurationService;
+	
+	@Autowired
+	private MainWindow mainWindow;
 
 	@PostConstruct
 	public void init() {
@@ -69,6 +75,17 @@ public class DesktopWalletService extends WalletService {
 
 	public Wallet getCurrentWallet() {
 		return currentWallet;
+	}
+
+	public void generateNewAddress() {
+
+		try {
+			WalletAddress newAddress = super.getNewAddress(currentWalletFile, currentWallet, currentWalletPassword);
+			mainWindow.showSystemTrayMessage(MessageType.INFO, "New address generated: " + newAddress.getAddress());
+		} catch (Exception e) {
+			log.error("Error: ", e);
+		}
+		
 	}
 
 }

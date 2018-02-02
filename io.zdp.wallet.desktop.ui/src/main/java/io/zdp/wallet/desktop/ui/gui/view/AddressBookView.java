@@ -1,16 +1,18 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
 import javax.swing.event.HyperlinkEvent;
 
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import io.zdp.common.utils.Mnemonics;
+import io.zdp.common.utils.Mnemonics.Language;
 import io.zdp.wallet.api.domain.WalletAddress;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Icons;
@@ -33,7 +35,7 @@ public class AddressBookView {
 
 	@Autowired
 	private MainWindow mainWindow;
-	
+
 	@Autowired
 	private AddressService addressService;
 
@@ -81,9 +83,16 @@ public class AddressBookView {
 
 						dialog.setTitle("Secret key for address " + WalletService.getPublicKeyHash(addr));
 
-						panel.txtSecretKey.setText(Base64.encodeBase64String(addr.getPrivateKey()));
+						panel.txtSecretKey.setText(addr.getSeed());
 						new QTextComponentContextMenu(panel.txtSecretKey);
 						panel.txtSecretKey.addFocusListener(new TextComponentFocuser());
+
+						// Mnemonics
+						mnemonics(panel, addr);
+
+						panel.languageSelector.addItemListener(i -> {
+							mnemonics(panel, addr);
+						});
 
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 						dialog.setVisible(true);
@@ -101,11 +110,7 @@ public class AddressBookView {
 		tabs.addTab("My addresses", Icons.getIcon("wallet_32.png"), myAddressesPanel, "My addresses and balances");
 
 		myAddressesPanel.btnGenerateNewAddress.addActionListener(e -> {
-			addressService.generateNewAddress(() -> {
-				mainWindow.showAddressBook();
-				//myAddressesPanel.html.setCaretPosition(myAddressesPanel.html.getText().length());
-
-			});
+			addressService.generateNewAddress();
 		});
 
 		// Recepients addresses
@@ -116,5 +121,38 @@ public class AddressBookView {
 		SwingHelper.setFontForJText(recepientsAddressPanel.html);
 
 		return tabs;
+	}
+
+	private void mnemonics(ShowAddressSecretKeyPanel panel, WalletAddress addr) {
+		Language l = Language.ENGLISH;
+
+		if (panel.languageSelector.getSelectedItem().equals("English")) {
+			l = Language.ENGLISH;
+		} else if (panel.languageSelector.getSelectedItem().equals("French")) {
+			l = Language.FRENCH;
+		} else if (panel.languageSelector.getSelectedItem().equals("Italian")) {
+			l = Language.ITALIAN;
+		} else if (panel.languageSelector.getSelectedItem().equals("Japanese")) {
+			l = Language.JAPANESE;
+		} else if (panel.languageSelector.getSelectedItem().equals("Korean")) {
+			l = Language.KOREAN;
+		} else if (panel.languageSelector.getSelectedItem().equals("Spanish")) {
+			l = Language.SPANISH;
+		} else if (panel.languageSelector.getSelectedItem().equals("Chinese Simplified")) {
+			l = Language.CHINESE_SIMPLIFIED;
+		} else if (panel.languageSelector.getSelectedItem().equals("Chinese Traditional")) {
+			l = Language.CHINESE_TRADITIONAL;
+		}
+
+		List<String> words = Mnemonics.generateWords(l, addr.getSeed());
+
+		int index = 0;
+		for (int column = 0; column < 3; column++) {
+			for (int row = 0; row < 8; row++) {
+				panel.tableMnemonics.getModel().setValueAt(words.get(index), row, column);
+				index++;
+			}
+		}
+
 	}
 }

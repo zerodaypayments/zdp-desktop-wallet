@@ -1,25 +1,17 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
 import java.awt.BorderLayout;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import io.zdp.common.utils.StringHelper;
-import io.zdp.wallet.api.domain.WalletAddress;
-import io.zdp.wallet.desktop.ui.common.Alert;
-import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
-import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.HomePanelWithEmptyAddressBook;
 import io.zdp.wallet.desktop.ui.gui.dialog.WalletInfoPanel;
@@ -54,11 +46,10 @@ public class HomeView {
 
 		JPanel panel = new JPanel(new BorderLayout());
 
-		/*
 		if (this.walletService.getCurrentWallet().getAddresses().isEmpty() == false) {
+			
 			WalletInfoPanel walletInfoPanel = new WalletInfoPanel();
-			new QTextComponentContextMenu(walletInfoPanel.txtWalletName);
-			*/
+//			new QTextComponentContextMenu(walletInfoPanel.txtWalletName);
 
 //			walletInfoPanel.txtWalletName.addFocusListener(new TextComponentFocuser());
 //			walletInfoPanel.txtWalletName.setText(walletService.getCurrentWallet().getName());
@@ -69,33 +60,12 @@ public class HomeView {
 			// new QTextComponentContextMenu(walletInfoPanel.txtWalletDate);
 
 			// Total wallet balance
-			/*
-			BigDecimal totalWalletBalance = 0;
-			for (WalletAddress addr : this.walletService.getCurrentWallet().getAddresses()) {
-				totalWalletBalance = totalWalletBalance.add(addr.getBalance());
-			}
-
-			walletInfoPanel.txtTotalWalletBalance.setText(totalWalletBalance.toString());
-			new QTextComponentContextMenu(walletInfoPanel.txtTotalWalletBalance);
-			walletInfoPanel.txtTotalWalletBalance.addFocusListener(new TextComponentFocuser());
-			// Recent events
-			Map<String, Object> events = new HashMap<>();
-			events.put("events", walletService.getCurrentWallet().getWalletEvents());
-			String eventsHtml = velocity.process(events, "/html/recentEvents.html");
-			SwingHelper.setFontForJText(walletInfoPanel.textRecentEvents);
-			walletInfoPanel.textRecentEvents.setText(eventsHtml);
-			new QTextComponentContextMenu(walletInfoPanel.textRecentEvents);
-
-			walletInfoPanel.btnUpdateName.addActionListener(e -> {
-				if (StringUtils.isNotBlank(walletInfoPanel.txtWalletName.getText())) {
-					walletService.getCurrentWallet().setName(walletInfoPanel.txtWalletName.getText());
-					walletService.saveCurrentWallet();
-					mainWindow.updateFrame(walletService.getCurrentWallet());
-					Alert.info("Wallet successfully updated!");
-				}
-			});
-
-			panel.add(walletInfoPanel, BorderLayout.CENTER);
+//			BigDecimal totalWalletBalance = 0;
+//			for (WalletAddress addr : this.walletService.getCurrentWallet().getAddresses()) {
+//				totalWalletBalance = totalWalletBalance.add(addr.getBalance());
+//			}
+//
+//			panel.add(walletInfoPanel, BorderLayout.CENTER);
 
 		} else {
 
@@ -110,17 +80,12 @@ public class HomeView {
 			});
 
 			homePanel.btnGenerateNewAddress.addActionListener(e -> {
-
-				addressService.generateNewAddress(() -> {
-					mainWindow.showHomeScreen();
-				});
-
+				addressService.generateNewAddress();
 			});
 
-			panel.add(homePanel, BorderLayout.CENTER);
+			panel.add(new JScrollPane(homePanel), BorderLayout.CENTER);
 
 		}
-			 */
 		
 		return panel;
 
