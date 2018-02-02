@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.security.KeyPair;
-import java.security.PublicKey;
 import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
@@ -17,7 +16,6 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bitcoinj.core.Base58;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

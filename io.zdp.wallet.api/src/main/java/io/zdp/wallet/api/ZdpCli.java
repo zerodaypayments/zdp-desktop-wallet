@@ -1,58 +1,77 @@
 package io.zdp.wallet.api;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import io.zdp.common.utils.Mnemonics;
-import io.zdp.common.utils.Mnemonics.Language;
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
+import org.apache.commons.lang3.math.NumberUtils;
 
+/*
+ * java -jar zdp.jar
+ */
 public class ZdpCli {
 
-	public static void main(String[] args) {
+	private static final String COMMAND_TX = "tx";
+	private static final String COMMAND_ADDRESS = "address";
+	private static final String COMMAND_WALLET = "wallet";
 
-		System.out.println("Usage: " + args.length);
+	public static void main(final String... _args) {
 
-		if (args.length == 0) {
-			printHelp();
-			return;
-		}
+		try (Scanner scanner = new Scanner(System.in)) {
 
-		if (args[0].equals("wallet")) {
+			final List<String> args = Collections.unmodifiableList(Arrays.stream(_args).collect(Collectors.toList()));
 
-			if (args[1].equals("create")) {
+			final List<String> commands = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(COMMAND_WALLET, COMMAND_ADDRESS, COMMAND_TX)));
 
-				File file = new File(args[2]);
+			String userCommand = null;
 
-				try {
+			if (args.isEmpty() || commands.contains(args.get(0)) == false) {
 
-					boolean newFile = file.createNewFile();
+				while (userCommand == null || commands.contains(userCommand) == false) {
 
-					if (!newFile) {
+					System.out.println("-=-=-=-=-=-=-=-=-=-");
+					System.out.println("Available commands:");
+					System.out.println("-=-=-=-=-=-=-=-=-=-");
 
-						System.err.println("The file already exists: " + file);
+					int index = 0;
 
-					} else {
-
-						Wallet w = WalletService.create(null, file);
-
-						System.out.println("Created wallet: " + file);
-						System.out.println("UUID: " + w.getUuid());
-						System.out.println("Private key: " + w.getSeed());
-						System.out.println("Seed words: " + Mnemonics.generateWords(Language.ENGLISH, w.getSeed()));
-
+					for (String command : commands) {
+						System.out.println("[" + (++index) + "] " + command);
 					}
 
-				} catch (Exception e) {
-					System.err.println("Can't create wallet: " + e.getMessage());
+					System.out.println("-=-=-=-=-=-=-=-=-=-");
+
+					String userValue = scanner.next();
+
+					int userCommandIndex = NumberUtils.toInt(userValue, -1);
+
+					if (userCommandIndex >= 1 && userCommandIndex <= commands.size()) {
+						userCommand = commands.get(userCommandIndex - 1);
+					} else if (commands.contains(userValue)) {
+						userCommand = userValue;
+					}
+
 				}
 			}
+
+			System.out.println("Seleted command: " + userCommand);
+
+			if (COMMAND_ADDRESS.equals(userCommand)) {
+
+			} else if (COMMAND_WALLET.equals(userCommand)) {
+
+			} else if (COMMAND_TX.equals(userCommand)) {
+
+				System.out.println("Enter transaction UUID: ");
+				String uuid = scanner.next();
+				System.out.println("Checking transaction [" + uuid + "]");
+			}
+
 		}
 
-	}
-
-	private static void printHelp() {
-		System.out.println("Print help here");
 	}
 
 }
