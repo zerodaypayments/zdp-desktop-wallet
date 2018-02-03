@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.security.PrivateKey;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -13,13 +14,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import io.zdp.api.model.BalanceResponse;
 import io.zdp.api.model.BigDecimalValue;
 import io.zdp.api.model.TransferResponse;
 import io.zdp.client.ZdpClient;
@@ -52,26 +53,31 @@ public class SendView {
 	@Autowired
 	private MainWindow mainWindow;
 
+	private Icon loadingIcon = Icons.getIcon("ajax-loader.gif");
+
 	public JPanel get() {
 
 		final SendPanel sendPanel = new SendPanel();
 
 		BigDecimalValue feeHolder = new BigDecimalValue();
-		BigDecimalValue addressBalanceHolder = new BigDecimalValue();
 
-		ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/ajax-loader.gif"));
+		/*
 		sendPanel.btnSendMax.setIcon(icon);
 		sendPanel.btnSendMax.setText("Getting fee from the network...");
 		sendPanel.btnSendMax.addActionListener(e -> {
-
+		
 			log.debug("Send maximum");
-
+		
 			if (addressBalanceHolder.getValue().compareTo(feeHolder.getValue()) > 0) {
 				BigDecimal max = addressBalanceHolder.getValue().subtract(feeHolder.getValue());
 				sendPanel.txtAmount.setText(max.toString());
 			}
-
+		
 		});
+		*/
+
+		sendPanel.txtAddressBalance.setIcon(loadingIcon);
+		sendPanel.txtFee.setIcon(loadingIcon);
 
 		new Thread(() -> {
 			try {
@@ -80,10 +86,8 @@ public class SendView {
 				feeHolder.setValue(f);
 
 				SwingUtilities.invokeLater(() -> {
-					sendPanel.btnSendMax.setIcon(Icons.getIcon("check.png"));
-					sendPanel.btnSendMax.setText("Send max");
 					sendPanel.txtFee.setText(feeHolder.getValue().toString());
-
+					sendPanel.txtFee.setIcon(Icons.getIcon("check.png"));
 				});
 
 			} catch (Exception e1) {
@@ -96,15 +100,14 @@ public class SendView {
 		sendPanel.selectorFromAddress.setModel(addressModel);
 
 		sendPanel.selectorFromAddress.addItemListener(e -> {
-			String selectedAddress = sendPanel.selectorFromAddress.getSelectedItem().toString();
-			WalletAddress addr = walletService.getCurrentWallet().getByPublicKeyHash(selectedAddress);
-			addressBalanceHolder.setValue(addr.getBalance());
-			sendPanel.txtAddressBalance.setText(addr.getBalance().toString());
+			updateAddressBalance(sendPanel);
 		});
 
 		for (WalletAddress addr : walletService.getCurrentWallet().getAddresses()) {
 			addressModel.addElement(WalletService.getPublicKeyHash(addr));
 		}
+
+		updateAddressBalance(sendPanel);
 
 		new QTextComponentContextMenu(sendPanel.txtToAddress);
 		sendPanel.txtToAddress.addFocusListener(new TextComponentFocuser());
@@ -122,15 +125,10 @@ public class SendView {
 		sendPanel.txtRecepientRef.setDocument(new JTextFieldLimit(64));
 		sendPanel.txtRecepientRef.addFocusListener(new TextComponentFocuser());
 
+		new QTextComponentContextMenu(sendPanel.txtTotalCharge);
+
 		JScrollPane scroll = new JScrollPane(sendPanel);
 		SwingHelper.updateScrollPane(scroll);
-
-		sendPanel.btnClear.addActionListener(e -> {
-			sendPanel.txtToAddress.setText(StringUtils.EMPTY);
-			sendPanel.txtAmount.setText(StringUtils.EMPTY);
-			sendPanel.txtSenderRef.setText(StringUtils.EMPTY);
-			sendPanel.txtRecepientRef.setText(StringUtils.EMPTY);
-		});
 
 		sendPanel.txtAmount.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -212,19 +210,36 @@ public class SendView {
 				try {
 
 					log.debug("TODO actual transfer");
+
 					WalletAddress fromAddress = walletService.getCurrentWallet().getByPublicKeyHash(panel.txtFrom.getText());
-					PrivateKey privKey = Signer.generatePrivateKey(fromAddress.getPrivateKey());
+
+					//					PrivateKey privKey = Signer.generatePrivateKey(fromAddress.getPrivateKey());
+
 					BigDecimal amountToSend = new BigDecimal(panel.txtAmount.getText().trim());
 
-					String fromAddressHash = WalletService.getPublicKeyHash(fromAddress);
+					//					String fromAddressHash = WalletService.getPublicKeyHash(fromAddress);
 
-					TransferResponse transferResponse = null;//zdp.transfer(privKey, fromAddressHash, panel.txtTo.getText(), amountToSend, panel.txtSenderRef.getText(), panel.txtRecepientRef.getText());
+					TransferResponse transferResponse = zdp.transfer(fromAddress.getPublicKey(), fromAddress.getPrivateKey(), panel.txtTo.getText(), amountToSend, panel.txtSenderRef.getText(), panel.txtRecepientRef.getText());
 
 					if (transferResponse == null || false == transferResponse.isSubmitted()) {
-						mainWindow.showSystemTrayMessage(MessageType.ERROR, "Ttransaction failed " + transferResponse == null ? "" : transferResponse.getError());
+						
+						String err = "Transaction failed " + transferResponse == null ? "" : transferResponse.getError();
+						mainWindow.showSystemTrayMessage(MessageType.ERROR, err);
+						Alert.error(err);
+						
 					} else {
-						mainWindow.showSystemTrayMessage(MessageType.INFO, "Submitted transaction " + transferResponse.getUuid());
+						
+						
+						String msg = "Submitted transaction " + transferResponse.getUuid();
+						mainWindow.showSystemTrayMessage(MessageType.INFO, msg);
+						
+						Alert.info("Transaction submitted: " + transferResponse.getUuid());
+						
+						updateAddressBalance(sendPanel);
 					}
+					
+					dialog.dispose();
+					
 
 				} catch (Exception ex) {
 					log.error("Error: ", ex);
@@ -238,6 +253,33 @@ public class SendView {
 		});
 
 		return sendPanel;
+
+	}
+
+	private void updateAddressBalance(SendPanel sendPanel) {
+
+		sendPanel.txtAddressBalance.setIcon(loadingIcon);
+		sendPanel.txtAddressBalance.setText("Getting address balance");
+
+		String selectedAddress = sendPanel.selectorFromAddress.getSelectedItem().toString();
+
+		WalletAddress addr = walletService.getCurrentWallet().getByPublicKeyHash(selectedAddress);
+
+		new Thread(() -> {
+
+			try {
+
+				BalanceResponse balance = zdp.getAddressBalance(addr.getPublicKey(), addr.getPrivateKey());
+				sendPanel.txtAddressBalance.setText(balance.getBalance().toString());
+				sendPanel.txtAddressBalance.setIcon(Icons.getIcon("check.png"));
+
+				addr.setBalance(balance.getBalance());
+
+			} catch (Exception e) {
+				log.error("Error: ", e);
+			}
+
+		}).start();
 
 	}
 

@@ -38,6 +38,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -526,7 +527,7 @@ public class MainWindow {
 			btnReceive.addActionListener(e -> {
 				showReceiveScreen();
 			});
-
+/*
 			JButton btnTransactions = new JButton("Transactions", new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
 			btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -542,7 +543,7 @@ public class MainWindow {
 				showAddressBook();
 			});
 			toolbar.add(btnAddressBook);
-
+*/
 			toolbar.add(Box.createHorizontalGlue());
 
 			JButton btnSync = new JButton("Synchronize", new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
@@ -574,7 +575,7 @@ public class MainWindow {
 	 * Open 'Send' screen
 	 */
 	private void showSendScreen() {
-		this.addComponentToFrame(sendView.get());
+		this.addComponentToFrame(new JScrollPane(sendView.get()));
 	}
 
 	/**
