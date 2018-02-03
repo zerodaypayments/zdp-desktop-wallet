@@ -65,6 +65,7 @@ import io.zdp.wallet.desktop.ui.gui.view.AddressBookView;
 import io.zdp.wallet.desktop.ui.gui.view.HomeView;
 import io.zdp.wallet.desktop.ui.gui.view.ReceiveView;
 import io.zdp.wallet.desktop.ui.gui.view.SendView;
+import io.zdp.wallet.desktop.ui.service.AddressService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component
@@ -79,6 +80,9 @@ public class MainWindow {
 
 	@Autowired
 	private OpenWallet openWallet;
+
+	@Autowired
+	private AddressService addressService;
 
 	@Autowired
 	private DesktopWallet desktopWallet;
@@ -527,34 +531,30 @@ public class MainWindow {
 			btnReceive.addActionListener(e -> {
 				showReceiveScreen();
 			});
-/*
-			JButton btnTransactions = new JButton("Transactions", new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
-			btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnTransactions.addActionListener(e -> {
-
-			});
-			toolbar.add(btnTransactions);
-
-			JButton btnAddressBook = new JButton("Address Book", new ImageIcon(this.getClass().getResource("/icons/address_book.png")));
-			btnAddressBook.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnAddressBook.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnAddressBook.addActionListener(e -> {
-				showAddressBook();
-			});
-			toolbar.add(btnAddressBook);
-*/
+			/*
+						JButton btnTransactions = new JButton("Transactions", new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
+						btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
+						btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
+						btnTransactions.addActionListener(e -> {
+			
+						});
+						toolbar.add(btnTransactions);
+			
+						JButton btnAddressBook = new JButton("Address Book", new ImageIcon(this.getClass().getResource("/icons/address_book.png")));
+						btnAddressBook.setVerticalTextPosition(SwingConstants.BOTTOM);
+						btnAddressBook.setHorizontalTextPosition(SwingConstants.CENTER);
+						btnAddressBook.addActionListener(e -> {
+							showAddressBook();
+						});
+						toolbar.add(btnAddressBook);
+			*/
 			toolbar.add(Box.createHorizontalGlue());
 
 			JButton btnSync = new JButton("Synchronize", new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
 			btnSync.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnSync.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnSync.addActionListener(e -> {
-				try {
-					showSystemTrayMessage(MessageType.INFO, "TODO Wallet synchronized");
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				addressService.sync();
 			});
 			toolbar.add(btnSync);
 
