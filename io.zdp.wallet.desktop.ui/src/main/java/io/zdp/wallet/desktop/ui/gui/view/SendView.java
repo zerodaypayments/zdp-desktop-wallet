@@ -2,11 +2,9 @@ package io.zdp.wallet.desktop.ui.gui.view;
 
 import java.awt.TrayIcon.MessageType;
 import java.math.BigDecimal;
-import java.security.PrivateKey;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,7 +23,6 @@ import io.zdp.api.model.BigDecimalValue;
 import io.zdp.api.model.TransferResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.crypto.Signer;
 import io.zdp.wallet.api.domain.WalletAddress;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
@@ -165,6 +162,11 @@ public class SendView {
 			String from = sendPanel.selectorFromAddress.getSelectedItem().toString();
 			String to = sendPanel.txtToAddress.getText();
 
+			if (false == NumberUtils.isParsable(sendPanel.txtAmount.getText().trim())) {
+				Alert.warn("Please, enter a valid amount");
+				return;
+			}
+			
 			BigDecimal amount = new BigDecimal(sendPanel.txtAmount.getText().trim());
 
 			if (amount.compareTo(BigDecimal.ZERO) < 0) {
@@ -209,15 +211,9 @@ public class SendView {
 
 				try {
 
-					log.debug("TODO actual transfer");
-
 					WalletAddress fromAddress = walletService.getCurrentWallet().getByPublicKeyHash(panel.txtFrom.getText());
 
-					//					PrivateKey privKey = Signer.generatePrivateKey(fromAddress.getPrivateKey());
-
 					BigDecimal amountToSend = new BigDecimal(panel.txtAmount.getText().trim());
-
-					//					String fromAddressHash = WalletService.getPublicKeyHash(fromAddress);
 
 					TransferResponse transferResponse = zdp.transfer(fromAddress.getPublicKey(), fromAddress.getPrivateKey(), panel.txtTo.getText(), amountToSend, panel.txtSenderRef.getText(), panel.txtRecepientRef.getText());
 

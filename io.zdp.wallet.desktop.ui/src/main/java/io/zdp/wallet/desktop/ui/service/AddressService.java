@@ -54,44 +54,12 @@ public class AddressService {
 		restTemplate = new RestTemplate();
 	}
 
-	public Wallet getRecentWallet() {
-		if (StringUtils.isNotBlank(configurationService.getConfiguration().getLastWalletFile())) {
-
-			// TOD ask for password and load
-
-		} else {
-		}
-		return null;
-	}
-
-	public WalletAddress createNewAddress() {
-
-		WalletAddress address = null;
-		/*
-				try {
-		
-					URI uri = new URI(apiCentralUrl + apiUrlAddressNew);
-					log.debug("Create new address: " + uri);
-					AddressDetailsResponse resp = restTemplate.postForObject(uri, null, AddressDetailsResponse.class);
-		
-					address = new WalletAddress();
-					address.setAddress(resp.getAddress());
-					address.setPrivateKey(resp.getPrivateKey());
-					address.setSeed(resp.getSecret());
-		
-				} catch (URISyntaxException e) {
-					log.error("Error: ", e);
-				}
-		*/
-		return address;
-	}
-
 	public void generateNewAddress() {
 		walletService.generateNewAddress();
 		mainWindow.showAddressBook();
 	}
 
-	public void sync() {
+	public void sync(Runnable postSyncFunction) {
 
 		List<Pair<byte[], byte[]>> keyPairs = new ArrayList<>();
 
@@ -113,6 +81,10 @@ public class AddressService {
 				walletService.saveCurrentWallet();
 
 				mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet synchronized");
+
+				if (postSyncFunction != null) {
+					postSyncFunction.run();
+				}
 
 			} catch (Exception e) {
 				log.error("Error: ", e);

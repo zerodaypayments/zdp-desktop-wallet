@@ -47,8 +47,11 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
-                          <Component id="linkAddressBook" alignment="0" max="32767" attributes="0"/>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnNewAddress" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -63,10 +66,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="450" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="395" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="linkAddressBook" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnNewAddress" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -98,24 +101,17 @@
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
-            <Property name="text" type="java.lang.String" value="&lt;html style=&quot;background:black;color:white;&quot;&gt;&#xa;&#x9;&lt;head style=&quot;background:black;color:white;&quot;&gt;&#xa;&#xa;&#x9;&lt;/head&gt;&#xa;&#x9;&lt;body&gt;&#xa;&#x9;&#x9;&lt;div style=&quot;margin-top: 0;background:white;color:black;padding:10px 10px 10px 10px;border-radius:6px;&quot;&gt;&#xa;&#x9;&#x9;&#x9;&lt;table width=&quot;100%&quot; border=&apos;0&apos;&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&lt;tr&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;div style=&apos;background:black;color:white;font-size:14px;padding:10px 10px 10px 10px;&apos;&gt;EWmjcBQCAa47AMknc5ks8rg2T5pyYNrHVjGv4VQ868Tj&lt;/div&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;br/&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;div style=&apos;padding-top:5px&apos;&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;This a temporary address that I used to send funds too (max 256 characters)&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/div&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;br&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;div&gt;Balance: &lt;b&gt;143.23223&lt;/b&gt;&lt;/div&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/td&gt;&#xa;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;td width=&quot;128&quot; align=&quot;center&quot;&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;img src=&quot;http://api.zdp.io/api/address/qr/160/92qphxD7HsuXfNpSpBXPt2jTwTHaGSB7XVJtLDdsHA1j.jpg&quot; /&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&lt;/td&gt;&#xa;&#x9;&#x9;&#x9;&#x9;&lt;/tr&gt;&#xa;&#xa;&#xa;&#x9;&#x9;&#x9;&lt;/table&gt;&#xa;&#xa;&#x9;&#x9;&lt;/div&gt;&#xa;&#x9;&lt;/body&gt;&#xa;&lt;/html&gt;&#xa;"/>
+            <Property name="text" type="java.lang.String" value=""/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="linkAddressBook">
+    <Component class="javax.swing.JButton" name="btnNewAddress">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="66" red="0" type="rgb"/>
-        </Property>
-        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/icons/info_32.png"/>
+          <Image iconType="3" name="/icons/add.png"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;u&gt;If you want to add a new address, please go to &quot;Address Book&quot;&lt;/u&gt;&lt;/html&gt;"/>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Hand Cursor"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Create new address"/>
       </Properties>
     </Component>
   </SubComponents>

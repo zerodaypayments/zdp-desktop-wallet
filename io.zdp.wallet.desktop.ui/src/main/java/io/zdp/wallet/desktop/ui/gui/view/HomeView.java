@@ -46,7 +46,7 @@ public class HomeView {
 
 		JPanel panel = new JPanel(new BorderLayout());
 
-		if (this.walletService.getCurrentWallet().getAddresses().isEmpty() == false) {
+		if (false) {
 			
 			WalletInfoPanel walletInfoPanel = new WalletInfoPanel();
 //			new QTextComponentContextMenu(walletInfoPanel.txtWalletName);

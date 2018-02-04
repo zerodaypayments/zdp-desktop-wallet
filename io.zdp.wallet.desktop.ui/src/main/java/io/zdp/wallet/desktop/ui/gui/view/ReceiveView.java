@@ -1,7 +1,5 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,13 +14,17 @@ import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.ReceivePanel;
-import io.zdp.wallet.desktop.ui.service.VelocityHelper;
+import io.zdp.wallet.desktop.ui.service.AddressService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
+import io.zdp.wallet.desktop.ui.service.VelocityHelper;
 
 @Component
 public class ReceiveView {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	private AddressService addressService;
 
 	@Autowired
 	private DesktopWalletService walletService;
@@ -54,28 +56,13 @@ public class ReceiveView {
 			panel.html.setText(html);
 		}
 
-		panel.linkAddressBook.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				mainWindow.showAddressBook();
-			}
+		panel.btnNewAddress.addActionListener(e -> {
+			addressService.generateNewAddress();
+
 		});
 
-		/*
-		 * panel.addressSelector.insertItemAt("No addresses yet", 0);
-		 * panel.addressSelector.setSelectedIndex(0);
-		 * 
-		 * panel.btnCreateNewAddress.addActionListener(e -> {
-		 * 
-		 * SwingHelper.async(frame, "Getting new address", () -> { try {
-		 * AddressDetailsResponse newAddress = zdp.getAddress();
-		 * Alert.info("New address was created"); } catch (Exception e1) {
-		 * Alert.error("Cannot connect to the network"); } });
-		 * 
-		 * });
-		 */
 		return panel;
-		
+
 	}
 
 }

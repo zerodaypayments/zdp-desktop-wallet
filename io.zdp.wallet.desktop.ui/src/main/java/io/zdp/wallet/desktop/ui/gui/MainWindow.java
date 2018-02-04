@@ -73,6 +73,12 @@ public class MainWindow {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+	public static enum View {
+		HOME, SEND, RECEIVE
+	}
+
+	private View view = View.HOME;
+
 	private JFrame frame;
 
 	@Autowired
@@ -554,7 +560,17 @@ public class MainWindow {
 			btnSync.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnSync.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnSync.addActionListener(e -> {
-				addressService.sync();
+
+				addressService.sync(() -> {
+					if (view == View.HOME) {
+						showHomeScreen();
+					} else if (view == View.RECEIVE) {
+						showReceiveScreen();
+					} else if (view == View.SEND) {
+						showSendScreen();
+					}
+				});
+
 			});
 			toolbar.add(btnSync);
 
@@ -575,13 +591,17 @@ public class MainWindow {
 	 * Open 'Send' screen
 	 */
 	private void showSendScreen() {
-		this.addComponentToFrame(new JScrollPane(sendView.get()));
+		this.view = View.SEND;
+		JScrollPane scroll = new JScrollPane(sendView.get());
+		SwingHelper.updateScrollPane(scroll);
+		this.addComponentToFrame(scroll);
 	}
 
 	/**
 	 * Open 'Receive' screen
 	 */
 	private void showReceiveScreen() {
+		this.view = View.RECEIVE;
 		addComponentToFrame(receiveView.get());
 	}
 
@@ -591,7 +611,10 @@ public class MainWindow {
 	}
 
 	public void showHomeScreen() {
-		addComponentToFrame(this.homeView.get());
+		this.view = View.HOME;
+		JScrollPane scroll = new JScrollPane(this.homeView.get());
+		SwingHelper.updateScrollPane(scroll);
+		addComponentToFrame(scroll);
 		setupToolbar();
 	}
 

@@ -35,7 +35,7 @@ public class ReceivePanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         html = new javax.swing.JEditorPane();
-        linkAddressBook = new javax.swing.JLabel();
+        btnNewAddress = new javax.swing.JButton();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -52,14 +52,11 @@ public class ReceivePanel extends javax.swing.JPanel {
 
         html.setEditable(false);
         html.setContentType("text/html"); // NOI18N
-        html.setText("<html style=\"background:black;color:white;\">\n\t<head style=\"background:black;color:white;\">\n\n\t</head>\n\t<body>\n\t\t<div style=\"margin-top: 0;background:white;color:black;padding:10px 10px 10px 10px;border-radius:6px;\">\n\t\t\t<table width=\"100%\" border='0'>\n\t\t\t\t<tr>\n\t\t\t\t\t<td>\n\t\t\t\t\t\n\t\t\t\t\t\t<div style='background:black;color:white;font-size:14px;padding:10px 10px 10px 10px;'>EWmjcBQCAa47AMknc5ks8rg2T5pyYNrHVjGv4VQ868Tj</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<br/>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<div style='padding-top:5px'>\n\t\t\t\t\t\t\tThis a temporary address that I used to send funds too (max 256 characters)\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<br>\n\t\t\t\t\t\t<div>Balance: <b>143.23223</b></div>\n\t\t\t\t\t</td>\n\n\t\t\t\t\t<td width=\"128\" align=\"center\">\n\t\t\t\t\t\t<img src=\"http://api.zdp.io/api/address/qr/160/92qphxD7HsuXfNpSpBXPt2jTwTHaGSB7XVJtLDdsHA1j.jpg\" />\n\t\t\t\t\t</td>\n\t\t\t\t</tr>\n\n\n\t\t\t</table>\n\n\t\t</div>\n\t</body>\n</html>\n");
+        html.setText("");
         jScrollPane1.setViewportView(html);
 
-        linkAddressBook.setForeground(new java.awt.Color(0, 102, 255));
-        linkAddressBook.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        linkAddressBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info_32.png"))); // NOI18N
-        linkAddressBook.setText("<html><u>If you want to add a new address, please go to \"Address Book\"</u></html>");
-        linkAddressBook.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnNewAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        btnNewAddress.setText("Create new address");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -74,8 +71,10 @@ public class ReceivePanel extends javax.swing.JPanel {
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addComponent(linkAddressBook))))
+                            .addComponent(jScrollPane1)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnNewAddress)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -86,15 +85,16 @@ public class ReceivePanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(linkAddressBook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(btnNewAddress)
+                .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnNewAddress;
     public javax.swing.JEditorPane html;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
@@ -102,6 +102,5 @@ public class ReceivePanel extends javax.swing.JPanel {
     public javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
     public javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JLabel linkAddressBook;
     // End of variables declaration//GEN-END:variables
 }
