@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import io.zdp.api.model.BalanceResponse;
+import io.zdp.api.model.BalancesResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.wallet.api.domain.Wallet;
@@ -100,13 +101,19 @@ public class AddressService {
 		}
 
 		SwingHelper.async(mainWindow.getFrame(), "Synchronizing wallet", () -> {
+
 			try {
-				List<BalanceResponse> balances = zdp.getAddressesBalances(keyPairs);
-				for (BalanceResponse b : balances) {
+
+				BalancesResponse balances = zdp.getAddressesBalances(keyPairs);
+
+				for (BalanceResponse b : balances.getBalances()) {
 					walletService.getCurrentWallet().getByPublicKeyHash(b.getAddress()).setBalance(b.getBalance());
 				}
+
 				walletService.saveCurrentWallet();
+
 				mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet synchronized");
+
 			} catch (Exception e) {
 				log.error("Error: ", e);
 			}
