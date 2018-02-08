@@ -29,29 +29,31 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        btnGenerateNewAddress = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         btnFAQ = new javax.swing.JButton();
         btnOnlineHelp = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtBalance = new javax.swing.JLabel();
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("<html> <h1>Home</h1> </html>");
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Dear friend, to do ZDP transfers you need to configure addresses for this wallet.");
-
-        btnGenerateNewAddress.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add_48.png"))); // NOI18N
-        btnGenerateNewAddress.setText("<html><h2>Generate new address</h2></html>");
-
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("<html><h1>Useful links</h1></html>");
+        jLabel3.setText("<html><h2>Wallet Balance</h2></html>");
 
         btnFAQ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/faq_48.png"))); // NOI18N
         btnFAQ.setText("<html><h2>Frequently asked questions</h2></html>");
 
         btnOnlineHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info_48.png"))); // NOI18N
         btnOnlineHelp.setText("<html><h2>Online help</h2></html>");
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("<html><h2>Useful links</h2></html>");
+
+        txtBalance.setFont(new java.awt.Font("sansserif", 0, 36)); // NOI18N
+        txtBalance.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txtBalance.setText("jLabel1");
+        txtBalance.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -61,11 +63,11 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
-                    .addComponent(btnGenerateNewAddress)
                     .addComponent(jLabel3)
                     .addComponent(btnOnlineHelp)
-                    .addComponent(btnFAQ))
+                    .addComponent(btnFAQ, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                    .addComponent(txtBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -74,14 +76,14 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(btnGenerateNewAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnOnlineHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(txtBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnOnlineHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFAQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -90,10 +92,10 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnFAQ;
-    public javax.swing.JButton btnGenerateNewAddress;
     public javax.swing.JButton btnOnlineHelp;
-    public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel txtBalance;
     // End of variables declaration//GEN-END:variables
 }

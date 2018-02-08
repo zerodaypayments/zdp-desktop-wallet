@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+@SuppressWarnings("serial")
 @XmlRootElement
 public class WalletTransaction implements Serializable {
 
@@ -21,9 +22,7 @@ public class WalletTransaction implements Serializable {
 
 	private String to;
 
-	private String senderRef;
-
-	private String recepientRef;
+	private String memo;
 
 	public String getUuid() {
 		return uuid;
@@ -73,25 +72,17 @@ public class WalletTransaction implements Serializable {
 		this.to = to;
 	}
 
-	public String getSenderRef() {
-		return senderRef;
+	public String getMemo() {
+		return memo;
 	}
 
-	public void setSenderRef(String senderRef) {
-		this.senderRef = senderRef;
-	}
-
-	public String getRecepientRef() {
-		return recepientRef;
-	}
-
-	public void setRecepientRef(String recepientRef) {
-		this.recepientRef = recepientRef;
+	public void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 	@Override
 	public String toString() {
-		return "WalletTransaction [uuid=" + uuid + ", amount=" + amount + ", fee=" + fee + ", date=" + date + ", from=" + from + ", to=" + to + ", senderRef=" + senderRef + ", recepientRef=" + recepientRef + "]";
+		return "WalletTransaction [uuid=" + uuid + ", amount=" + amount + ", fee=" + fee + ", date=" + date + ", from=" + from + ", to=" + to + ", memo=" + memo + "]";
 	}
 
 }

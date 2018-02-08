@@ -31,15 +31,15 @@ public class SendPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         btnSend = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        selectorFromAddress = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        txtToAddress = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtFromAddress = new javax.swing.JEditorPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtToAddress = new javax.swing.JEditorPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        txtSenderRef = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtRecepientRef = new javax.swing.JTextField();
+        txtMemo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -57,11 +57,15 @@ public class SendPanel extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        selectorFromAddress.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "3QJTf5zcfKL4UxCgjmmRWwRR6cG9VwQYQhBkEhgVuZuC" }));
-
         jLabel3.setText("To address:");
 
         jLabel11.setText("From:");
+
+        txtFromAddress.setEditable(false);
+        jScrollPane3.setViewportView(txtFromAddress);
+
+        txtToAddress.setPreferredSize(new java.awt.Dimension(118, 30));
+        jScrollPane4.setViewportView(txtToAddress);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -71,11 +75,11 @@ public class SendPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(0, 503, Short.MAX_VALUE))
-                    .addComponent(selectorFromAddress, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtToAddress))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -84,28 +88,26 @@ public class SendPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectorFromAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtToAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel5.setText("Description on your statement (optional):");
+        jLabel5.setText("Public memo:");
 
-        jLabel6.setText("Description on recipient's statement (optional)");
-
-        jLabel4.setText("Address balance:");
+        jLabel4.setText("Account balance:");
 
         jLabel7.setText("Transaction fee:");
 
         jLabel8.setText("Amount to send:");
 
         txtAddressBalance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ajax-loader.gif"))); // NOI18N
-        txtAddressBalance.setText("Getting address balance");
+        txtAddressBalance.setText("Getting account balance");
 
         txtFee.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ajax-loader.gif"))); // NOI18N
         txtFee.setText("Getting transaction fee");
@@ -122,9 +124,7 @@ public class SendPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSenderRef)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtRecepientRef)
+                    .addComponent(txtMemo)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
@@ -141,7 +141,7 @@ public class SendPanel extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTotalCharge)))))
+                                .addComponent(txtTotalCharge, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -164,11 +164,7 @@ public class SendPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSenderRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtRecepientRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMemo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -194,7 +190,7 @@ public class SendPanel extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSend)
@@ -211,18 +207,18 @@ public class SendPanel extends javax.swing.JPanel {
     public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel4;
     public javax.swing.JLabel jLabel5;
-    public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel7;
     public javax.swing.JLabel jLabel8;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel4;
-    public javax.swing.JComboBox selectorFromAddress;
+    public javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JScrollPane jScrollPane4;
     public javax.swing.JLabel txtAddressBalance;
     public javax.swing.JTextField txtAmount;
     public javax.swing.JLabel txtFee;
-    public javax.swing.JTextField txtRecepientRef;
-    public javax.swing.JTextField txtSenderRef;
-    public javax.swing.JTextField txtToAddress;
+    public javax.swing.JEditorPane txtFromAddress;
+    public javax.swing.JTextField txtMemo;
+    public javax.swing.JEditorPane txtToAddress;
     public javax.swing.JTextField txtTotalCharge;
     // End of variables declaration//GEN-END:variables
 }

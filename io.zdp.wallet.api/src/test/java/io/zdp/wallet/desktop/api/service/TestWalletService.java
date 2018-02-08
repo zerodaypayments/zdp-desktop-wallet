@@ -27,7 +27,6 @@ public class TestWalletService extends TestCase {
 		Wallet w1 = WalletService.create(privKey, file);
 
 		assertNotNull(w1);
-		assertTrue(w1.getAddresses().isEmpty());
 		assertFalse(w1.getSeed().isEmpty());
 		assertFalse(w1.getUuid().isEmpty());
 
@@ -39,6 +38,8 @@ public class TestWalletService extends TestCase {
 
 			assertEquals(w1, w2);
 		}
+		
+		
 
 	}
 

@@ -44,7 +44,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,6 @@ import io.zdp.wallet.desktop.ui.gui.action.CreateNewWallet;
 import io.zdp.wallet.desktop.ui.gui.action.OpenWallet;
 import io.zdp.wallet.desktop.ui.gui.dialog.AboutDialog;
 import io.zdp.wallet.desktop.ui.gui.dialog.FreshStart;
-import io.zdp.wallet.desktop.ui.gui.view.AddressBookView;
 import io.zdp.wallet.desktop.ui.gui.view.HomeView;
 import io.zdp.wallet.desktop.ui.gui.view.ReceiveView;
 import io.zdp.wallet.desktop.ui.gui.view.SendView;
@@ -114,9 +113,6 @@ public class MainWindow {
 	private TrayIcon trayIcon;
 
 	private JLabel statusLabel;
-
-	@Autowired
-	private AddressBookView addressBookView;
 
 	@Autowired
 	private SendView sendView;
@@ -269,7 +265,7 @@ public class MainWindow {
 			}
 
 			private void getNewPoint() {
-				NetworkPoint p = new NetworkPoint(RandomUtils.nextInt(getWidth()), RandomUtils.nextInt(getHeight()));
+				NetworkPoint p = new NetworkPoint(RandomUtils.nextInt(0, getWidth()), RandomUtils.nextInt(0, getHeight()));
 				p.accelX = 1 * (RandomUtils.nextFloat() - RandomUtils.nextFloat());
 				p.accelY = 1 * (RandomUtils.nextFloat() - RandomUtils.nextFloat());
 				points.add(p);
@@ -577,14 +573,6 @@ public class MainWindow {
 			frame.add(toolbar, BorderLayout.PAGE_START);
 
 		}
-	}
-
-	/**
-	 * Address book consists of 2 tabs -> my addresses I can send from and
-	 * recepient's addresses I can send to
-	 */
-	public void showAddressBook() {
-		this.addComponentToFrame(addressBookView.get());
 	}
 
 	/**

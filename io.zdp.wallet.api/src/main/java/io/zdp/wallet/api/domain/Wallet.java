@@ -1,14 +1,16 @@
 package io.zdp.wallet.api.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-import io.zdp.wallet.api.service.WalletService;
+import io.zdp.common.crypto.CryptoUtils;
 
 @SuppressWarnings("serial")
 @XmlRootElement
@@ -16,49 +18,34 @@ public class Wallet implements Serializable {
 
 	protected String uuid;
 
-	protected List<WalletAddress> addresses = new ArrayList<>();
-
-	protected List<RecepientAddress> recepientAddresses = new ArrayList<>();
-
 	protected List<WalletTransaction> transactions = new ArrayList<>();
 
 	protected Date dateCreated;
 
 	protected String seed;
 
-	public WalletAddress getByPublicKeyHash(String address) {
-		for (WalletAddress addr : this.addresses) {
-			if (WalletService.getPublicKeyHash(addr).equals(address)) {
-				return addr;
+	protected BigDecimal balance;
+
+	protected transient KeyPair keys;
+
+	public KeyPair getKeys() {
+
+		if (keys == null) {
+			try {
+				keys = CryptoUtils.generateKeys(seed);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-
-		return null;
+		return keys;
 	}
 
-	public List<RecepientAddress> getRecepientAddresses() {
-		return recepientAddresses;
+	public BigDecimal getBalance() {
+		return balance;
 	}
 
-	public void setRecepientAddresses(List<RecepientAddress> recepientAddresses) {
-		this.recepientAddresses = recepientAddresses;
-	}
-
-	public List<WalletTransaction> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(List<WalletTransaction> transactions) {
-		this.transactions = transactions;
-	}
-
-	public String getSeed() {
-		return seed;
-	}
-
-	@XmlElement
-	public void setSeed(String seed) {
-		this.seed = seed;
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 
 	public String getUuid() {
@@ -69,12 +56,12 @@ public class Wallet implements Serializable {
 		this.uuid = uuid;
 	}
 
-	public List<WalletAddress> getAddresses() {
-		return addresses;
+	public List<WalletTransaction> getTransactions() {
+		return transactions;
 	}
 
-	public void setAddresses(List<WalletAddress> addresses) {
-		this.addresses = addresses;
+	public void setTransactions(List<WalletTransaction> transactions) {
+		this.transactions = transactions;
 	}
 
 	public Date getDateCreated() {
@@ -85,34 +72,25 @@ public class Wallet implements Serializable {
 		this.dateCreated = dateCreated;
 	}
 
+	public String getSeed() {
+		return seed;
+	}
+
+	public void setSeed(String seed) {
+		this.seed = seed;
+	}
+
 	@Override
 	public String toString() {
-		return "Wallet [uuid=" + uuid + ", addresses=" + addresses + ", recepientAddresses=" + recepientAddresses + ", transactions=" + transactions + ", dateCreated=" + dateCreated + ", seed=" + seed + "]";
+		return "Wallet [uuid=" + uuid + ", transactions=" + transactions + ", dateCreated=" + dateCreated + ", seed=" + seed + ", balance=" + balance + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
-		return result;
+	public byte[] getPublicKey() {
+		return getKeys().getPublic().getEncoded();
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Wallet other = (Wallet) obj;
-		if (uuid == null) {
-			if (other.uuid != null)
-				return false;
-		} else if (!uuid.equals(other.uuid))
-			return false;
-		return true;
+	public byte[] getPrivateKey() {
+		return getKeys().getPrivate().getEncoded();
 	}
 
 }

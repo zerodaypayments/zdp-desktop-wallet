@@ -23,7 +23,6 @@ import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.common.crypto.Signer;
 import io.zdp.common.utils.ZIPHelper;
 import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.domain.WalletAddress;
 
 public class WalletService {
 
@@ -45,34 +44,6 @@ public class WalletService {
 		save(file, w, privKey);
 
 		return w;
-	}
-
-	public static synchronized WalletAddress getNewAddress(File file, Wallet wallet, String pass) throws Exception {
-
-		WalletAddress addr = new WalletAddress();
-
-		String seed = null;
-
-		if (wallet.getAddresses().isEmpty()) {
-			seed = DigestUtils.sha256Hex(wallet.getSeed());
-		} else {
-			seed = DigestUtils.sha256Hex(wallet.getAddresses().get(wallet.getAddresses().size() - 1).getPrivateKey());
-		}
-
-		KeyPair keys = CryptoUtils.generateKeys(seed);
-
-		addr.setBalance(BigDecimal.ZERO);
-		addr.setSeed(seed);
-
-		wallet.getAddresses().add(addr);
-		save(file, wallet, pass);
-
-		return addr;
-
-	}
-
-	public static String getPublicKeyHash(final WalletAddress addr) {
-		return Signer.getPublicKeyHash(addr.getPublicKey());
 	}
 
 	private static Marshaller getWalletMarshaller() throws JAXBException, PropertyException {
