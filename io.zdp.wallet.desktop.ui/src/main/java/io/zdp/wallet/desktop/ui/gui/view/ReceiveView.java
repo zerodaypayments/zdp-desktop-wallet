@@ -1,15 +1,8 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -22,11 +15,9 @@ import org.springframework.stereotype.Component;
 import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.common.crypto.Signer;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
-import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.ReceivePanel;
-import io.zdp.wallet.desktop.ui.service.AddressService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
@@ -35,9 +26,6 @@ import net.glxn.qrgen.image.ImageType;
 public class ReceiveView {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-	@Autowired
-	private AddressService addressService;
 
 	@Autowired
 	private DesktopWalletService walletService;
@@ -79,24 +67,8 @@ public class ReceiveView {
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		}
-
-		/*
-		SwingHelper.setFontForJText(panel.html);
 		
-		new QTextComponentContextMenu(panel.html);
-		if (this.walletService.getCurrentWallet().getAddresses().isEmpty()) {
-		
-			panel.html.setText("There are no addresses in this wallet yet");
-		
-		} else {
-		
-			Map<String, Object> events = new HashMap<>();
-			events.put("addresses", walletService.getCurrentWallet().getAddresses());
-			String html = velocity.process(events, "/html/receive.html");
-		
-			panel.html.setText(html);
-		}
-		*/
+		// start background transfer listener
 
 		return panel;
 
