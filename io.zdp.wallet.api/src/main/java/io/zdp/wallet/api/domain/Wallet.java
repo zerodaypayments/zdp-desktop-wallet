@@ -24,7 +24,7 @@ public class Wallet implements Serializable {
 
 	protected String seed;
 
-	protected BigDecimal balance;
+	protected BigDecimal balance = BigDecimal.ZERO;
 
 	protected transient KeyPair keys;
 

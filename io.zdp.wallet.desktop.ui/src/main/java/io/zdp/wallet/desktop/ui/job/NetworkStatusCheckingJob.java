@@ -1,6 +1,9 @@
 package io.zdp.wallet.desktop.ui.job;
 
+import java.awt.TrayIcon.MessageType;
+
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -10,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import io.zdp.api.model.BalanceResponse;
 import io.zdp.client.ZdpClient;
+import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
+import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component
 public class NetworkStatusCheckingJob {
@@ -21,6 +27,9 @@ public class NetworkStatusCheckingJob {
 
 	@Autowired
 	private MainWindow mainWindow;
+
+	@Autowired
+	private DesktopWalletService walletService;
 
 	@Autowired
 	private ZdpClient zdp;
@@ -36,9 +45,30 @@ public class NetworkStatusCheckingJob {
 		}
 
 		try {
-			zdp.ping();
+
+			final Wallet wallet = walletService.getCurrentWallet();
+
+			if (wallet != null) {
+
+				BalanceResponse accountBalance = zdp.getAccountBalance(wallet.getPublicKey(), wallet.getPrivateKey());
+
+				if (false == wallet.getBalance().equals(accountBalance.getBalance())) {
+					wallet.setBalance(accountBalance.getBalance());
+					mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet balance changed");
+					SwingUtilities.invokeLater(() -> {
+						mainWindow.updateUI();
+					});
+				}
+
+			} else {
+
+				zdp.ping();
+
+			}
+
 			connected = true;
 			mainWindow.setStatusMessage("Connected to network", Icons.getIcon("check.png"));
+
 		} catch (Exception e) {
 			log.error("Error: " + e.getMessage());
 			mainWindow.setStatusMessage("Network not available...", Icons.getIcon("cancel.png"));

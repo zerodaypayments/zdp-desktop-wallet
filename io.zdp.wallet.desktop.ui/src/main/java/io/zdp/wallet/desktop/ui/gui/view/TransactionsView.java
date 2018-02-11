@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,37 +17,19 @@ import io.zdp.wallet.desktop.ui.gui.dialog.HomePanelWithEmptyAddressBook;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component
-public class HomeView {
+public class TransactionsView {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private DesktopWalletService walletService;
 
-	@Value("${app.url.online.faq}")
-	private String appUrlOnlineFaq;
-
-	@Value("${app.url.online.help}")
-	private String appUrlOnlineHelp;
-
 	public JPanel get() {
 
 		JPanel panel = new JPanel(new BorderLayout());
+		
+		panel.add(new JTree());
 
-		HomePanelWithEmptyAddressBook homePanel = new HomePanelWithEmptyAddressBook();
-
-		homePanel.btnFAQ.addActionListener(e -> {
-			SwingHelper.browseToUrl(appUrlOnlineFaq);
-		});
-
-		homePanel.btnOnlineHelp.addActionListener(e -> {
-			SwingHelper.browseToUrl(appUrlOnlineHelp);
-		});
-
-		String balance = walletService.getCurrentWallet().getBalance().toPlainString();
-		homePanel.txtBalance.setText(balance);
-
-		panel.add(new JScrollPane(homePanel), BorderLayout.CENTER);
 
 		return panel;
 

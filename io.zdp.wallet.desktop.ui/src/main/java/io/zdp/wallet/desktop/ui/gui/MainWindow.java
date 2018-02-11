@@ -64,6 +64,7 @@ import io.zdp.wallet.desktop.ui.gui.dialog.FreshStart;
 import io.zdp.wallet.desktop.ui.gui.view.HomeView;
 import io.zdp.wallet.desktop.ui.gui.view.ReceiveView;
 import io.zdp.wallet.desktop.ui.gui.view.SendView;
+import io.zdp.wallet.desktop.ui.gui.view.TransactionsView;
 import io.zdp.wallet.desktop.ui.service.AddressService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
@@ -73,7 +74,7 @@ public class MainWindow {
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	public static enum View {
-		HOME, SEND, RECEIVE
+		HOME, SEND, RECEIVE, TRANSACTIONS
 	}
 
 	private View view = View.HOME;
@@ -118,6 +119,9 @@ public class MainWindow {
 	private SendView sendView;
 
 	@Autowired
+	private TransactionsView txView;
+
+	@Autowired
 	private HomeView homeView;
 
 	@Autowired
@@ -156,13 +160,11 @@ public class MainWindow {
 
 		bgPanel = new JPanel() {
 
-			BufferedImage bim;
 			BufferedImage logo;
 
 			{
 
 				try {
-					bim = ImageIO.read(this.getClass().getResourceAsStream("/images/bg.png"));
 					logo = ImageIO.read(this.getClass().getResourceAsStream("/icons/zpg.png"));
 				} catch (IOException e) {
 					log.error("Error: ", e);
@@ -205,12 +207,10 @@ public class MainWindow {
 
 				g2.setColor(Color.WHITE);
 				Iterator<NetworkPoint> it = points.iterator();
-
+				
 				while (it.hasNext()) {
-
+					
 					NetworkPoint pt = it.next();
-
-					//					g2.fillOval((int) pt.x - 2, (int) pt.y - 2, 4, 4);
 
 					g2.setColor(new Color(255, 255, 255, pt.alpha));
 
@@ -254,13 +254,7 @@ public class MainWindow {
 					getNewPoint();
 				}
 
-				/*
-				super.paintComponent(g);
-				g.setColor(new Color(255, 168, 0));
-				g.fillRect(0, 0, getWidth(), getHeight());
-				g.drawImage(bim, 0, getHeight() - bim.getHeight(), null);
 				g.drawImage(logo, (getWidth() - logo.getWidth()) / 2, (getHeight() - logo.getHeight()) / 2, null);
-				*/
 
 			}
 
@@ -490,15 +484,15 @@ public class MainWindow {
 
 		walletService.setCurrentWallet(w, walletFile, pass);
 
-		updateFrame(w);
+		updateFrame(w, walletFile);
 
 		initUI();
 
 	}
 
-	public void updateFrame(Wallet w) {
+	public void updateFrame(Wallet w, File walletFile) {
 
-		frame.setTitle(i18n.get("app.window.title"));
+		frame.setTitle(i18n.get("app.window.title") + " - " + walletFile.getAbsolutePath());
 
 	}
 
@@ -533,14 +527,16 @@ public class MainWindow {
 			btnReceive.addActionListener(e -> {
 				showReceiveScreen();
 			});
+
+			JButton btnTransactions = new JButton("Transactions", new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
+			btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
+			btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
+			btnTransactions.addActionListener(e -> {
+				showTransactionsScreen();
+			});
+			toolbar.add(btnTransactions);
+
 			/*
-						JButton btnTransactions = new JButton("Transactions", new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
-						btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
-						btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
-						btnTransactions.addActionListener(e -> {
-			
-						});
-						toolbar.add(btnTransactions);
 			
 						JButton btnAddressBook = new JButton("Address Book", new ImageIcon(this.getClass().getResource("/icons/address_book.png")));
 						btnAddressBook.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -558,13 +554,7 @@ public class MainWindow {
 			btnSync.addActionListener(e -> {
 
 				addressService.sync(() -> {
-					if (view == View.HOME) {
-						showHomeScreen();
-					} else if (view == View.RECEIVE) {
-						showReceiveScreen();
-					} else if (view == View.SEND) {
-						showSendScreen();
-					}
+					updateUI();
 				});
 
 			});
@@ -575,12 +565,31 @@ public class MainWindow {
 		}
 	}
 
+	public void updateUI() {
+		if (view == View.HOME) {
+			showHomeScreen();
+		} else if (view == View.RECEIVE) {
+			showReceiveScreen();
+		} else if (view == View.SEND) {
+			showSendScreen();
+		} else if (view == View.TRANSACTIONS) {
+			showTransactionsScreen();
+		}
+	}
+
 	/**
 	 * Open 'Send' screen
 	 */
 	private void showSendScreen() {
 		this.view = View.SEND;
 		JScrollPane scroll = new JScrollPane(sendView.get());
+		SwingHelper.updateScrollPane(scroll);
+		this.addComponentToFrame(scroll);
+	}
+
+	private void showTransactionsScreen() {
+		this.view = View.TRANSACTIONS;
+		JScrollPane scroll = new JScrollPane(txView.get());
 		SwingHelper.updateScrollPane(scroll);
 		this.addComponentToFrame(scroll);
 	}

@@ -227,6 +227,9 @@ public class SendView {
 						Alert.info("Transaction submitted: " + transferResponse.getUuid());
 
 						updateAddressBalance(sendPanel);
+						
+						mainWindow.updateUI();
+						
 					}
 
 					dialog.dispose();
