@@ -71,9 +71,6 @@ public class WalletService {
 			final StringWriter sw = new StringWriter();
 			getWalletMarshaller().marshal(wallet, sw);
 
-			// TODO remove debugging logging
-			System.out.println(sw);
-
 			// Compress XML into byte array
 			final byte[] compressed = ZIPHelper.compress(sw.toString());
 

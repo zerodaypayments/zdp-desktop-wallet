@@ -1,77 +1,117 @@
 package io.zdp.wallet.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.io.File;
+import java.security.NoSuchAlgorithmException;
 
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
+
+import io.zdp.common.crypto.CryptoUtils;
+import io.zdp.wallet.api.service.WalletService;
 
 /*
  * java -jar zdp.jar
+ * -h <host>
+ * zdp --createwallet --file FILE --pass PASS
+ * zdp -c restore -f 1.wallet (ask for seed/list of mnemonics in interractive mode)
+ * zdp -c balance -f 1.wallet -p pass
+ * zdp -c fee 
+ * zdp -c tx -uuid <uuid> 
+ * zdp -c tx -from <address>
+ * zdp -c tx -to <address>
+ * zdp -c tx -from <address>
+ * zdp -c tx -from <address>
  */
+@Component
 public class ZdpCli {
 
-	private static final String COMMAND_TX = "tx";
-	private static final String COMMAND_ADDRESS = "address";
-	private static final String COMMAND_WALLET = "wallet";
-
 	public static void main(final String... _args) {
-
-		try (Scanner scanner = new Scanner(System.in)) {
-
-			final List<String> args = Collections.unmodifiableList(Arrays.stream(_args).collect(Collectors.toList()));
-
-			final List<String> commands = Collections.unmodifiableList(new ArrayList<>(Arrays.asList(COMMAND_WALLET, COMMAND_ADDRESS, COMMAND_TX)));
-
-			String userCommand = null;
-
-			if (args.isEmpty() || commands.contains(args.get(0)) == false) {
-
-				while (userCommand == null || commands.contains(userCommand) == false) {
-
-					System.out.println("-=-=-=-=-=-=-=-=-=-");
-					System.out.println("Available commands:");
-					System.out.println("-=-=-=-=-=-=-=-=-=-");
-
-					int index = 0;
-
-					for (String command : commands) {
-						System.out.println("[" + (++index) + "] " + command);
-					}
-
-					System.out.println("-=-=-=-=-=-=-=-=-=-");
-
-					String userValue = scanner.next();
-
-					int userCommandIndex = NumberUtils.toInt(userValue, -1);
-
-					if (userCommandIndex >= 1 && userCommandIndex <= commands.size()) {
-						userCommand = commands.get(userCommandIndex - 1);
-					} else if (commands.contains(userValue)) {
-						userCommand = userValue;
-					}
-
-				}
-			}
-
-			System.out.println("Seleted command: " + userCommand);
-
-			if (COMMAND_ADDRESS.equals(userCommand)) {
-
-			} else if (COMMAND_WALLET.equals(userCommand)) {
-
-			} else if (COMMAND_TX.equals(userCommand)) {
-
-				System.out.println("Enter transaction UUID: ");
-				String uuid = scanner.next();
-				System.out.println("Checking transaction [" + uuid + "]");
-			}
-
+		
+		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/spring-context.xml");
+		
+		try {
+			ctx.getBean(ZdpCli.class).run(_args);
+		} catch (BeansException e) {
+			e.printStackTrace();
+		} finally {
+			ctx.stop();
+			ctx.close();
 		}
+		
 
+	}
+
+	private void run(String[] _args) {
+		
+		Options options = new Options();
+		
+		options.addOption( Option.builder()
+				.longOpt("help")
+                .desc( "display this help and exit" )
+                .hasArg(false)
+                .build() );
+		
+		options.addOption( Option.builder()
+                .desc( "create a new wallet, write to the specified FILE and encrypt with a specified PASSWORD" )
+                .hasArg(false)
+                .longOpt("createwallet")
+                .build() );
+		
+		options.addOption( Option.builder()
+                .desc( "wallet's password" )
+                .hasArg(true)
+                .longOpt("pass")
+                .argName("PASSWORD")
+                .build() );	
+		
+		options.addOption( Option.builder()
+                .desc( "wallet's file" )
+                .hasArg(true)
+                .longOpt("file")
+                .argName("FILE")
+                .build() );				
+		
+		CommandLineParser parser = new DefaultParser();
+
+		try {
+
+			CommandLine cmd = parser.parse(options, _args);
+
+			// validate that block-size has been set
+			if (cmd.hasOption("help")) {
+				help(options);
+			} else if (cmd.hasOption("createwallet")) {
+				String password = cmd.getOptionValue("pass");
+				String file = cmd.getOptionValue("file");
+				String seed = CryptoUtils.generateRandomNumber256bits();
+				WalletService.create(seed, new File(file));
+			}
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+			help(options);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+
+	private void help(Options options) {
+		HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp("java -jar zdp.jar", options);
+		System.exit(0);
 	}
 
 }
