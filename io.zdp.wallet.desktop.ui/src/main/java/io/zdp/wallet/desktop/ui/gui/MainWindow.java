@@ -175,6 +175,7 @@ public class MainWindow {
 			}
 
 			class NetworkPoint extends Point2D.Float {
+
 				public NetworkPoint(float x, float y) {
 					super(x, y);
 				}
@@ -182,7 +183,12 @@ public class MainWindow {
 				public float accelX = 0;
 				public float accelY = 0;
 				public boolean deleted;
-				public int alpha = 0;
+
+				@Override
+				public String toString() {
+					return "NetworkPoint [accelX=" + accelX + ", accelY=" + accelY + ", deleted=" + deleted + ", x=" + x
+							+ ", y=" + y + "]";
+				}
 
 			}
 
@@ -205,14 +211,14 @@ public class MainWindow {
 				g2.setColor(Color.BLACK);
 				g2.fillRect(0, 0, getWidth(), getHeight());
 
-				g2.setColor(Color.WHITE);
+				// g2.setColor(Color.WHITE);
 				Iterator<NetworkPoint> it = points.iterator();
-				
+
 				while (it.hasNext()) {
-					
+
 					NetworkPoint pt = it.next();
 
-					g2.setColor(new Color(255, 255, 255, pt.alpha));
+					//g2.setColor(new Color(255, 255, 255, pt.alpha));
 
 					pt.x += pt.accelX;
 
@@ -259,9 +265,10 @@ public class MainWindow {
 			}
 
 			private void getNewPoint() {
-				NetworkPoint p = new NetworkPoint(RandomUtils.nextInt(0, getWidth()), RandomUtils.nextInt(0, getHeight()));
-				p.accelX = 1 * (RandomUtils.nextFloat() - RandomUtils.nextFloat());
-				p.accelY = 1 * (RandomUtils.nextFloat() - RandomUtils.nextFloat());
+				NetworkPoint p = new NetworkPoint(RandomUtils.nextFloat(0, getWidth()),
+						RandomUtils.nextFloat(0, getHeight()));
+				p.accelX = 1 * (RandomUtils.nextFloat(0,1) - RandomUtils.nextFloat(0,1));
+				p.accelY = 1 * (RandomUtils.nextFloat(0,1) - RandomUtils.nextFloat(0,1));
 				points.add(p);
 			}
 
@@ -283,13 +290,10 @@ public class MainWindow {
 
 			while (true) {
 
-				if (bgPanel.isVisible()) {
-
-					SwingUtilities.invokeLater(() -> {
-						bgPanel.repaint();
-					});
+				if (bgPanel != null && bgPanel.isVisible()) {
 
 					try {
+						bgPanel.repaint();
 						Thread.sleep(10);
 					} catch (InterruptedException e) {
 						log.error("Error: ", e);
@@ -316,8 +320,7 @@ public class MainWindow {
 
 			});
 			/*
-			 * freshStartPanel.btnQuit.addActionListener(e -> {
-			 * desktopWallet.close(); });
+			 * freshStartPanel.btnQuit.addActionListener(e -> { desktopWallet.close(); });
 			 */
 
 			SwingHelper.installEscapeCloseOperation(startDialog);
@@ -519,7 +522,8 @@ public class MainWindow {
 				showSendScreen();
 			});
 
-			JButton btnReceive = new JButton("Receive", new ImageIcon(this.getClass().getResource("/icons/receive.png")));
+			JButton btnReceive = new JButton("Receive",
+					new ImageIcon(this.getClass().getResource("/icons/receive.png")));
 			btnReceive.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReceive.setHorizontalTextPosition(SwingConstants.CENTER);
 			toolbar.add(btnReceive);
@@ -528,7 +532,8 @@ public class MainWindow {
 				showReceiveScreen();
 			});
 
-			JButton btnTransactions = new JButton("Transactions", new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
+			JButton btnTransactions = new JButton("Transactions",
+					new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
 			btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnTransactions.addActionListener(e -> {
@@ -537,18 +542,18 @@ public class MainWindow {
 			toolbar.add(btnTransactions);
 
 			/*
-			
-						JButton btnAddressBook = new JButton("Address Book", new ImageIcon(this.getClass().getResource("/icons/address_book.png")));
-						btnAddressBook.setVerticalTextPosition(SwingConstants.BOTTOM);
-						btnAddressBook.setHorizontalTextPosition(SwingConstants.CENTER);
-						btnAddressBook.addActionListener(e -> {
-							showAddressBook();
-						});
-						toolbar.add(btnAddressBook);
-			*/
+			 * 
+			 * JButton btnAddressBook = new JButton("Address Book", new
+			 * ImageIcon(this.getClass().getResource("/icons/address_book.png")));
+			 * btnAddressBook.setVerticalTextPosition(SwingConstants.BOTTOM);
+			 * btnAddressBook.setHorizontalTextPosition(SwingConstants.CENTER);
+			 * btnAddressBook.addActionListener(e -> { showAddressBook(); });
+			 * toolbar.add(btnAddressBook);
+			 */
 			toolbar.add(Box.createHorizontalGlue());
 
-			JButton btnSync = new JButton("Synchronize", new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
+			JButton btnSync = new JButton("Synchronize",
+					new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
 			btnSync.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnSync.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnSync.addActionListener(e -> {
