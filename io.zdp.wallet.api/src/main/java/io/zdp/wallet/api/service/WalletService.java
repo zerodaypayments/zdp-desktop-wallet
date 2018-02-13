@@ -3,8 +3,6 @@ package io.zdp.wallet.api.service;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.StringWriter;
-import java.math.BigDecimal;
-import java.security.KeyPair;
 import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
@@ -20,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.crypto.Signer;
 import io.zdp.common.utils.ZIPHelper;
 import io.zdp.wallet.api.domain.Wallet;
 
@@ -28,7 +25,7 @@ public class WalletService {
 
 	private static final Logger log = LoggerFactory.getLogger(WalletService.class);
 
-	public static Wallet create(String privKey, File file) throws Exception {
+	public static Wallet create(String privKey, File file, String pass) throws Exception {
 
 		final Wallet w = new Wallet();
 		w.setDateCreated(new Date());
@@ -41,7 +38,7 @@ public class WalletService {
 
 		w.setSeed(privKey);
 
-		save(file, w, privKey);
+		save(file, w, pass);
 
 		return w;
 	}
@@ -63,7 +60,7 @@ public class WalletService {
 	// Switching to XML from JSON as easier to support changes in the wallet
 	// format
 	// in the future
-	public static synchronized void save(final File file, final Wallet wallet, final String walletSeed) {
+	public static synchronized void save(final File file, final Wallet wallet, final String password) {
 
 		try {
 
@@ -74,7 +71,7 @@ public class WalletService {
 			// Compress XML into byte array
 			final byte[] compressed = ZIPHelper.compress(sw.toString());
 
-			final byte[] encrypted = CryptoUtils.encryptLargeData(walletSeed, compressed);
+			final byte[] encrypted = CryptoUtils.encryptLargeData(password, compressed);
 
 			FileUtils.writeByteArrayToFile(file, encrypted);
 
@@ -84,14 +81,14 @@ public class WalletService {
 
 	}
 
-	public static synchronized Wallet load(final File file, final String walletSeed) {
+	public static synchronized Wallet load(final File file, final String pass) {
 
 		try {
 
 			// Read decrypted file content to byte array
 			final byte[] content = FileUtils.readFileToByteArray(file);
 
-			final byte[] decryptedCompressed = CryptoUtils.decryptLargeData(walletSeed, content);
+			final byte[] decryptedCompressed = CryptoUtils.decryptLargeData(pass, content);
 
 			final byte[] xml = ZIPHelper.decompressAsBytes(decryptedCompressed);
 

@@ -11,17 +11,17 @@
 	</appender>
 
 	<logger name="io.zdp" additivity="false">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="console" />
 	</logger>
 
 	<logger name="org.springframework.web" additivity="false">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="console" />
 	</logger>
 
 	<root>
-		<priority value="info" />
+		<priority value="error" />
 		<appender-ref ref="console" />
 	</root>
 

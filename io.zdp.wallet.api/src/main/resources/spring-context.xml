@@ -13,4 +13,6 @@
 	
 	<context:annotation-config />
 
+	<context:property-placeholder location="classpath:/app.properties" ignore-unresolvable="true"/>
+
 </beans>

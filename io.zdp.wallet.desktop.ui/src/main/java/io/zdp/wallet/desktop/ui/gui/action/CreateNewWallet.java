@@ -92,7 +92,8 @@ public class CreateNewWallet {
 
 			try {
 
-				Wallet w = WalletService.create(pass, walletFile);
+				// TODO fix password
+				Wallet w = WalletService.create(pass, walletFile,pass );
 
 				walletService.setCurrentWallet(w, walletFile, pass);
 
