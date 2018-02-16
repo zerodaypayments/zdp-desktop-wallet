@@ -35,7 +35,7 @@ public class EnterPasswordPanel extends javax.swing.JPanel {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock_black_128.png"))); // NOI18N
 
-        jLabel2.setText("Please, enter the wallet password:");
+        jLabel2.setText("Please, enter the password:");
 
         btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check.png"))); // NOI18N
         btnOk.setText("Ok");

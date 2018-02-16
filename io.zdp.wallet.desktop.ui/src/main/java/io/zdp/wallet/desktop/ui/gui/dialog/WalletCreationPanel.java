@@ -53,7 +53,7 @@ public class WalletCreationPanel extends javax.swing.JPanel {
         jLabel6.setText("<html> <h2>Attention!</h2> </html>");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Please, write down the wallet password or list of words.");
+        jLabel2.setText("Please, write down the private key or list of words (if you need to restore the wallet later)");
 
         txtSeed.setEditable(false);
 

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
-import io.zdp.wallet.desktop.ui.gui.dialog.HomePanelWithEmptyAddressBook;
+import io.zdp.wallet.desktop.ui.gui.dialog.HomePanel;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component

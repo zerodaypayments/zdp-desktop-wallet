@@ -10,12 +10,12 @@ package io.zdp.wallet.desktop.ui.gui.dialog;
  *
  * @author Sergey
  */
-public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
+public class HomePanel extends javax.swing.JPanel {
 
     /**
      * Creates new form HomePanelWithEmptyAddressBook
      */
-    public HomePanelWithEmptyAddressBook() {
+    public HomePanel() {
         initComponents();
     }
 
@@ -30,10 +30,10 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        btnFAQ = new javax.swing.JButton();
-        btnOnlineHelp = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         txtBalance = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        events = new javax.swing.JEditorPane();
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("<html> <h1>Home</h1> </html>");
@@ -41,19 +41,16 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("<html><h2>Wallet Balance</h2></html>");
 
-        btnFAQ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/faq_48.png"))); // NOI18N
-        btnFAQ.setText("<html><h2>Frequently asked questions</h2></html>");
-
-        btnOnlineHelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info_48.png"))); // NOI18N
-        btnOnlineHelp.setText("<html><h2>Online help</h2></html>");
-
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("<html><h2>Useful links</h2></html>");
+        jLabel4.setText("<html><h2>Recent events</h2></html>");
 
         txtBalance.setFont(new java.awt.Font("sansserif", 0, 36)); // NOI18N
         txtBalance.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txtBalance.setText("jLabel1");
+        txtBalance.setText("0");
         txtBalance.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        events.setEditable(false);
+        jScrollPane1.setViewportView(events);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -63,11 +60,10 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(btnOnlineHelp)
-                    .addComponent(btnFAQ, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
                     .addComponent(txtBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -82,20 +78,18 @@ public class HomePanelWithEmptyAddressBook extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnOnlineHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnFAQ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton btnFAQ;
-    public javax.swing.JButton btnOnlineHelp;
+    public javax.swing.JEditorPane events;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
     public javax.swing.JLabel jLabel4;
+    public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel txtBalance;
     // End of variables declaration//GEN-END:variables
 }

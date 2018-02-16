@@ -256,7 +256,7 @@ public class SwingHelper {
 		WaitingPanel panel = new WaitingPanel();
 		panel.text.setText(text);
 		panel.btnCancel.addActionListener(e -> {
-			cancellation.setValue(true);
+			cancellation.set(true);
 		});
 
 		final JDialog dialog = dialog(frame, panel);
@@ -268,7 +268,7 @@ public class SwingHelper {
 
 			@Override
 			public void run() {
-				if (!cancellation.isValue() && runnable != null) {
+				if (!cancellation.isTrue() && runnable != null) {
 					SwingUtilities.invokeLater(() -> {
 						runnable.run();
 					});

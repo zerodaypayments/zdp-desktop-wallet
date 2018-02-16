@@ -7,8 +7,12 @@ public class BooleanWrapper implements Serializable {
 
 	private boolean value;
 
-	public boolean isValue() {
+	public boolean isTrue() {
 		return value;
+	}
+
+	public boolean isFalse() {
+		return !isTrue();
 	}
 
 	public BooleanWrapper() {
@@ -20,7 +24,7 @@ public class BooleanWrapper implements Serializable {
 		this.value = value;
 	}
 
-	public void setValue(boolean value) {
+	public void set(boolean value) {
 		this.value = value;
 	}
 
