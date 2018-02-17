@@ -265,7 +265,7 @@ public class SendView {
 				sendPanel.txtAddressBalance.setText(balance.getBalance().toString());
 				sendPanel.txtAddressBalance.setIcon(Icons.getIcon("check.png"));
 
-				w.setBalance(balance.getBalance());
+				w.setBalance(balance.getBalanceAsBigDecimal());
 				walletService.saveCurrentWallet();
 
 			} catch (Exception e) {

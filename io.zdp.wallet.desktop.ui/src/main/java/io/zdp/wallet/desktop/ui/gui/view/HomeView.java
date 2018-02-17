@@ -30,16 +30,12 @@ public class HomeView {
 
 	public JPanel get() {
 
-		JPanel panel = new JPanel(new BorderLayout());
-
 		HomePanel homePanel = new HomePanel();
 
 		String balance = walletService.getCurrentWallet().getBalance().toPlainString();
 		homePanel.txtBalance.setText(balance);
 
-		panel.add(new JScrollPane(homePanel), BorderLayout.CENTER);
-
-		return panel;
+		return homePanel;
 
 	}
 

@@ -532,6 +532,7 @@ public class MainWindow {
 				showReceiveScreen();
 			});
 
+			/*
 			JButton btnTransactions = new JButton("Transactions",
 					new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
 			btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -540,6 +541,7 @@ public class MainWindow {
 				showTransactionsScreen();
 			});
 			toolbar.add(btnTransactions);
+			*/
 
 			/*
 			 * 
@@ -614,9 +616,7 @@ public class MainWindow {
 
 	public void showHomeScreen() {
 		this.view = View.HOME;
-		JScrollPane scroll = new JScrollPane(this.homeView.get());
-		SwingHelper.updateScrollPane(scroll);
-		addComponentToFrame(scroll);
+		addComponentToFrame(this.homeView.get());
 		setupToolbar();
 	}
 

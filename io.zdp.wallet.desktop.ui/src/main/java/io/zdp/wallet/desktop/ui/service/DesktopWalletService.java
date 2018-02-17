@@ -1,6 +1,9 @@
 package io.zdp.wallet.desktop.ui.service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.zdp.api.model.TransferDetails;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.DesktopWallet;
@@ -36,9 +40,11 @@ public class DesktopWalletService extends WalletService {
 
 	@Autowired
 	private ConfigurationService configurationService;
-	
+
 	@Autowired
 	private MainWindow mainWindow;
+
+	private Map<Wallet, List<TransferDetails>> walletTransactions = new HashMap<>();
 
 	@PostConstruct
 	public void init() {

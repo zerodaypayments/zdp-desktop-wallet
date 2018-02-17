@@ -52,8 +52,8 @@ public class NetworkStatusCheckingJob {
 
 				BalanceResponse accountBalance = zdp.getAccountBalance(wallet.getPublicKey(), wallet.getPrivateKey());
 
-				if (false == wallet.getBalance().equals(accountBalance.getBalance())) {
-					wallet.setBalance(accountBalance.getBalance());
+				if (false == wallet.getBalance().toPlainString().equals(accountBalance.getBalance())) {
+					wallet.setBalance(accountBalance.getBalanceAsBigDecimal());
 					mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet balance changed");
 					SwingUtilities.invokeLater(() -> {
 						mainWindow.updateUI();

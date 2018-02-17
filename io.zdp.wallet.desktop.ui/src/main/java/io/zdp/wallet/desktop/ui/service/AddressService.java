@@ -1,6 +1,7 @@
 package io.zdp.wallet.desktop.ui.service;
 
 import java.awt.TrayIcon.MessageType;
+import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
 
@@ -11,8 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.zdp.api.model.BalanceResponse;
+import io.zdp.api.model.TransactionHeadersResponse;
+import io.zdp.api.model.TransactionHeadersResponse.Transaction;
+import io.zdp.api.model.TransferDetails;
+import io.zdp.api.model.TransferDetailsList;
 import io.zdp.client.ZdpClient;
 import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.domain.WalletTransaction;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
@@ -46,10 +52,29 @@ public class AddressService {
 
 			try {
 
+				// Get balance
 				Wallet wallet = walletService.getCurrentWallet();
 				BalanceResponse balance = zdp.getAccountBalance(wallet.getPublicKey(), wallet.getPrivateKey());
-				wallet.setBalance(balance.getBalance());
-				
+				wallet.setBalance(balance.getBalanceAsBigDecimal());
+
+				// Get transactions
+				TransactionHeadersResponse transactions = zdp.getTransactionHeaders(wallet.getPublicKey(), wallet.getPrivateKey());
+
+				if (transactions != null && transactions.getTransactions().isEmpty() == false) {
+
+					wallet.getTransactions().clear();
+
+					for (Transaction details : transactions.getTransactions()) {
+
+						WalletTransaction tx = new WalletTransaction();
+
+						tx.setAmount(new BigDecimal(details.getAmount()));
+						tx.setDate(details.getDate());
+
+						wallet.getTransactions().add(tx);
+					}
+				}
+
 				walletService.saveCurrentWallet();
 
 				mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet synchronized");
