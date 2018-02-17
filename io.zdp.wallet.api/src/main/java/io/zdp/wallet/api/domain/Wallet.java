@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.security.KeyPair;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +59,12 @@ public class Wallet implements Serializable {
 	}
 
 	public List<WalletTransaction> getTransactions() {
+		Collections.sort(transactions, new Comparator<WalletTransaction>() {
+			@Override
+			public int compare(WalletTransaction o1, WalletTransaction o2) {
+				return o2.getDate().compareTo(o1.getDate());
+			}
+		});
 		return transactions;
 	}
 

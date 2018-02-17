@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import io.zdp.api.model.BalanceResponse;
 import io.zdp.api.model.TransactionHeadersResponse;
 import io.zdp.api.model.TransactionHeadersResponse.Transaction;
-import io.zdp.api.model.TransferDetails;
-import io.zdp.api.model.TransferDetailsList;
 import io.zdp.client.ZdpClient;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.domain.WalletTransaction;
@@ -23,7 +21,7 @@ import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Service
-public class AddressService {
+public class AccountService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -70,6 +68,7 @@ public class AddressService {
 
 						tx.setAmount(new BigDecimal(details.getAmount()));
 						tx.setDate(details.getDate());
+						tx.setUuid(details.getUuid());
 
 						wallet.getTransactions().add(tx);
 					}

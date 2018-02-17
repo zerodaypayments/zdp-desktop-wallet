@@ -1,16 +1,20 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
-import java.awt.BorderLayout;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import io.zdp.wallet.api.domain.WalletTransaction;
+import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
+import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.dialog.HomePanel;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
@@ -34,6 +38,43 @@ public class HomeView {
 
 		String balance = walletService.getCurrentWallet().getBalance().toPlainString();
 		homePanel.txtBalance.setText(balance);
+		SwingHelper.setFontForJText(homePanel.events);
+
+		new QTextComponentContextMenu(homePanel.events);
+
+		// Show recent transactions
+		if (walletService.getCurrentWallet() != null) {
+
+			List<WalletTransaction> txs = walletService.getCurrentWallet().getTransactions();
+
+			if (false == CollectionUtils.isEmpty(txs)) {
+
+				StringBuilder sb = new StringBuilder("<html><body>");
+				sb.append("<table border='0' width='100%'>");
+
+				sb.append("<tr style='background:#333;color:white;'><th align='right'>Date</th><th  align='left'>Amount</th><th  align='left'>Transaction</th></tr>");
+
+				for (WalletTransaction tx : txs) {
+
+					sb.append("<tr>");
+
+					sb.append("<td nowrap align='right'>");
+					sb.append(new SimpleDateFormat("dd MMM yy hh:mm:ss a").format(tx.getDate()));
+					sb.append("</td><td  style='background:white;color:black;'>");
+					sb.append(tx.getAmount().toPlainString());
+					sb.append("</td><td>");
+					sb.append("<a href='tx:'" + tx.getUuid() + "'>" + tx.getUuid() + "</a>");
+					sb.append("</td>");
+
+					sb.append("</tr>");
+				}
+
+				sb.append("</table>");
+				sb.append("</body></html>");
+
+				homePanel.events.setText(sb.toString());
+			}
+		}
 
 		return homePanel;
 

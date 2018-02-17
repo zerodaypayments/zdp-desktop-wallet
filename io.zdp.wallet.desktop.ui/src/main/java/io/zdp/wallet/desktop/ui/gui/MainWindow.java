@@ -65,7 +65,7 @@ import io.zdp.wallet.desktop.ui.gui.view.HomeView;
 import io.zdp.wallet.desktop.ui.gui.view.ReceiveView;
 import io.zdp.wallet.desktop.ui.gui.view.SendView;
 import io.zdp.wallet.desktop.ui.gui.view.TransactionsView;
-import io.zdp.wallet.desktop.ui.service.AddressService;
+import io.zdp.wallet.desktop.ui.service.AccountService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component
@@ -88,7 +88,7 @@ public class MainWindow {
 	private OpenWallet openWallet;
 
 	@Autowired
-	private AddressService addressService;
+	private AccountService addressService;
 
 	@Autowired
 	private DesktopWallet desktopWallet;
@@ -186,8 +186,7 @@ public class MainWindow {
 
 				@Override
 				public String toString() {
-					return "NetworkPoint [accelX=" + accelX + ", accelY=" + accelY + ", deleted=" + deleted + ", x=" + x
-							+ ", y=" + y + "]";
+					return "NetworkPoint [accelX=" + accelX + ", accelY=" + accelY + ", deleted=" + deleted + ", x=" + x + ", y=" + y + "]";
 				}
 
 			}
@@ -265,10 +264,9 @@ public class MainWindow {
 			}
 
 			private void getNewPoint() {
-				NetworkPoint p = new NetworkPoint(RandomUtils.nextFloat(0, getWidth()),
-						RandomUtils.nextFloat(0, getHeight()));
-				p.accelX = 1 * (RandomUtils.nextFloat(0,1) - RandomUtils.nextFloat(0,1));
-				p.accelY = 1 * (RandomUtils.nextFloat(0,1) - RandomUtils.nextFloat(0,1));
+				NetworkPoint p = new NetworkPoint(RandomUtils.nextFloat(0, getWidth()), RandomUtils.nextFloat(0, getHeight()));
+				p.accelX = 1 * (RandomUtils.nextFloat(0, 1) - RandomUtils.nextFloat(0, 1));
+				p.accelY = 1 * (RandomUtils.nextFloat(0, 1) - RandomUtils.nextFloat(0, 1));
 				points.add(p);
 			}
 
@@ -302,31 +300,21 @@ public class MainWindow {
 			}
 		}).start();
 
-		// fresh start
-		if (walletService.getRecentWallet() == null) {
+		FreshStart freshStartPanel = new FreshStart();
 
-			FreshStart freshStartPanel = new FreshStart();
+		JDialog startDialog = SwingHelper.dialog(frame, freshStartPanel);
+		startDialog.setTitle("Welcome to ZDP Wallet!");
 
-			JDialog startDialog = SwingHelper.dialog(frame, freshStartPanel);
-			startDialog.setTitle("Welcome to ZDP Wallet!");
+		freshStartPanel.btnLoadExistingWallet.addActionListener(e -> {
+			openWallet.open(startDialog, startDialog);
+		});
 
-			freshStartPanel.btnLoadExistingWallet.addActionListener(e -> {
-				openWallet.open(startDialog, startDialog);
-			});
-
-			freshStartPanel.btnCreateNewWallet.addActionListener(e -> {
-
-				createNewWallet.create(startDialog);
-
-			});
-			/*
-			 * freshStartPanel.btnQuit.addActionListener(e -> { desktopWallet.close(); });
-			 */
-
-			SwingHelper.installEscapeCloseOperation(startDialog);
-			startDialog.setVisible(true);
-
-		}
+		freshStartPanel.btnCreateNewWallet.addActionListener(e -> {
+			createNewWallet.create(startDialog);
+		});
+		
+		SwingHelper.installEscapeCloseOperation(startDialog);
+		startDialog.setVisible(true);
 
 	}
 
@@ -522,8 +510,7 @@ public class MainWindow {
 				showSendScreen();
 			});
 
-			JButton btnReceive = new JButton("Receive",
-					new ImageIcon(this.getClass().getResource("/icons/receive.png")));
+			JButton btnReceive = new JButton("Receive", new ImageIcon(this.getClass().getResource("/icons/receive.png")));
 			btnReceive.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReceive.setHorizontalTextPosition(SwingConstants.CENTER);
 			toolbar.add(btnReceive);
@@ -554,8 +541,7 @@ public class MainWindow {
 			 */
 			toolbar.add(Box.createHorizontalGlue());
 
-			JButton btnSync = new JButton("Synchronize",
-					new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
+			JButton btnSync = new JButton("Synchronize", new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
 			btnSync.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnSync.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnSync.addActionListener(e -> {
@@ -610,6 +596,7 @@ public class MainWindow {
 	}
 
 	private void initUI() {
+		
 		showHomeScreen();
 		setupToolbar();
 	}

@@ -8,7 +8,6 @@ import java.io.FilenameFilter;
 
 import javax.swing.JDialog;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,6 @@ import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.EnterPasswordPanel;
-import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
 @Component
 public class OpenWallet {
@@ -32,9 +30,6 @@ public class OpenWallet {
 
 	@Autowired
 	private I18n i18n;
-
-	@Autowired
-	private DesktopWalletService walletService;
 
 	@Autowired
 	private MainWindow mainWindow;

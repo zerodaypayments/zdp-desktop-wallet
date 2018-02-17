@@ -50,6 +50,7 @@ public class HomePanel extends javax.swing.JPanel {
         txtBalance.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         events.setEditable(false);
+        events.setContentType("text/html"); // NOI18N
         jScrollPane1.setViewportView(events);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -63,7 +64,7 @@ public class HomePanel extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                     .addComponent(txtBalance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
