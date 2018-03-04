@@ -42,7 +42,7 @@ public class AboutDialog extends javax.swing.JPanel {
         jLabel3.setText("https://zdp.io");
 
         text.setEditable(false);
-        text.setText("2017-2018 Copyright ZDP Developers. All rights reserved.");
+        text.setText("2017-2018 Copyright ZDP Developers. All rights reserved.\n\nThird party rights and licenses:\n\nSilk icon set 1.3 by Mark James is licensed under a Creative Commons Attribution 2.5 License.\nhttp://www.famfamfam.com/lab/icons/silk/\n\n");
         jScrollPane1.setViewportView(text);
 
         btnOk.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check.png"))); // NOI18N
@@ -59,7 +59,7 @@ public class AboutDialog extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnOk)))

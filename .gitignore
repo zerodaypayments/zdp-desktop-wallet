@@ -3,3 +3,5 @@
 .settings/
 target/
 velocity*
+dist/
+jre/
