@@ -4,7 +4,7 @@ import java.awt.FileDialog;
 import java.awt.Window;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.security.NoSuchAlgorithmException;
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bitcoinj.core.Base58;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,11 +199,11 @@ public class CreateNewWallet {
 
 				String seed = panel.txtSeed.getText();
 				
-				Wallet w = WalletService.create(seed, walletFile, walletPassword);
+				Wallet w = WalletService.create(seed, walletFile);
 
-				walletService.setCurrentWallet(w, walletFile, walletPassword);
+				walletService.setCurrentWallet(w, walletFile);
 
-				mainWindow.setWallet(w, walletFile, walletPassword);
+				mainWindow.setWallet(w, walletFile);
 
 				if (parent != mainWindow.getFrame()) {
 					parent.dispose();
@@ -227,8 +228,8 @@ public class CreateNewWallet {
 	private void generateWalletInfo(WalletCreationPanel panel) {
 
 		try {
-			String seed = CryptoUtils.generateRandomNumber256bits();
-			panel.txtSeed.setText(seed);
+			 BigInteger privateKey = CryptoUtils.generateECPrivateKey();
+			panel.txtSeed.setText(Base58.encode(privateKey.toByteArray()));
 
 			Language l = Language.ENGLISH;
 
@@ -250,12 +251,12 @@ public class CreateNewWallet {
 				l = Language.CHINESE_TRADITIONAL;
 			}
 
-			List<String> generateWords = Mnemonics.generateWords(l, seed);
+			List<String> generateWords = Mnemonics.generateWords(l, privateKey.toString(16));
 			String words = StringUtils.join(generateWords, IOUtils.LINE_SEPARATOR);
 			panel.txtMnemonics.setText(words);
 			panel.txtMnemonics.setCaretPosition(0);
 
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			log.error("Error: ", e);
 		}
 

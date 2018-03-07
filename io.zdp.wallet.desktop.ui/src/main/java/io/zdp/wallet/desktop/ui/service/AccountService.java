@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.zdp.api.model.BalanceResponse;
-import io.zdp.api.model.TransactionHeadersResponse;
-import io.zdp.api.model.TransactionHeadersResponse.Transaction;
+import io.zdp.api.model.v1.GetBalanceResponse;
+import io.zdp.api.model.v1.ListTransactionsResponse;
+import io.zdp.api.model.v1.ListTransactionsResponse.Transaction;
 import io.zdp.client.ZdpClient;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.domain.WalletTransaction;
@@ -52,12 +52,12 @@ public class AccountService {
 
 				// Get balance
 				Wallet wallet = walletService.getCurrentWallet();
-				BalanceResponse balance = zdp.getAccountBalance(wallet.getPublicKey(), wallet.getPrivateKey());
-				wallet.setBalance(balance.getBalanceAsBigDecimal());
+				GetBalanceResponse balance = zdp.getBalance(wallet.getPrivateKey(), wallet.getPublicKey());
+				wallet.setBalance(new BigDecimal(balance.getAmount()));
 
 				// Get transactions
-				TransactionHeadersResponse transactions = zdp.getTransactionHeaders(wallet.getPublicKey(), wallet.getPrivateKey());
-
+				ListTransactionsResponse transactions = zdp.getTransactions( wallet.getPrivateKey(), wallet.getPublicKey(),0,100);
+				
 				if (transactions != null && transactions.getTransactions().isEmpty() == false) {
 
 					wallet.getTransactions().clear();
