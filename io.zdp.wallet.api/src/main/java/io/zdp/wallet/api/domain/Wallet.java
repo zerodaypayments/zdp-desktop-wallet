@@ -2,7 +2,6 @@ package io.zdp.wallet.api.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,9 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
-import io.zdp.common.crypto.CryptoUtils;
 
 @SuppressWarnings("serial")
 @XmlRootElement
@@ -24,22 +20,20 @@ public class Wallet implements Serializable {
 
 	protected Date dateCreated;
 
-	protected String seed;
+	protected Date dateLastUpdated;
+
+	protected String privateKey;
+
+	protected String publicKey;
 
 	protected BigDecimal balance = BigDecimal.ZERO;
 
-	protected transient KeyPair keys;
+	public Date getDateLastUpdated() {
+		return dateLastUpdated;
+	}
 
-	public KeyPair getKeys() {
-
-		if (keys == null) {
-			try {
-				keys = CryptoUtils.generateKeys(seed);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return keys;
+	public void setDateLastUpdated(Date dateLastUpdated) {
+		this.dateLastUpdated = dateLastUpdated;
 	}
 
 	public BigDecimal getBalance() {
@@ -80,25 +74,25 @@ public class Wallet implements Serializable {
 		this.dateCreated = dateCreated;
 	}
 
-	public String getSeed() {
-		return seed;
+	public String getPrivateKey() {
+		return privateKey;
 	}
 
-	public void setSeed(String seed) {
-		this.seed = seed;
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
+	}
+
+	public String getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
 	}
 
 	@Override
 	public String toString() {
-		return "Wallet [uuid=" + uuid + ", transactions=" + transactions + ", dateCreated=" + dateCreated + ", seed=" + seed + ", balance=" + balance + "]";
-	}
-
-	public byte[] getPublicKey() {
-		return getKeys().getPublic().getEncoded();
-	}
-
-	public byte[] getPrivateKey() {
-		return getKeys().getPrivate().getEncoded();
+		return "Wallet [uuid=" + uuid + ", transactions=" + transactions + ", dateCreated=" + dateCreated + ", privateKey=" + privateKey + ", publicKey=" + publicKey + ", balance=" + balance + "]";
 	}
 
 }

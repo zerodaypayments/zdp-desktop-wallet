@@ -17,12 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.api.model.BalanceResponse;
-import io.zdp.api.model.BigDecimalValue;
-import io.zdp.api.model.TransferResponse;
+import io.zdp.api.model.v1.GetBalanceResponse;
+import io.zdp.api.model.v1.GetFeeResponse;
+import io.zdp.api.model.v1.SubmitTransactionResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.crypto.Signer;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.Icons;
@@ -55,7 +54,7 @@ public class SendView {
 
 		final SendPanel sendPanel = new SendPanel();
 
-		BigDecimalValue feeHolder = new BigDecimalValue();
+		GetFeeResponse fee = new GetFeeResponse();
 
 		/*
 		sendPanel.btnSendMax.setIcon(icon);
@@ -74,11 +73,9 @@ public class SendView {
 
 		sendPanel.txtAddressBalance.setIcon(loadingIcon);
 		sendPanel.txtFee.setIcon(loadingIcon);
-		
-		try {
-			final String address = Signer.getPublicKeyHash(walletService.getCurrentWallet().getPublicKey());
 
-			sendPanel.txtFromAddress.setText(CryptoUtils.getUniqueAddressForAccountUuid(address));
+		try {
+			//sendPanel.txtFromAddress.setText(CryptoUtils.get );
 			sendPanel.txtFromAddress.setCaretPosition(0);
 		} catch (Exception e2) {
 			log.error("Error: ", e2);
@@ -86,12 +83,11 @@ public class SendView {
 
 		new Thread(() -> {
 			try {
-				BigDecimal f = zdp.getFee();
-				log.debug("Got fee: " + f);
-				feeHolder.setValue(f);
+				fee.setFee(zdp.getFee().getFee());
+				log.debug("Got fee: " + fee.getFee());
 
 				SwingUtilities.invokeLater(() -> {
-					sendPanel.txtFee.setText(feeHolder.getValue().toString());
+					sendPanel.txtFee.setText(fee.getFee());
 					sendPanel.txtFee.setIcon(Icons.getIcon("check.png"));
 				});
 
@@ -115,8 +111,7 @@ public class SendView {
 
 		new QTextComponentContextMenu(sendPanel.txtFromAddress);
 		sendPanel.txtFromAddress.addFocusListener(new TextComponentFocuser());
-		
-		
+
 		new QTextComponentContextMenu(sendPanel.txtTotalCharge);
 
 		JScrollPane scroll = new JScrollPane(sendPanel);
@@ -143,7 +138,7 @@ public class SendView {
 				String amountText = sendPanel.txtAmount.getText();
 				if (NumberUtils.isCreatable(amountText) && NumberUtils.isParsable(amountText)) {
 					BigDecimal amount = new BigDecimal(amountText);
-					BigDecimal total = amount.add(feeHolder.getValue());
+					BigDecimal total = amount.add(new BigDecimal(fee.getFee()));
 					sendPanel.txtTotalCharge.setText(total.toString());
 				}
 			}
@@ -193,7 +188,7 @@ public class SendView {
 			new QTextComponentContextMenu(panel.txtFrom);
 			new QTextComponentContextMenu(panel.txtTo);
 			new QTextComponentContextMenu(panel.txtMemo);
-			
+
 			panel.txtFrom.setCaretPosition(0);
 			panel.txtTo.setCaretPosition(0);
 
@@ -211,7 +206,7 @@ public class SendView {
 
 					BigDecimal amountToSend = new BigDecimal(panel.txtAmount.getText().trim());
 
-					TransferResponse transferResponse = zdp.transfer(wallet.getKeys().getPublic().getEncoded(), wallet.getKeys().getPrivate().getEncoded(), panel.txtFrom.getText(), panel.txtTo.getText(), amountToSend, panel.txtMemo.getText());
+					SubmitTransactionResponse transferResponse = zdp.transfer(wallet.getPrivateKey(), wallet.getPublicKey(), panel.txtFrom.getText(), panel.txtTo.getText(), amountToSend, panel.txtMemo.getText());
 
 					if (transferResponse == null || false == transferResponse.isSubmitted()) {
 
@@ -221,15 +216,15 @@ public class SendView {
 
 					} else {
 
-						String msg = "Submitted transaction " + transferResponse.getUuid();
+						String msg = "Submitted transaction " + transferResponse.getTxUuid();
 						mainWindow.showSystemTrayMessage(MessageType.INFO, msg);
 
-						Alert.info("Transaction submitted: " + transferResponse.getUuid());
+						Alert.info("Transaction submitted: " + transferResponse.getTxUuid());
 
 						updateAddressBalance(sendPanel);
-						
+
 						mainWindow.updateUI();
-						
+
 					}
 
 					dialog.dispose();
@@ -260,12 +255,12 @@ public class SendView {
 
 				Wallet w = walletService.getCurrentWallet();
 
-				BalanceResponse balance = zdp.getAccountBalance(w.getKeys().getPublic().getEncoded(), w.getKeys().getPrivate().getEncoded());
+				GetBalanceResponse balance = zdp.getBalance(w.getPrivateKey(), w.getPublicKey());
 
-				sendPanel.txtAddressBalance.setText(balance.getBalance().toString());
+				sendPanel.txtAddressBalance.setText(balance.getAmount());
 				sendPanel.txtAddressBalance.setIcon(Icons.getIcon("check.png"));
 
-				w.setBalance(balance.getBalanceAsBigDecimal());
+				w.setBalance(new BigDecimal(balance.getAmount()));
 				walletService.saveCurrentWallet();
 
 			} catch (Exception e) {

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.zdp.api.model.TransferDetails;
+import io.zdp.api.model.v1.GetTransactionDetailsResponse;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.DesktopWallet;
@@ -27,7 +27,6 @@ public class DesktopWalletService extends WalletService {
 
 	private Wallet currentWallet;
 	private File currentWalletFile;
-	private String currentWalletPassword;
 
 	@Value("${api.central.url}")
 	private String apiCentralUrl;
@@ -44,7 +43,7 @@ public class DesktopWalletService extends WalletService {
 	@Autowired
 	private MainWindow mainWindow;
 
-	private Map<Wallet, List<TransferDetails>> walletTransactions = new HashMap<>();
+	private Map<Wallet, List<GetTransactionDetailsResponse>> walletTransactions = new HashMap<>();
 
 	@PostConstruct
 	public void init() {
@@ -61,11 +60,10 @@ public class DesktopWalletService extends WalletService {
 		return null;
 	}
 
-	public void setCurrentWallet(Wallet w, File file, String pass) {
+	public void setCurrentWallet(Wallet w, File file) {
 
 		this.currentWallet = w;
 		this.currentWalletFile = file;
-		this.currentWalletPassword = pass;
 
 		if (file != null) {
 			configurationService.getConfiguration().setLastWalletFile(file.getAbsolutePath());
@@ -73,8 +71,8 @@ public class DesktopWalletService extends WalletService {
 		}
 	}
 
-	public void saveCurrentWallet() {
-		super.save(currentWalletFile, currentWallet, currentWalletPassword);
+	public void saveCurrentWallet() throws Exception {
+		super.save(currentWalletFile, currentWallet);
 	}
 
 	public Wallet getCurrentWallet() {

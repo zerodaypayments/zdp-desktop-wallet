@@ -1,39 +1,9 @@
 package io.zdp.wallet.api;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.net.ConnectException;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.nulabinc.zxcvbn.Strength;
-import com.nulabinc.zxcvbn.Zxcvbn;
-
-import io.zdp.api.model.BalanceResponse;
-import io.zdp.api.model.TransferDetails;
-import io.zdp.api.model.TransferDetailsList;
 import io.zdp.client.ZdpClient;
-import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.utils.Mnemonics;
-import io.zdp.common.utils.Mnemonics.Language;
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
 
 /*
  * java -jar zdp.jar
@@ -52,7 +22,7 @@ public class ZdpCli {
 
 	@Autowired
 	private ZdpClient zdp;
-
+/*
 	public static void main(final String... _args) {
 
 		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/spring-context.xml");
@@ -267,5 +237,5 @@ public class ZdpCli {
 		formatter.printHelp("java -jar zdp.jar", options);
 		System.exit(0);
 	}
-
+*/
 }

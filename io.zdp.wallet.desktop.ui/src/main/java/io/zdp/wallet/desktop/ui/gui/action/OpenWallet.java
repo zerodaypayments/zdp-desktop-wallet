@@ -71,11 +71,16 @@ public class OpenWallet {
 				return;
 			}
 
-			Wallet wallet = WalletService.load(walletFile, pass);
+			Wallet wallet = null;
+			try {
+				wallet = WalletService.load(walletFile);
+			} catch (Exception e) {
+				log.error("Error: ", e);
+			}
 
 			if (wallet != null) {
 
-				mainWindow.setWallet(wallet, walletFile, pass);
+				mainWindow.setWallet(wallet, walletFile);
 
 				passwordDialog.dispose();
 				// startDialog.dispose();

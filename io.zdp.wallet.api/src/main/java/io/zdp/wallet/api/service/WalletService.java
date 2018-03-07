@@ -1,109 +1,58 @@
 package io.zdp.wallet.api.service;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.StringWriter;
+import java.math.BigInteger;
 import java.util.Date;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
-import javax.xml.bind.Unmarshaller;
+import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bitcoinj.core.Base58;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.utils.ZIPHelper;
 import io.zdp.wallet.api.domain.Wallet;
 
 public class WalletService {
 
 	private static final Logger log = LoggerFactory.getLogger(WalletService.class);
 
-	public static Wallet create(String privKey, File file, String pass) throws Exception {
+	private static final ObjectMapper mapper = new ObjectMapper();
+
+	static {
+		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+	}
+
+	public static Wallet create(String privKey, File file) throws Exception {
 
 		final Wallet w = new Wallet();
 		w.setDateCreated(new Date());
 
 		if (StringUtils.isBlank(privKey)) {
-			privKey = CryptoUtils.generateRandomNumber256bits();
+			privKey = Base58.encode(CryptoUtils.generateECPrivateKey().toByteArray());
 		}
 
-		w.setUuid(DigestUtils.sha256Hex(privKey));
+		w.setUuid(UUID.randomUUID().toString());
+		w.setDateLastUpdated(new Date());
+		w.setPrivateKey(privKey);
+		w.setPublicKey(Base58.encode(CryptoUtils.getPublicKeyFromPrivate(new BigInteger(Base58.decode(privKey)), true)));
 
-		w.setSeed(privKey);
-
-		save(file, w, pass);
+		save(file, w);
 
 		return w;
 	}
 
-	private static Marshaller getWalletMarshaller() throws JAXBException, PropertyException {
-		final JAXBContext jaxbContext = JAXBContext.newInstance(Wallet.class);
-		final Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		return jaxbMarshaller;
+	// Save wallet in JSON format
+	public static synchronized void save(final File file, final Wallet wallet) throws Exception {
+		mapper.writeValue(file, wallet);
 	}
 
-	private static Unmarshaller getWalletUnmarshaller() throws JAXBException, PropertyException {
-		final JAXBContext jaxbContext = JAXBContext.newInstance(Wallet.class);
-		final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-		return jaxbUnmarshaller;
-	}
-
-	// Save Wallet in XML format
-	// Switching to XML from JSON as easier to support changes in the wallet
-	// format
-	// in the future
-	public static synchronized void save(final File file, final Wallet wallet, final String password) {
-
-		try {
-
-			// Generate XML
-			final StringWriter sw = new StringWriter();
-			getWalletMarshaller().marshal(wallet, sw);
-
-			// Compress XML into byte array
-			final byte[] compressed = ZIPHelper.compress(sw.toString());
-
-			final byte[] encrypted = CryptoUtils.encryptLargeData(password, compressed);
-
-			FileUtils.writeByteArrayToFile(file, encrypted);
-
-		} catch (Exception e) {
-			log.error("Error: ", e);
-		}
-
-	}
-
-	public static synchronized Wallet load(final File file, final String pass) {
-
-		try {
-
-			// Read decrypted file content to byte array
-			final byte[] content = FileUtils.readFileToByteArray(file);
-
-			final byte[] decryptedCompressed = CryptoUtils.decryptLargeData(pass, content);
-
-			final byte[] xml = ZIPHelper.decompressAsBytes(decryptedCompressed);
-
-			// TODO remove debugging logging
-			System.out.println(new String(xml));
-
-			final Wallet wallet = (Wallet) getWalletUnmarshaller().unmarshal(new ByteArrayInputStream(xml));
-
-			return wallet;
-
-		} catch (Exception e) {
-			log.error("Error: ", e);
-		}
-
-		return null;
-
+	// Read wallet from a JSON file
+	public static synchronized Wallet load(final File file) throws Exception {
+		return mapper.readValue(file, Wallet.class);
 	}
 }

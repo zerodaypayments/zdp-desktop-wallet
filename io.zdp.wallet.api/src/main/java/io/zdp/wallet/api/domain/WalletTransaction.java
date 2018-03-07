@@ -24,6 +24,26 @@ public class WalletTransaction implements Serializable {
 
 	private String memo;
 
+	private boolean submitted;
+
+	private String error;
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public boolean isSubmitted() {
+		return submitted;
+	}
+
+	public void setSubmitted(boolean submitted) {
+		this.submitted = submitted;
+	}
+
 	public String getUuid() {
 		return uuid;
 	}

@@ -1,6 +1,7 @@
 package io.zdp.wallet.desktop.ui.job;
 
 import java.awt.TrayIcon.MessageType;
+import java.math.BigDecimal;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import io.zdp.api.model.BalanceResponse;
+import io.zdp.api.model.v1.GetBalanceResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Icons;
@@ -50,10 +51,10 @@ public class NetworkStatusCheckingJob {
 
 			if (wallet != null) {
 
-				BalanceResponse accountBalance = zdp.getAccountBalance(wallet.getPublicKey(), wallet.getPrivateKey());
+				GetBalanceResponse accountBalance = zdp.getBalance(wallet.getPublicKey(), wallet.getPrivateKey());
 
-				if (false == wallet.getBalance().toPlainString().equals(accountBalance.getBalance())) {
-					wallet.setBalance(accountBalance.getBalanceAsBigDecimal());
+				if (false == wallet.getBalance().toPlainString().equals(accountBalance.getAmount())) {
+					wallet.setBalance(new BigDecimal(accountBalance.getAmount()));
 					mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet balance changed");
 					SwingUtilities.invokeLater(() -> {
 						mainWindow.updateUI();

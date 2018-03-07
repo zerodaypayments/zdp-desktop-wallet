@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.crypto.Signer;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
@@ -38,8 +37,8 @@ public class ReceiveView {
 		ReceivePanel panel = new ReceivePanel();
 
 		try {
-			final String walletUuid = Signer.getPublicKeyHash(walletService.getCurrentWallet().getPublicKey());
-			final String address = CryptoUtils.getUniqueAddressForAccountUuid(walletUuid);
+			final String publicKey58 = walletService.getCurrentWallet().getPublicKey();
+			final String address = CryptoUtils.generateAccountUniqueAddress(publicKey58);
 
 			panel.txtAddress.setText(address);
 
@@ -67,7 +66,7 @@ public class ReceiveView {
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		}
-		
+
 		// start background transfer listener
 
 		return panel;

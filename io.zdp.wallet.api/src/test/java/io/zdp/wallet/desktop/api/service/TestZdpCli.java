@@ -35,7 +35,7 @@ public class TestZdpCli extends TestCase {
 //		cli.main(new String[] { "--txfrom", "BBBE78DEC452C2A462427EEE7DFF1D12ED893CDD130E87C2FDDEC4F17E2E7BA7"});
 		
 
-		cli.main(new String[] { "--balance", "--pass", "adm23141234 1234 1", "--file", "1.wallet" });
+		// cli.main(new String[] { "--balance", "--pass", "adm23141234 1234 1", "--file", "1.wallet" });
 	}
 
 }

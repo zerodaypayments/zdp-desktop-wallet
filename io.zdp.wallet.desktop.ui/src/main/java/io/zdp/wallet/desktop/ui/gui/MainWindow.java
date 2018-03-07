@@ -471,9 +471,9 @@ public class MainWindow {
 
 	}
 
-	public void setWallet(Wallet w, File walletFile, String pass) {
+	public void setWallet(Wallet w, File walletFile) {
 
-		walletService.setCurrentWallet(w, walletFile, pass);
+		walletService.setCurrentWallet(w, walletFile);
 
 		updateFrame(w, walletFile);
 
@@ -622,7 +622,7 @@ public class MainWindow {
 
 		if (walletService.getCurrentWallet() != null) {
 
-			walletService.setCurrentWallet(null, null, null);
+			walletService.setCurrentWallet(null, null);
 
 			frame.getContentPane().removeAll();
 			frame.add(bgPanel, BorderLayout.CENTER);
