@@ -28,7 +28,6 @@ public class DesktopWallet {
 		try {
 			// UIManager.setLookAndFeel(new SubstanceOfficeSilver2007LookAndFeel());
 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			if (SystemUtils.IS_OS_WINDOWS) {
 				
@@ -38,8 +37,11 @@ public class DesktopWallet {
 				
 		        System.setProperty("sun.java2d.opengl", "true");
 		        
+				UIManager.setLookAndFeel(new SubstanceMarinerLookAndFeel());
+
+			} else {
+
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				UIManager.setLookAndFeel(new NimbusLookAndFeel());
 				
 			}
 
