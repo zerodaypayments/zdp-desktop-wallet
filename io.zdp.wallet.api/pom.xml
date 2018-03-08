@@ -57,12 +57,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.nulab-inc</groupId>
-			<artifactId>zxcvbn</artifactId>
-			<version>1.2.3</version>
-		</dependency>
-
-		<dependency>
 			<groupId>io.zdp</groupId>
 			<artifactId>io.zdp.common</artifactId>
 			<version>1.0</version>

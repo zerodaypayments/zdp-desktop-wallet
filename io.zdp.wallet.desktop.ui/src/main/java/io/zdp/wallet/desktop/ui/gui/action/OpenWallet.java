@@ -2,13 +2,11 @@ package io.zdp.wallet.desktop.ui.gui.action;
 
 import java.awt.FileDialog;
 import java.awt.Window;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
 
 import javax.swing.JDialog;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,7 @@ import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.I18n;
-import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
-import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
-import io.zdp.wallet.desktop.ui.gui.dialog.EnterPasswordPanel;
 
 @Component
 public class OpenWallet {
@@ -56,50 +51,24 @@ public class OpenWallet {
 
 		// /if (walletService.load(file, pass))
 
-		EnterPasswordPanel passwordPanel = new EnterPasswordPanel();
-		new QTextComponentContextMenu(passwordPanel.password);
+		Wallet wallet = null;
+		try {
+			wallet = WalletService.load(walletFile);
+		} catch (Exception e) {
+			log.error("Error: ", e);
+		}
 
-		JDialog passwordDialog = SwingHelper.dialog(parent, passwordPanel);
+		if (wallet != null) {
 
-		passwordDialog.setTitle("Enter password");
+			mainWindow.setWallet(wallet, walletFile);
 
-		ActionListener al = ev -> {
-
-			String pass = new String(passwordPanel.password.getPassword());
-
-			if (StringUtils.isEmpty(pass)) {
-				return;
+			if (dialog != null) {
+				dialog.dispose();
 			}
 
-			Wallet wallet = null;
-			try {
-				wallet = WalletService.load(walletFile);
-			} catch (Exception e) {
-				log.error("Error: ", e);
-			}
+		} else {
+			Alert.error("Sorry, this wallet can not be loaded");
+		}
 
-			if (wallet != null) {
-
-				mainWindow.setWallet(wallet, walletFile);
-
-				passwordDialog.dispose();
-				// startDialog.dispose();
-
-				if (dialog != null) {
-					dialog.dispose();
-				}
-
-			} else {
-				Alert.error("Sorry, this wallet can not be loaded");
-			}
-
-		};
-
-		passwordPanel.btnOk.addActionListener(al);
-		passwordPanel.password.addActionListener(al);
-
-		SwingHelper.installEscapeCloseOperation(passwordDialog);
-
-		passwordDialog.setVisible(true);
 	}
 }

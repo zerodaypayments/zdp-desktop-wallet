@@ -37,7 +37,7 @@ public class NetworkStatusCheckingJob {
 
 	private boolean connected;
 
-	@Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND * 5)
+	@Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND * 20)
 	public void check() throws Exception {
 
 		if (connected == false) {

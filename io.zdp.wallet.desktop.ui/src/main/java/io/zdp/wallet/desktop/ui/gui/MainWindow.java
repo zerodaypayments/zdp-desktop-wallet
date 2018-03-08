@@ -158,119 +158,9 @@ public class MainWindow {
 			}
 		});
 
-		bgPanel = new JPanel() {
+		bgPanel = new AnimatedNetworkPanel();
 
-			BufferedImage logo;
-
-			{
-
-				try {
-					logo = ImageIO.read(this.getClass().getResourceAsStream("/icons/zpg.png"));
-				} catch (IOException e) {
-					log.error("Error: ", e);
-				}
-
-				points = new ArrayList<>();
-
-			}
-
-			class NetworkPoint extends Point2D.Float {
-
-				public NetworkPoint(float x, float y) {
-					super(x, y);
-				}
-
-				public float accelX = 0;
-				public float accelY = 0;
-				public boolean deleted;
-
-				@Override
-				public String toString() {
-					return "NetworkPoint [accelX=" + accelX + ", accelY=" + accelY + ", deleted=" + deleted + ", x=" + x + ", y=" + y + "]";
-				}
-
-			}
-
-			private List<NetworkPoint> points = new ArrayList<>();
-
-			@Override
-			protected void paintComponent(Graphics g) {
-
-				Graphics2D g2 = (Graphics2D) g;
-				SwingHelper.awesomeGraphics(g2);
-
-				if (points.isEmpty()) {
-
-					for (int i = 0; i < 200; i++) {
-						getNewPoint();
-					}
-
-				}
-
-				g2.setColor(Color.BLACK);
-				g2.fillRect(0, 0, getWidth(), getHeight());
-
-				// g2.setColor(Color.WHITE);
-				Iterator<NetworkPoint> it = points.iterator();
-
-				while (it.hasNext()) {
-
-					NetworkPoint pt = it.next();
-
-					//g2.setColor(new Color(255, 255, 255, pt.alpha));
-
-					pt.x += pt.accelX;
-
-					pt.y += pt.accelY;
-
-					for (NetworkPoint otherPt : points) {
-						if (pt != otherPt) {
-							double dist = otherPt.distance(pt);
-							if (dist <= 200) {
-								int alpha = 100 - (int) dist;
-								if (alpha < 0) {
-									alpha = 0;
-								}
-								g2.setColor(new Color(255, 255, 255, alpha));
-								g2.drawLine((int) pt.x, (int) pt.y, (int) otherPt.x, (int) otherPt.y);
-							}
-						}
-					}
-
-					g2.setColor(Color.WHITE);
-
-					if (pt.x < -255 || pt.y < -255 || pt.x > getWidth() + 255 || pt.y > getHeight() + 255) {
-						pt.deleted = true;
-					}
-
-				}
-
-				it = points.iterator();
-				int deleted = 0;
-				while (it.hasNext()) {
-					NetworkPoint pt = it.next();
-					if (pt.deleted) {
-						it.remove();
-						deleted++;
-					}
-				}
-
-				for (int i = 0; i < deleted; i++) {
-					getNewPoint();
-				}
-
-				g.drawImage(logo, (getWidth() - logo.getWidth()) / 2, (getHeight() - logo.getHeight()) / 2, null);
-
-			}
-
-			private void getNewPoint() {
-				NetworkPoint p = new NetworkPoint(RandomUtils.nextFloat(0, getWidth()), RandomUtils.nextFloat(0, getHeight()));
-				p.accelX = 1 * (RandomUtils.nextFloat(0, 1) - RandomUtils.nextFloat(0, 1));
-				p.accelY = 1 * (RandomUtils.nextFloat(0, 1) - RandomUtils.nextFloat(0, 1));
-				points.add(p);
-			}
-
-		};
+		//		bgPanel = new JPanel();		
 
 		mainPanel = new JPanel(new BorderLayout());
 
@@ -288,7 +178,7 @@ public class MainWindow {
 
 			while (true) {
 
-				if (bgPanel != null && bgPanel.isVisible()) {
+				if (bgPanel != null && bgPanel.isVisible() && frame.isShowing()) {
 
 					try {
 						bgPanel.repaint();
@@ -312,7 +202,7 @@ public class MainWindow {
 		freshStartPanel.btnCreateNewWallet.addActionListener(e -> {
 			createNewWallet.create(startDialog);
 		});
-		
+
 		SwingHelper.installEscapeCloseOperation(startDialog);
 		startDialog.setVisible(true);
 
@@ -596,7 +486,7 @@ public class MainWindow {
 	}
 
 	private void initUI() {
-		
+
 		showHomeScreen();
 		setupToolbar();
 	}

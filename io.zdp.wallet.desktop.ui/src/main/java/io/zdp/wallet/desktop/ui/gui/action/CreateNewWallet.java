@@ -7,10 +7,7 @@ import java.io.FilenameFilter;
 import java.math.BigInteger;
 import java.util.List;
 
-import javax.swing.Icon;
 import javax.swing.JDialog;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -20,9 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.nulabinc.zxcvbn.Strength;
-import com.nulabinc.zxcvbn.Zxcvbn;
-
 import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.common.utils.Mnemonics;
 import io.zdp.common.utils.Mnemonics.Language;
@@ -30,14 +24,10 @@ import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.I18n;
-import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
-import io.zdp.wallet.desktop.ui.common.model.BooleanWrapper;
-import io.zdp.wallet.desktop.ui.common.model.StringWrapper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
-import io.zdp.wallet.desktop.ui.gui.dialog.PasswordPanel;
 import io.zdp.wallet.desktop.ui.gui.dialog.WalletCreationPanel;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 
@@ -52,104 +42,10 @@ public class CreateNewWallet {
 	@Autowired
 	private DesktopWalletService walletService;
 
-	private Icon warningIcon = Icons.getIcon("info_32.png");
-
 	@Autowired
 	private MainWindow mainWindow;
 
 	public void create(Window parent) {
-
-		// Ask for a wallet password
-		PasswordPanel ppanel = new PasswordPanel();
-
-		JDialog passwordDialog = SwingHelper.dialog(mainWindow.getFrame(), ppanel);
-		SwingHelper.installEscapeCloseOperation(passwordDialog);
-
-		BooleanWrapper strongPassword = new BooleanWrapper(false);
-
-		ppanel.password.getDocument().addDocumentListener(new DocumentListener() {
-
-			private Zxcvbn zxcvbn = new Zxcvbn();
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				checkPass();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				checkPass();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				checkPass();
-			}
-
-			private void checkPass() {
-
-				final String password = new String(ppanel.password.getPassword());
-
-				final Strength strength = zxcvbn.measure(password);
-
-				if (strength.getScore() < 3) {
-
-					String error = strength.getFeedback().getWarning();
-
-					if (StringUtils.isNotBlank(error)) {
-						ppanel.error.setText(error);
-					} else {
-						ppanel.error.setText("Please, use a stronger password");
-					}
-
-					ppanel.error.setIcon(warningIcon);
-					strongPassword.set(false);
-					
-					ppanel.btnOk.setEnabled(false);
-
-				} else {
-					ppanel.error.setText("");
-					ppanel.error.setIcon(null);
-					strongPassword.set(true);
-					ppanel.btnOk.setEnabled(true);
-				}
-
-			}
-		});
-
-		BooleanWrapper cancelled = new BooleanWrapper(false);
-
-		ppanel.btnCancel.addActionListener(e -> {
-			cancelled.set(true);
-			passwordDialog.dispose();
-		});
-
-		StringWrapper passwordWrapper = new StringWrapper();
-
-		ppanel.btnOk.addActionListener(e -> {
-			
-			final String password = new String(ppanel.password.getPassword());
-			final String confirmed = new String(ppanel.passwordConfirm.getPassword());
-			
-			if (strongPassword.isFalse()) {
-				Alert.warn("Please, use a stronger password!");
-				return;
-			}
-			
-			if (password.equals(confirmed)) {
-				passwordWrapper.set(password);
-				passwordDialog.dispose();
-			} else {
-				Alert.warn("Please, confirm the password");
-			}
-			
-		});
-
-		passwordDialog.setVisible(true);
-
-		if (cancelled.isTrue() || strongPassword.isFalse()) {
-			return;
-		}
 
 		WalletCreationPanel panel = new WalletCreationPanel();
 
@@ -173,8 +69,6 @@ public class CreateNewWallet {
 			if (false == Alert.confirm("Did you write down the wallet private key or list of words?")) {
 				return;
 			}
-
-			String walletPassword = passwordWrapper.get();
 
 			FileDialog fileDialog = new FileDialog(mainWindow.getFrame(), "Save Wallet", FileDialog.SAVE);
 			fileDialog.setFilenameFilter(new FilenameFilter() {

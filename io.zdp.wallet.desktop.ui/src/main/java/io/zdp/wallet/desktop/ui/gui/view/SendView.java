@@ -75,7 +75,7 @@ public class SendView {
 		sendPanel.txtFee.setIcon(loadingIcon);
 
 		try {
-			//sendPanel.txtFromAddress.setText(CryptoUtils.get );
+			sendPanel.txtFromAddress.setText(CryptoUtils.generateAccountUniqueAddress(walletService.getCurrentWallet().getPublicKey()) );
 			sendPanel.txtFromAddress.setCaretPosition(0);
 		} catch (Exception e2) {
 			log.error("Error: ", e2);

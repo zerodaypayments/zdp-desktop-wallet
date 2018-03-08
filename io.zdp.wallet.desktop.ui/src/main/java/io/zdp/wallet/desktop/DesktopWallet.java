@@ -31,10 +31,16 @@ public class DesktopWallet {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			if (SystemUtils.IS_OS_WINDOWS) {
+				
 				UIManager.setLookAndFeel(new SubstanceMarinerLookAndFeel());
+				
 			} else if (SystemUtils.IS_OS_LINUX) {
+				
+		        System.setProperty("sun.java2d.opengl", "true");
+		        
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				UIManager.setLookAndFeel(new NimbusLookAndFeel());
+				
 			}
 
 			JFrame.setDefaultLookAndFeelDecorated(true);
