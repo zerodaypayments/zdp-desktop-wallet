@@ -134,7 +134,7 @@ public class AnimatedNetworkPanel extends JPanel {
 
 		long et = System.currentTimeMillis();
 
-		System.out.println((et - st));
+//		System.out.println((et - st));
 
 	}
 
