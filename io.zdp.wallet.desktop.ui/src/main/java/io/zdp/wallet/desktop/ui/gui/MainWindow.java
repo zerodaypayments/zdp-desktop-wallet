@@ -1,11 +1,8 @@
 package io.zdp.wallet.desktop.ui.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Event;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -15,16 +12,11 @@ import java.awt.TrayIcon.MessageType;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.Icon;
@@ -44,7 +36,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +78,7 @@ public class MainWindow {
 
 	@Autowired
 	private OpenWallet openWallet;
-	
+
 	@Autowired
 	private RestoreWallet restoreWallet;
 
@@ -307,12 +298,12 @@ public class MainWindow {
 			menu.add(menuOpenWallet);
 
 			JMenuItem menuRestoreWallet = new JMenuItem("Restore wallet");
-			menuOpenWallet.setMnemonic('R');
-			menuOpenWallet.addActionListener(e -> {
+			menuRestoreWallet.setMnemonic('R');
+			menuRestoreWallet.addActionListener(e -> {
 				restoreWallet.restore(frame);
 			});
 			menu.add(menuRestoreWallet);
-			
+
 			menu.addSeparator();
 
 			JMenuItem itemCloseWallet = new JMenuItem("Close wallet", 'c');
@@ -525,11 +516,12 @@ public class MainWindow {
 
 			walletService.setCurrentWallet(null, null);
 
-			frame.getContentPane().removeAll();
-			frame.add(bgPanel, BorderLayout.CENTER);
-			frame.revalidate();
-			frame.doLayout();
-			frame.repaint();
+			addComponentToFrame(bgPanel);
+
+			frame.remove(toolbar);
+
+			toolbar = null;
+
 		}
 	}
 

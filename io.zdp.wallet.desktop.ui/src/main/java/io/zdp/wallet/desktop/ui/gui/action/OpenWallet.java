@@ -15,16 +15,12 @@ import org.springframework.stereotype.Component;
 import io.zdp.wallet.api.domain.Wallet;
 import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
-import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Component
 public class OpenWallet {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-	@Autowired
-	private I18n i18n;
 
 	@Autowired
 	private MainWindow mainWindow;
@@ -49,9 +45,8 @@ public class OpenWallet {
 
 		log.debug("Open wallet: " + walletFile);
 
-		// /if (walletService.load(file, pass))
-
 		Wallet wallet = null;
+		
 		try {
 			wallet = WalletService.load(walletFile);
 		} catch (Exception e) {

@@ -54,10 +54,12 @@ public class AnimatedNetworkPanel extends JPanel {
 
 		Graphics2D g2 = (Graphics2D) g;
 		
+		/*
 		g.setColor(Color.gray);
 		g2.fillRect(0, 0, getWidth(), getHeight());
 		
 		if (true) return;
+		*/
 		
 		if (SystemUtils.IS_OS_WINDOWS) {
 			SwingHelper.awesomeGraphics(g2);
@@ -69,7 +71,7 @@ public class AnimatedNetworkPanel extends JPanel {
 			//			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			//			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			//			g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-			//			g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+			//			g2.setRenderingHint(Re-nderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 		}
 
 		if (points.isEmpty()) {

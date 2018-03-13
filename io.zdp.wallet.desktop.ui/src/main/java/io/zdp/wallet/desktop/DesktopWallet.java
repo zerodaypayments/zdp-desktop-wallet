@@ -4,7 +4,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import org.apache.commons.lang3.SystemUtils;
 import org.pushingpixels.substance.api.skin.SubstanceMarinerLookAndFeel;
@@ -45,8 +44,6 @@ public class DesktopWallet {
 				
 			}
 			
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
 			JFrame.setDefaultLookAndFeelDecorated(true);
 			JDialog.setDefaultLookAndFeelDecorated(true);
 			
