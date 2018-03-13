@@ -28,6 +28,10 @@ public class WalletTransaction implements Serializable {
 
 	private String error;
 
+	public boolean hasAllDetails() {
+		return from != null;
+	}
+
 	public String getError() {
 		return error;
 	}

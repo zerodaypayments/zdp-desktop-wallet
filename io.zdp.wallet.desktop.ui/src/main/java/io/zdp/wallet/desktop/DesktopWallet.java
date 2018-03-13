@@ -26,8 +26,8 @@ public class DesktopWallet {
 	public static void main(String[] args) {
 
 		try {
+			
 			// UIManager.setLookAndFeel(new SubstanceOfficeSilver2007LookAndFeel());
-
 
 			if (SystemUtils.IS_OS_WINDOWS) {
 				
@@ -44,6 +44,8 @@ public class DesktopWallet {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				
 			}
+			
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			JFrame.setDefaultLookAndFeelDecorated(true);
 			JDialog.setDefaultLookAndFeelDecorated(true);

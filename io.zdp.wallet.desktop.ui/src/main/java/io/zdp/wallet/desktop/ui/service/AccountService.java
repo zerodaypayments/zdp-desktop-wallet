@@ -56,21 +56,22 @@ public class AccountService {
 				wallet.setBalance(new BigDecimal(balance.getAmount()));
 
 				// Get transactions
-				ListTransactionsResponse transactions = zdp.getTransactions( wallet.getPrivateKey(), wallet.getPublicKey(),0,100);
-				
-				if (transactions != null && transactions.getTransactions().isEmpty() == false) {
+				ListTransactionsResponse transactions = zdp.getTransactions(wallet.getPrivateKey(), wallet.getPublicKey(), 0, 100);
 
-					wallet.getTransactions().clear();
+				if (transactions != null && transactions.getTransactions().isEmpty() == false) {
 
 					for (Transaction details : transactions.getTransactions()) {
 
-						WalletTransaction tx = new WalletTransaction();
+						if (null == wallet.getTxByUuid(details.getUuid())) {
 
-						tx.setAmount(new BigDecimal(details.getAmount()));
-						tx.setDate(details.getDate());
-						tx.setUuid(details.getUuid());
+							WalletTransaction tx = new WalletTransaction();
 
-						wallet.getTransactions().add(tx);
+							tx.setAmount(new BigDecimal(details.getAmount()));
+							tx.setDate(details.getDate());
+							tx.setUuid(details.getUuid());
+
+							wallet.getTransactions().add(tx);
+						}
 					}
 				}
 

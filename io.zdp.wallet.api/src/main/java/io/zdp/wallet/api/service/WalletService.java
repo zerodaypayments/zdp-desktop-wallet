@@ -49,6 +49,7 @@ public class WalletService {
 	// Save wallet in JSON format
 	public static synchronized void save(final File file, final Wallet wallet) throws Exception {
 		mapper.writeValue(file, wallet);
+		log.debug("Wallet [" + wallet.getUuid() + "]  saved to: " + file);
 	}
 
 	// Read wallet from a JSON file

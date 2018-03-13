@@ -51,6 +51,15 @@ public class Wallet implements Serializable {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+	
+	public WalletTransaction getTxByUuid(String uuid) {
+		for (WalletTransaction tx : transactions) {
+			if (tx.getUuid().equals(uuid)) {
+				return tx;
+			}
+		}
+		return null;
+	}
 
 	public List<WalletTransaction> getTransactions() {
 		Collections.sort(transactions, new Comparator<WalletTransaction>() {

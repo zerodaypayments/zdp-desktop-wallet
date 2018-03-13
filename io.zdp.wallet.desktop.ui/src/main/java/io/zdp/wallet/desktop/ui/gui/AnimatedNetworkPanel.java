@@ -53,7 +53,12 @@ public class AnimatedNetworkPanel extends JPanel {
 		long st = System.currentTimeMillis();
 
 		Graphics2D g2 = (Graphics2D) g;
-
+		
+		g.setColor(Color.gray);
+		g2.fillRect(0, 0, getWidth(), getHeight());
+		
+		if (true) return;
+		
 		if (SystemUtils.IS_OS_WINDOWS) {
 			SwingHelper.awesomeGraphics(g2);
 		} else {

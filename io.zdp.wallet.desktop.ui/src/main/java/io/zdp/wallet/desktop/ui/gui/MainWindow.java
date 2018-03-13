@@ -59,6 +59,7 @@ import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.action.CreateNewWallet;
 import io.zdp.wallet.desktop.ui.gui.action.OpenWallet;
+import io.zdp.wallet.desktop.ui.gui.action.RestoreWallet;
 import io.zdp.wallet.desktop.ui.gui.dialog.AboutDialog;
 import io.zdp.wallet.desktop.ui.gui.dialog.FreshStart;
 import io.zdp.wallet.desktop.ui.gui.view.HomeView;
@@ -86,6 +87,9 @@ public class MainWindow {
 
 	@Autowired
 	private OpenWallet openWallet;
+	
+	@Autowired
+	private RestoreWallet restoreWallet;
 
 	@Autowired
 	private AccountService addressService;
@@ -300,8 +304,15 @@ public class MainWindow {
 			menuOpenWallet.addActionListener(e -> {
 				openWallet.open(frame, null);
 			});
-
 			menu.add(menuOpenWallet);
+
+			JMenuItem menuRestoreWallet = new JMenuItem("Restore wallet");
+			menuOpenWallet.setMnemonic('R');
+			menuOpenWallet.addActionListener(e -> {
+				restoreWallet.restore(frame);
+			});
+			menu.add(menuRestoreWallet);
+			
 			menu.addSeparator();
 
 			JMenuItem itemCloseWallet = new JMenuItem("Close wallet", 'c');

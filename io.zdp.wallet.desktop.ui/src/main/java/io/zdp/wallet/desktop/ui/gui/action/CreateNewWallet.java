@@ -145,7 +145,7 @@ public class CreateNewWallet {
 				l = Language.CHINESE_TRADITIONAL;
 			}
 
-			List<String> generateWords = Mnemonics.generateWords(l, privateKey.toString(16));
+			List<String> generateWords = Mnemonics.generateWords(l, privateKey.toByteArray());
 			String words = StringUtils.join(generateWords, IOUtils.LINE_SEPARATOR);
 			panel.txtMnemonics.setText(words);
 			panel.txtMnemonics.setCaretPosition(0);
