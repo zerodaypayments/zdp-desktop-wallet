@@ -27,13 +27,13 @@
 	</logger>
 
 	<logger name="org.springframework.web" additivity="false">
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="engine" />
 		<appender-ref ref="console" />
 	</logger>
 
 	<root>
-		<priority value="trace" />
+		<priority value="info" />
 		<appender-ref ref="engine" />
 		<appender-ref ref="console" />
 	</root>
