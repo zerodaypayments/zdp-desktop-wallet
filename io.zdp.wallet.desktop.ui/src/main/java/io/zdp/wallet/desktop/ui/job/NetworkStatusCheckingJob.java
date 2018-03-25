@@ -51,7 +51,7 @@ public class NetworkStatusCheckingJob {
 
 			if (wallet != null) {
 
-				GetBalanceResponse accountBalance = zdp.getBalance(wallet.getPublicKey(), wallet.getPrivateKey());
+				GetBalanceResponse accountBalance = zdp.getBalance(wallet.getPrivateKey(), wallet.getPublicKey());
 
 				if (false == wallet.getBalance().toPlainString().equals(accountBalance.getAmount())) {
 					wallet.setBalance(new BigDecimal(accountBalance.getAmount()));
@@ -68,6 +68,7 @@ public class NetworkStatusCheckingJob {
 			}
 
 			connected = true;
+
 			mainWindow.setStatusMessage("Connected to network", Icons.getIcon("check.png"));
 
 		} catch (Exception e) {
