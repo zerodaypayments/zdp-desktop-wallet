@@ -1,0 +1,1 @@
+select * from tx where uuid='{uuid}';

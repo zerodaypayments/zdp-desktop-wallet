@@ -2,10 +2,8 @@ package io.zdp.wallet.api.service.json;
 
 import java.io.File;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.UUID;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bitcoinj.core.Base58;
 import org.slf4j.Logger;
@@ -30,14 +28,12 @@ public class WalletServiceJsonFile {
 	public static Wallet create(String privKey, File file) throws Exception {
 
 		final Wallet w = new Wallet();
-		w.setDateCreated(new Date());
 
 		if (StringUtils.isBlank(privKey)) {
 			privKey = Base58.encode(CryptoUtils.generateECPrivateKey().toByteArray());
 		}
 
 		w.setUuid(UUID.randomUUID().toString());
-		w.setDateLastUpdated(new Date());
 		w.setPrivateKey(privKey);
 		w.setPublicKey(Base58.encode(CryptoUtils.getPublicKeyFromPrivate(new BigInteger(Base58.decode(privKey)), true)));
 
