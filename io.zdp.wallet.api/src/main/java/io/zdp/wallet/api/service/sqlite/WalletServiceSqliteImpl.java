@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bitcoinj.core.Base58;
@@ -68,14 +70,17 @@ public class WalletServiceSqliteImpl implements WalletService {
 		if (false == file.exists()) {
 
 			log.debug("Create new db file: " + file);
-			
+
 			try (Connection conn = this.getConnection(file)) {
+
 				log.debug("Created new db file: " + file);
+
+				QueryRunner qr = new QueryRunner();
+
+				qr.execute(conn, sql("create-new.sql"), null);
+
 			}
-			
-			
-			
-			
+
 		}
 
 	}
@@ -86,7 +91,7 @@ public class WalletServiceSqliteImpl implements WalletService {
 		return null;
 	}
 
-	private String loadSql(String scriptFilename) throws IOException {
+	private String sql(String scriptFilename) throws IOException {
 		return IOUtils.toString(this.getClass().getResourceAsStream("/sql/" + scriptFilename), StandardCharsets.UTF_8);
 	}
 }
