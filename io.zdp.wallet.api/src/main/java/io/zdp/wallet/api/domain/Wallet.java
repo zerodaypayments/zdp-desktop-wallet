@@ -10,6 +10,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @SuppressWarnings("serial")
 @XmlRootElement
 public class Wallet implements Serializable {
@@ -18,22 +21,20 @@ public class Wallet implements Serializable {
 
 	protected List<WalletTransaction> transactions = new ArrayList<>();
 
-	protected Date dateCreated;
-
-	protected Date dateLastUpdated;
-
 	protected String privateKey;
 
 	protected String publicKey;
 
+	protected int version;
+
 	protected BigDecimal balance = BigDecimal.ZERO;
 
-	public Date getDateLastUpdated() {
-		return dateLastUpdated;
+	public int getVersion() {
+		return version;
 	}
 
-	public void setDateLastUpdated(Date dateLastUpdated) {
-		this.dateLastUpdated = dateLastUpdated;
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public BigDecimal getBalance() {
@@ -51,7 +52,7 @@ public class Wallet implements Serializable {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	public WalletTransaction getTxByUuid(String uuid) {
 		for (WalletTransaction tx : transactions) {
 			if (tx.getUuid().equals(uuid)) {
@@ -75,14 +76,6 @@ public class Wallet implements Serializable {
 		this.transactions = transactions;
 	}
 
-	public Date getDateCreated() {
-		return dateCreated;
-	}
-
-	public void setDateCreated(Date dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-
 	public String getPrivateKey() {
 		return privateKey;
 	}
@@ -101,7 +94,59 @@ public class Wallet implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Wallet [uuid=" + uuid + ", transactions=" + transactions + ", dateCreated=" + dateCreated + ", privateKey=" + privateKey + ", publicKey=" + publicKey + ", balance=" + balance + "]";
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((balance == null) ? 0 : balance.hashCode());
+		result = prime * result + ((privateKey == null) ? 0 : privateKey.hashCode());
+		result = prime * result + ((publicKey == null) ? 0 : publicKey.hashCode());
+		result = prime * result + ((transactions == null) ? 0 : transactions.hashCode());
+		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		result = prime * result + version;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Wallet other = (Wallet) obj;
+		if (balance == null) {
+			if (other.balance != null)
+				return false;
+		} else if (!balance.equals(other.balance))
+			return false;
+		if (privateKey == null) {
+			if (other.privateKey != null)
+				return false;
+		} else if (!privateKey.equals(other.privateKey))
+			return false;
+		if (publicKey == null) {
+			if (other.publicKey != null)
+				return false;
+		} else if (!publicKey.equals(other.publicKey))
+			return false;
+		if (transactions == null) {
+			if (other.transactions != null)
+				return false;
+		} else if (!transactions.equals(other.transactions))
+			return false;
+		if (uuid == null) {
+			if (other.uuid != null)
+				return false;
+		} else if (!uuid.equals(other.uuid))
+			return false;
+		if (version != other.version)
+			return false;
+		return true;
 	}
 
 }
