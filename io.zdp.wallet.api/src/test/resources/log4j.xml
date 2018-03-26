@@ -11,7 +11,7 @@
 	</appender>
 
 	<logger name="io.zdp" additivity="false">
-		<level value="error" />
+		<level value="debug" />
 		<appender-ref ref="console" />
 	</logger>
 

@@ -6,11 +6,13 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.UUID;
 
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bitcoinj.core.Base58;
@@ -71,13 +73,13 @@ public class WalletServiceSqliteImpl implements WalletService {
 
 			log.debug("Create new db file: " + file);
 
-			try (Connection conn = this.getConnection(file)) {
+			try (Connection conn = this.getConnection(file); Statement stmt = conn.createStatement();) {
 
 				log.debug("Created new db file: " + file);
 
-				QueryRunner qr = new QueryRunner();
+				String sql = sql("create-new.sql");
 
-				qr.execute(conn, sql("create-new.sql"), null);
+				stmt.executeUpdate(sql);
 
 			}
 
@@ -87,8 +89,18 @@ public class WalletServiceSqliteImpl implements WalletService {
 
 	@Override
 	public Wallet load(File file) throws Exception {
-		// TODO Auto-generated method stub
+
+		try (Connection conn = this.getConnection(file); ) {
+
+			QueryRunner qr = new QueryRunner();
+			Wallet w = qr.query(conn, sql("load-wallet.sql"), new ResultSetHandler<Wallet> {},null);
+			
+			return w;
+		}
+
 		return null;
+		
+		
 	}
 
 	private String sql(String scriptFilename) throws IOException {
