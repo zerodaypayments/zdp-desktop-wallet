@@ -21,7 +21,7 @@ import io.zdp.wallet.desktop.DesktopWallet;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Service
-public class DesktopWalletService extends WalletService {
+public class DesktopWalletService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -45,6 +45,9 @@ public class DesktopWalletService extends WalletService {
 
 	private Map<Wallet, List<GetTransactionDetailsResponse>> walletTransactions = new HashMap<>();
 
+	@Autowired
+	private WalletService walletService;
+	
 	@PostConstruct
 	public void init() {
 	}
@@ -72,11 +75,15 @@ public class DesktopWalletService extends WalletService {
 	}
 
 	public void saveCurrentWallet() throws Exception {
-		super.save(currentWalletFile, currentWallet);
+		walletService.save(currentWalletFile, currentWallet);
 	}
 
 	public Wallet getCurrentWallet() {
 		return currentWallet;
+	}
+
+	public Wallet create(String privKey, File file) throws Exception {
+		return this.walletService.create(privKey, file);
 	}
 
 }

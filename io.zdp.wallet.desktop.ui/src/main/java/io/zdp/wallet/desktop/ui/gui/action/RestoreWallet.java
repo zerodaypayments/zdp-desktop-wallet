@@ -97,7 +97,7 @@ public class RestoreWallet {
 
 			try {
 
-				Wallet w = WalletService.create(privateKey, walletFile);
+				Wallet w = walletService.create(privateKey, walletFile);
 
 				walletService.setCurrentWallet(w, walletFile);
 

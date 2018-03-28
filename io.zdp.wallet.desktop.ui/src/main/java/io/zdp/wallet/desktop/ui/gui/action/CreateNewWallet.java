@@ -93,7 +93,7 @@ public class CreateNewWallet {
 
 				String seed = panel.txtSeed.getText();
 				
-				Wallet w = WalletService.create(seed, walletFile);
+				Wallet w = walletService.create(seed, walletFile);
 
 				walletService.setCurrentWallet(w, walletFile);
 

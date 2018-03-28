@@ -24,6 +24,9 @@ public class OpenWallet {
 
 	@Autowired
 	private MainWindow mainWindow;
+	
+	@Autowired
+	private WalletService walletService;
 
 	public void open(Window parent, JDialog dialog) {
 
@@ -48,7 +51,7 @@ public class OpenWallet {
 		Wallet wallet = null;
 		
 		try {
-			wallet = WalletService.load(walletFile);
+			wallet = walletService.load(walletFile);
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		}
