@@ -38,7 +38,7 @@ public class ReceiveView {
 
 		try {
 			final String publicKey58 = walletService.getCurrentWallet().getPublicKey();
-			final String address = CryptoUtils.generateAccountUniqueAddress(publicKey58);
+			final String address = CryptoUtils.generateUniqueAddressByPublicKey58(publicKey58);
 
 			panel.txtAddress.setText(address);
 

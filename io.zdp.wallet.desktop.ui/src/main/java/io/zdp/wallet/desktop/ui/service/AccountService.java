@@ -52,11 +52,11 @@ public class AccountService {
 
 				// Get balance
 				Wallet wallet = walletService.getCurrentWallet();
-				GetBalanceResponse balance = zdp.getBalance(wallet.getPrivateKey(), wallet.getPublicKey());
+				GetBalanceResponse balance = zdp.getBalance(wallet.getPrivateKey());
 				wallet.setBalance(new BigDecimal(balance.getAmount()));
 
 				// Get transactions
-				ListTransactionsResponse transactions = zdp.getTransactions(wallet.getPrivateKey(), wallet.getPublicKey(), 0, 100);
+				ListTransactionsResponse transactions = zdp.getTransactions(wallet.getPrivateKey(), 0, 100);
 
 				if (transactions != null && transactions.getTransactions().isEmpty() == false) {
 

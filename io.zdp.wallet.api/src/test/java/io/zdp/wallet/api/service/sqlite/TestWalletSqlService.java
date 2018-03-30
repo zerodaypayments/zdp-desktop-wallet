@@ -25,7 +25,7 @@ public class TestWalletSqlService extends TestCase {
 
 		File file = new File(SystemUtils.getJavaIoTmpDir(), UUID.randomUUID().toString());
 
-		Wallet original = service.create(CryptoUtils.getNewAccount().getLeft(), file);
+		Wallet original = service.create(CryptoUtils.getNewAccount().getPrivateKey58(), file);
 
 		assertNotNull(original);
 

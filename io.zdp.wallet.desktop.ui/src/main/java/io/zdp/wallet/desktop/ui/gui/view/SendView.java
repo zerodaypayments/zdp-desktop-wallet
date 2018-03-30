@@ -75,7 +75,7 @@ public class SendView {
 		sendPanel.txtFee.setIcon(loadingIcon);
 
 		try {
-			sendPanel.txtFromAddress.setText(CryptoUtils.generateAccountUniqueAddress(walletService.getCurrentWallet().getPublicKey()) );
+			sendPanel.txtFromAddress.setText(CryptoUtils.generateUniqueAddressByPublicKey58(walletService.getCurrentWallet().getPublicKey()) );
 			sendPanel.txtFromAddress.setCaretPosition(0);
 		} catch (Exception e2) {
 			log.error("Error: ", e2);
@@ -206,7 +206,7 @@ public class SendView {
 
 					BigDecimal amountToSend = new BigDecimal(panel.txtAmount.getText().trim());
 
-					SubmitTransactionResponse transferResponse = zdp.transfer(wallet.getPrivateKey(), wallet.getPublicKey(), panel.txtFrom.getText(), panel.txtTo.getText(), amountToSend, panel.txtMemo.getText());
+					SubmitTransactionResponse transferResponse = zdp.transfer(wallet.getPrivateKey(), panel.txtFrom.getText(), panel.txtTo.getText(), amountToSend, panel.txtMemo.getText());
 
 					if (transferResponse == null || false == transferResponse.isSubmitted()) {
 
@@ -255,7 +255,7 @@ public class SendView {
 
 				Wallet w = walletService.getCurrentWallet();
 
-				GetBalanceResponse balance = zdp.getBalance(w.getPrivateKey(), w.getPublicKey());
+				GetBalanceResponse balance = zdp.getBalance(w.getPrivateKey());
 
 				sendPanel.txtAddressBalance.setText(balance.getAmount());
 				sendPanel.txtAddressBalance.setIcon(Icons.getIcon("check.png"));

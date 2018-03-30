@@ -51,7 +51,7 @@ public class NetworkStatusCheckingJob {
 
 			if (wallet != null) {
 
-				GetBalanceResponse accountBalance = zdp.getBalance(wallet.getPrivateKey(), wallet.getPublicKey());
+				GetBalanceResponse accountBalance = zdp.getBalance(wallet.getPrivateKey());
 
 				if (false == wallet.getBalance().toPlainString().equals(accountBalance.getAmount())) {
 					wallet.setBalance(new BigDecimal(accountBalance.getAmount()));
