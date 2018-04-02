@@ -26,8 +26,8 @@
 		<appender-ref ref="console" />
 	</logger>
 
-	<logger name="org.springframework.web" additivity="false">
-		<level value="info" />
+	<logger name="org.springframework" additivity="false">
+		<level value="trace" />
 		<appender-ref ref="engine" />
 		<appender-ref ref="console" />
 	</logger>

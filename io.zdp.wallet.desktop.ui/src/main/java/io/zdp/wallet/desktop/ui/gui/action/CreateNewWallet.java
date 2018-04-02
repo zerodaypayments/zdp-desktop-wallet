@@ -21,7 +21,6 @@ import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.common.utils.Mnemonics;
 import io.zdp.common.utils.Mnemonics.Language;
 import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
