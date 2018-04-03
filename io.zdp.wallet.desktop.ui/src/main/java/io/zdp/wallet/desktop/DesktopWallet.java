@@ -13,6 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import io.zdp.wallet.desktop.ui.common.Fonts;
+import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Component
@@ -31,6 +32,11 @@ public class DesktopWallet {
 			if (SystemUtils.IS_OS_WINDOWS) {
 				
 				UIManager.setLookAndFeel(new SubstanceMarinerLookAndFeel());
+			
+
+				JFrame.setDefaultLookAndFeelDecorated(true);
+				JDialog.setDefaultLookAndFeelDecorated(true);
+				
 				
 			} else if (SystemUtils.IS_OS_LINUX) {
 				
@@ -38,14 +44,18 @@ public class DesktopWallet {
 		        
 				UIManager.setLookAndFeel(new SubstanceMarinerLookAndFeel());
 
-			} else {
+			} else if (SystemUtils.IS_OS_MAC_OSX) {
+
+				System.setProperty("apple.laf.useScreenMenuBar", "true");
+				System.setProperty("com.apple.mrj.application.apple.menu.about.name", "ZDP Wallet");
+				
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				
+			} else  {
 
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				
 			}
-			
-			JFrame.setDefaultLookAndFeelDecorated(true);
-			JDialog.setDefaultLookAndFeelDecorated(true);
 			
 		} catch (Exception e1) {
 			log.error("Error: ", e1);

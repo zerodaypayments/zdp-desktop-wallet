@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.KeyEvent;
@@ -36,6 +37,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +157,7 @@ public class MainWindow {
 
 		bgPanel = new AnimatedNetworkPanel();
 
-		//		bgPanel = new JPanel();		
+		// bgPanel = new JPanel();
 
 		mainPanel = new JPanel(new BorderLayout());
 
@@ -279,7 +281,8 @@ public class MainWindow {
 			mb.add(menu);
 
 			JMenuItem newWalletMenu = new JMenuItem("New wallet", 'N');
-			newWalletMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+			newWalletMenu.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			menu.add(newWalletMenu);
 			newWalletMenu.addActionListener(e -> {
 				createNewWallet.create(frame);
@@ -289,9 +292,15 @@ public class MainWindow {
 
 			menu.addSeparator();
 
-			JMenuItem menuOpenWallet = new JMenuItem("Open wallet", Icons.getIcon("folder.png"));
+			JMenuItem menuOpenWallet = new JMenuItem("Open wallet");
+
+			if (SystemUtils.IS_OS_MAC_OSX == false) {
+				menuOpenWallet.setIcon(Icons.getIcon("folder.png"));
+			}
+			
 			menuOpenWallet.setMnemonic('O');
-			menuOpenWallet.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+			menuOpenWallet.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 			menuOpenWallet.addActionListener(e -> {
 				openWallet.open(frame, null);
 			});
@@ -307,7 +316,8 @@ public class MainWindow {
 			menu.addSeparator();
 
 			JMenuItem itemCloseWallet = new JMenuItem("Close wallet", 'c');
-			itemCloseWallet.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+			itemCloseWallet.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
 			itemCloseWallet.addActionListener(e -> {
 				closeWallet();
@@ -316,7 +326,8 @@ public class MainWindow {
 			menu.addSeparator();
 
 			JMenuItem exit = new JMenuItem("Exit", 'x');
-			exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK));
+			exit.setAccelerator(
+					KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
 			exit.addActionListener(e -> {
 				desktopWallet.close();
@@ -328,8 +339,15 @@ public class MainWindow {
 			JMenu menu = new JMenu("Help");
 			mb.add(menu);
 
-			JMenuItem menuOnlineHelp = new JMenuItem("Online help", Icons.getIcon("menu/information.png"));
+			JMenuItem menuOnlineHelp = new JMenuItem("Online help");
+			
+			if (SystemUtils.IS_OS_MAC_OSX == false) {
+				menuOnlineHelp.setIcon(Icons.getIcon("menu/information.png"));
+			}
+			
 			menu.add(menuOnlineHelp);
+			
+			
 			menuOnlineHelp.addActionListener(e -> {
 				SwingHelper.browseToUrl(appUrlOnlineHelp);
 			});
@@ -343,7 +361,12 @@ public class MainWindow {
 
 			menu.addSeparator();
 
-			JMenuItem aboutMenu = new JMenuItem("About", Icons.getIcon("app/16.png"));
+			JMenuItem aboutMenu = new JMenuItem("About");
+
+			if (SystemUtils.IS_OS_MAC_OSX == false) {
+				aboutMenu.setIcon(Icons.getIcon("app/16.png"));
+			}
+			
 			aboutMenu.addActionListener(e -> {
 				AboutDialog aboutDialogPanel = new AboutDialog();
 				JDialog aboutDialog = SwingHelper.dialog(frame, aboutDialogPanel);
@@ -402,7 +425,8 @@ public class MainWindow {
 				showSendScreen();
 			});
 
-			JButton btnReceive = new JButton("Receive", new ImageIcon(this.getClass().getResource("/icons/receive.png")));
+			JButton btnReceive = new JButton("Receive",
+					new ImageIcon(this.getClass().getResource("/icons/receive.png")));
 			btnReceive.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnReceive.setHorizontalTextPosition(SwingConstants.CENTER);
 			toolbar.add(btnReceive);
@@ -412,15 +436,13 @@ public class MainWindow {
 			});
 
 			/*
-			JButton btnTransactions = new JButton("Transactions",
-					new ImageIcon(this.getClass().getResource("/icons/transactions.png")));
-			btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
-			btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
-			btnTransactions.addActionListener(e -> {
-				showTransactionsScreen();
-			});
-			toolbar.add(btnTransactions);
-			*/
+			 * JButton btnTransactions = new JButton("Transactions", new
+			 * ImageIcon(this.getClass().getResource("/icons/transactions.png")));
+			 * btnTransactions.setVerticalTextPosition(SwingConstants.BOTTOM);
+			 * btnTransactions.setHorizontalTextPosition(SwingConstants.CENTER);
+			 * btnTransactions.addActionListener(e -> { showTransactionsScreen(); });
+			 * toolbar.add(btnTransactions);
+			 */
 
 			/*
 			 * 
@@ -433,7 +455,8 @@ public class MainWindow {
 			 */
 			toolbar.add(Box.createHorizontalGlue());
 
-			JButton btnSync = new JButton("Synchronize", new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
+			JButton btnSync = new JButton("Synchronize",
+					new ImageIcon(this.getClass().getResource("/icons/refresh.png")));
 			btnSync.setVerticalTextPosition(SwingConstants.BOTTOM);
 			btnSync.setHorizontalTextPosition(SwingConstants.CENTER);
 			btnSync.addActionListener(e -> {
