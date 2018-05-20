@@ -3,5 +3,6 @@
 .settings/
 target/
 velocity*
-dist/
-jre/
+io.zdp.wallet.desktop.ui/dist/
+io.zdp.wallet.desktop.ui/jre/
+*.log

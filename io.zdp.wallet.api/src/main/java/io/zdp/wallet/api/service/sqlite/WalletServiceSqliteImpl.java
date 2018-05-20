@@ -1,36 +1,61 @@
 package io.zdp.wallet.api.service.sqlite;
 
 import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.UUID;
 
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bitcoinj.core.Base58;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import io.zdp.common.crypto.CryptoUtils;
+import io.zdp.wallet.api.domain.AccountTransaction;
 import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.domain.WalletTransaction;
 import io.zdp.wallet.api.service.WalletService;
 
 @Component
 public class WalletServiceSqliteImpl implements WalletService {
 
+	@Override
+	public Wallet create(String privKey, File file) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void save(File file, Wallet wallet) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Wallet load(File file) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveTransaction(File file, AccountTransaction tx) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public AccountTransaction getTransactionByUuid(File file, String uuid) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long countTransactions(File file) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<AccountTransaction> listTransactions(int page, int size) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+/*
 	private static final String TX_DATE_FORMAT = "yyyy-MM-dd kk:mm:ss";
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -146,7 +171,7 @@ public class WalletServiceSqliteImpl implements WalletService {
 	}
 
 	@Override
-	public void saveTransaction(File file, WalletTransaction tx) throws Exception {
+	public void saveTransaction(File file, AccountTransaction tx) throws Exception {
 
 		if (file.exists()) {
 
@@ -185,7 +210,7 @@ public class WalletServiceSqliteImpl implements WalletService {
 	}
 
 	@Override
-	public WalletTransaction getTransactionByUuid(File file, String uuid) throws Exception {
+	public AccountTransaction getTransactionByUuid(File file, String uuid) throws Exception {
 
 		log.debug("getTransactionByUuid from wallet: " + file + " by '" + uuid + "'");
 
@@ -198,12 +223,12 @@ public class WalletServiceSqliteImpl implements WalletService {
 
 			log.debug("Sql: " + sql);
 
-			WalletTransaction tx = qr.query(conn, sql, new ResultSetHandler<WalletTransaction>() {
+			AccountTransaction tx = qr.query(conn, sql, new ResultSetHandler<AccountTransaction>() {
 
 				@Override
-				public WalletTransaction handle(ResultSet rs) throws SQLException {
+				public AccountTransaction handle(ResultSet rs) throws SQLException {
 
-					WalletTransaction tx = new WalletTransaction();
+					AccountTransaction tx = new AccountTransaction();
 					tx.setAmount(rs.getBigDecimal("amount"));
 					try {
 						tx.setDate(new SimpleDateFormat(TX_DATE_FORMAT).parse(rs.getString("date")));
@@ -254,11 +279,12 @@ public class WalletServiceSqliteImpl implements WalletService {
 	}
 
 	@Override
-	public List<WalletTransaction> listTransactions(int page, int size) throws Exception {
+	public List<AccountTransaction> listTransactions(int page, int size) throws Exception {
 		
 		
 		
 		return null;
 		
 	}
+	*/
 }

@@ -1,19 +1,10 @@
 package io.zdp.wallet.api.service.json;
 
-import java.io.File;
-import java.math.BigInteger;
-import java.util.UUID;
-
-import org.apache.commons.lang3.StringUtils;
-import org.bitcoinj.core.Base58;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
-import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.wallet.api.domain.Wallet;
 
 public class WalletServiceJsonFile {
 
@@ -25,6 +16,7 @@ public class WalletServiceJsonFile {
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
 	}
 
+	/*
 	public static Wallet create(String privKey, File file) throws Exception {
 
 		final Wallet w = new Wallet();
@@ -52,4 +44,5 @@ public class WalletServiceJsonFile {
 	public static synchronized Wallet load(final File file) throws Exception {
 		return mapper.readValue(file, Wallet.class);
 	}
+	*/
 }

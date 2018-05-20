@@ -6,18 +6,15 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 @SuppressWarnings("serial")
 @XmlRootElement
-public class WalletTransaction implements Serializable {
+public class AccountTransaction implements Serializable {
 
 	private String uuid;
 
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ZERO;
 
-	private BigDecimal fee;
+	private BigDecimal fee = BigDecimal.ZERO;
 
 	private Date date;
 
@@ -113,7 +110,7 @@ public class WalletTransaction implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		WalletTransaction other = (WalletTransaction) obj;
+		AccountTransaction other = (AccountTransaction) obj;
 		if (amount == null) {
 			if (other.amount != null)
 				return false;

@@ -1,24 +1,14 @@
 package io.zdp.wallet.api.service.sqlite;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.UUID;
-
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 
-import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.domain.WalletTransaction;
 import junit.framework.TestCase;
 
 public class TestWalletSqlService extends TestCase {
 
 	@Test
 	public void test() throws Exception {
-
+/*
 		System.out.println("start");
 
 		WalletServiceSqliteImpl service = new WalletServiceSqliteImpl();
@@ -42,7 +32,7 @@ public class TestWalletSqlService extends TestCase {
 			
 			long st=System.currentTimeMillis();
 			
-			WalletTransaction tx = new WalletTransaction();
+			AccountTransaction tx = new AccountTransaction();
 			tx.setAmount(BigDecimal.valueOf(RandomUtils.nextInt()));
 			tx.setDate(new Date());
 			tx.setFee(BigDecimal.valueOf(RandomUtils.nextInt()));
@@ -60,7 +50,7 @@ public class TestWalletSqlService extends TestCase {
 			
 			// get by uuid
 			long st1=System.currentTimeMillis();
-			WalletTransaction loadedTx = service.getTransactionByUuid(file, tx.getUuid());
+			AccountTransaction loadedTx = service.getTransactionByUuid(file, tx.getUuid());
 			long et1=System.currentTimeMillis();
 			System.out.println("Load tx took " + (et1 - st1) + " ms.");
 
@@ -73,7 +63,7 @@ public class TestWalletSqlService extends TestCase {
 			}
 
 		}
-
+*/
 
 	}
 }
