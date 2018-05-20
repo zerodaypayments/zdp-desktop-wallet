@@ -4,4 +4,4 @@ set PATH=%PATH%;C:\tools\Java\jdk8.0_45\bin;
 
 set MAVEN_OPTS=-Xmx4G
 rem C:/tools/maven3.0.3/bin/mvn install -DskipTests=true
-C:/tools/maven3.2.2/bin/mvn clean install -DskipTests=true
+mvn clean install -DskipTests=true
