@@ -19,11 +19,9 @@ import org.springframework.stereotype.Component;
 
 import io.zdp.api.model.v1.GetBalanceResponse;
 import io.zdp.api.model.v1.GetFeeResponse;
-import io.zdp.api.model.v1.SubmitTransactionResponse;
 import io.zdp.client.ZdpClient;
-import io.zdp.common.crypto.CryptoUtils;
 import io.zdp.crypto.Curves;
-import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.common.JTextFieldLimit;
@@ -74,7 +72,7 @@ public class SendView {
 
 		sendPanel.txtAddressBalance.setIcon(loadingIcon);
 		sendPanel.txtFee.setIcon(loadingIcon);
-
+/*
 		try {
 			sendPanel.txtFromAddress.setText(CryptoUtils.generateUniqueAddressByPublicKey58(walletService.getCurrentWallet().getPublicKey()) );
 			sendPanel.txtFromAddress.setCaretPosition(0);
@@ -240,7 +238,7 @@ public class SendView {
 			dialog.setVisible(true);
 
 		});
-
+*/
 		return sendPanel;
 
 	}
@@ -253,7 +251,7 @@ public class SendView {
 		new Thread(() -> {
 
 			try {
-
+/*
 				Wallet w = walletService.getCurrentWallet();
 
 				GetBalanceResponse balance = zdp.getBalance(w.getPrivateKey(), Curves.DEFAULT_CURVE);
@@ -263,7 +261,7 @@ public class SendView {
 
 				w.setBalance(new BigDecimal(balance.getAmount()));
 				walletService.saveCurrentWallet();
-
+*/
 			} catch (Exception e) {
 				log.error("Error: ", e);
 			}

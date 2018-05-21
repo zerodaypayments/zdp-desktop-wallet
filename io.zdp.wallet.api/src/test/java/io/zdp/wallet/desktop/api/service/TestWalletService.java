@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
+import io.zdp.wallet.api.db.domain.Wallet;
+import io.zdp.wallet.api.service.ApiService;
 import junit.framework.TestCase;
 
 public class TestWalletService extends TestCase {

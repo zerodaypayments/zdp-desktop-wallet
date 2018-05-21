@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.zdp.api.model.v1.GetTransactionDetailsResponse;
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
+import io.zdp.wallet.api.db.domain.Wallet;
+import io.zdp.wallet.api.service.ApiService;
 import io.zdp.wallet.desktop.DesktopWallet;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
@@ -24,9 +24,6 @@ import io.zdp.wallet.desktop.ui.gui.MainWindow;
 public class DesktopWalletService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-	private Wallet currentWallet;
-	private File currentWalletFile;
 
 	@Value("${api.central.url}")
 	private String apiCentralUrl;
@@ -39,14 +36,14 @@ public class DesktopWalletService {
 
 	@Autowired
 	private ConfigurationService configurationService;
-
+	
 	@Autowired
 	private MainWindow mainWindow;
 
 	private Map<Wallet, List<GetTransactionDetailsResponse>> walletTransactions = new HashMap<>();
 
 	@Autowired
-	private WalletService walletService;
+	private ApiService walletService;
 	
 	@PostConstruct
 	public void init() {
@@ -65,9 +62,6 @@ public class DesktopWalletService {
 
 	public void setCurrentWallet(Wallet w, File file) {
 
-		this.currentWallet = w;
-		this.currentWalletFile = file;
-
 		if (file != null) {
 			configurationService.getConfiguration().setLastWalletFile(file.getAbsolutePath());
 			configurationService.saveConfiguration();
@@ -75,15 +69,15 @@ public class DesktopWalletService {
 	}
 
 	public void saveCurrentWallet() throws Exception {
-		walletService.save(currentWalletFile, currentWallet);
+		//walletService.save(currentWalletFile, currentWallet);
 	}
 
 	public Wallet getCurrentWallet() {
-		return currentWallet;
+		return walletService.getCurrentWallet();
 	}
 
-	public Wallet create(String privKey, File file) throws Exception {
-		return this.walletService.create(privKey, file);
+	public Wallet create(String password, File file) throws Exception {
+		return this.walletService.openWallet(file, password);
 	}
 
 }

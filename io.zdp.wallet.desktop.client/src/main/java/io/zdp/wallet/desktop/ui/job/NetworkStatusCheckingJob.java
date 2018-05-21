@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import io.zdp.api.model.v1.GetBalanceResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.crypto.Curves;
-import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
@@ -40,7 +40,7 @@ public class NetworkStatusCheckingJob {
 
 	@Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND * 20)
 	public void check() throws Exception {
-
+/*
 		if (connected == false) {
 			ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/ajax-loader.gif"));
 			mainWindow.setStatusMessage("Checking network connection", icon);
@@ -77,6 +77,7 @@ public class NetworkStatusCheckingJob {
 			mainWindow.setStatusMessage("Network not available...", Icons.getIcon("cancel.png"));
 			connected = false;
 		}
+		*/
 
 		Thread.sleep(DateUtils.MILLIS_PER_SECOND * RandomUtils.nextInt(1, 3));
 	}

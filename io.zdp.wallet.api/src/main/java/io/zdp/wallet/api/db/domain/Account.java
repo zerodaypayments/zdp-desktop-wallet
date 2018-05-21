@@ -1,38 +1,39 @@
-package io.zdp.wallet.api.domain;
+package io.zdp.wallet.api.db.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "account")
-@XmlRootElement
 public class Account implements Serializable {
 
 	@Id
 	@Column(name = "ID", nullable = false, updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonIgnore
 	private long id;
 
-	@Column(name = "PRIV_KEY", nullable = false)
+	@Column(name = "PRIV_KEY", nullable = false, unique = true)
 	private String privateKey;
 
 	@Column(name = "PUB_KEY", nullable = false)
 	private String publicKey;
+
+	@Column(name = "ZDP_UUID", nullable = false)
+	private String zdpUuid;
 
 	@Column(name = "UUID", columnDefinition = "BINARY(20)", nullable = false, updatable = false, unique = true)
 	private byte[] uuid;
@@ -49,7 +50,28 @@ public class Account implements Serializable {
 	@Column(name = "HASH", columnDefinition = "BINARY(20)", nullable = false)
 	private byte[] transferChainHash;
 
-	protected List<AccountTransaction> transactions = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "WALLET_ID")
+	private Wallet wallet;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	protected List<AccountTransaction> transactions;
+
+	public String getZdpUuid() {
+		return zdpUuid;
+	}
+
+	public void setZdpUuid(String zdpUuid) {
+		this.zdpUuid = zdpUuid;
+	}
+
+	public Wallet getWallet() {
+		return wallet;
+	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
+	}
 
 	public String getPrivateKey() {
 		return privateKey;
@@ -117,7 +139,7 @@ public class Account implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Account [privateKey=" + privateKey + ", publicKey=" + publicKey + ", uuid=" + uuid + ", balance=" + balance + ", height=" + height + ", curve=" + curve + ", transferChainHash=" + Arrays.toString(transferChainHash) + ", transactions=" + transactions + "]";
+		return "Account [id=" + id + ", privateKey=" + privateKey + ", publicKey=" + publicKey + ", zdpUuid=" + zdpUuid + ", uuid=" + Arrays.toString(uuid) + ", balance=" + balance + ", height=" + height + ", curve=" + curve + ", transferChainHash=" + Arrays.toString(transferChainHash) + ", wallet=" + wallet + "]";
 	}
 
 	@Override

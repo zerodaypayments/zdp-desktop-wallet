@@ -73,6 +73,20 @@ public class SwingHelper {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 	}
+	
+	public static void installEscapeCloseOperation(final JDialog dialog, final BooleanWrapper cancelled) {
+		
+		Action dispatchClosing = new AbstractAction() {
+			public void actionPerformed(ActionEvent event) {
+				cancelled.set(true);
+				dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+			}
+		};
+		JRootPane root = dialog.getRootPane();
+		root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeStroke, dispatchWindowClosingActionMapKey);
+		root.getActionMap().put(dispatchWindowClosingActionMapKey, dispatchClosing);
+		
+	}
 
 	public static void installEscapeCloseOperation(final JDialog dialog) {
 		Action dispatchClosing = new AbstractAction() {

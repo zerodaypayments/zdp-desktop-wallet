@@ -4,22 +4,24 @@ import java.awt.FileDialog;
 import java.awt.Window;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JDialog;
 
 import org.apache.commons.lang3.StringUtils;
-import org.bitcoinj.core.Base58;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.common.utils.Mnemonics;
-import io.zdp.common.utils.Mnemonics.Language;
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
+import io.zdp.crypto.Base58;
+import io.zdp.crypto.Curves;
+import io.zdp.crypto.key.ZDPKeyPair;
+import io.zdp.crypto.mnemonics.Mnemonics;
+import io.zdp.crypto.mnemonics.Mnemonics.Language;
+import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -67,7 +69,9 @@ public class RestoreWallet {
 				String[] split = StringUtils.split(panel.txtListOfWords.getText().trim(), "\r\n, ");
 				List<String> words = Arrays.asList(split);
 
-				privateKey = Base58.encode( Mnemonics.generateSeedFromWords(Language.valueOf(panel.language.getSelectedItem().toString().toUpperCase()), words) );
+				BigInteger bi = Mnemonics.generatePrivateKeyFromWords(Language.valueOf(panel.language.getSelectedItem().toString().toUpperCase()), words);
+
+				privateKey = ZDPKeyPair.createFromPrivateKeyBigInteger(bi, Curves.DEFAULT_CURVE).getPrivateKeyAsBase58();
 
 			} else {
 

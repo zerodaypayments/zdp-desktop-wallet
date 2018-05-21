@@ -4,6 +4,7 @@ import java.awt.FileDialog;
 import java.awt.Window;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JDialog;
 
@@ -12,10 +13,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.service.WalletService;
+import io.zdp.wallet.api.db.domain.Wallet;
+import io.zdp.wallet.api.service.ApiService;
 import io.zdp.wallet.desktop.ui.common.Alert;
+import io.zdp.wallet.desktop.ui.common.SynchronousJFXFileChooser;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
+import javafx.application.Platform;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 @Component
 public class OpenWallet {
@@ -24,34 +29,37 @@ public class OpenWallet {
 
 	@Autowired
 	private MainWindow mainWindow;
-	
+
 	@Autowired
-	private WalletService walletService;
+	private ApiService walletService;
 
 	public void open(Window parent, JDialog dialog) {
 
-		FileDialog fileDialog = new FileDialog(mainWindow.getFrame(), "Open Wallet", FileDialog.LOAD);
+		javafx.embed.swing.JFXPanel dummy = new javafx.embed.swing.JFXPanel();
+		Platform.setImplicitExit(false);
 
-		fileDialog.setFilenameFilter(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".wallet");
-			}
+		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(() -> {
+			FileChooser ch = new FileChooser();
+
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ZDP Wallet (*.zdp)", "*.zdp");
+			ch.getExtensionFilters().add(extFilter);
+
+			ch.setTitle("Open wallet file");
+			return ch;
 		});
 
-		fileDialog.setVisible(true);
+		File walletFile = chooser.showOpenDialog();
 
-		File walletFile = new File(fileDialog.getDirectory() + "" + fileDialog.getFile());
-
-		if (fileDialog.getDirectory() == null || fileDialog.getFile() == null) {
+		if (walletFile == null || false == walletFile.canRead()) {
 			return;
 		}
 
 		log.debug("Open wallet: " + walletFile);
 
 		Wallet wallet = null;
-		
+
 		try {
-			wallet = walletService.load(walletFile);
+			wallet = walletService.openWallet(walletFile, "");
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		}

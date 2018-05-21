@@ -1,10 +1,5 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.io.ByteArrayOutputStream;
-
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.slf4j.Logger;
@@ -12,14 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
-import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.ReceivePanel;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
 
 @Component
 public class ReceiveView {
@@ -37,6 +27,7 @@ public class ReceiveView {
 		ReceivePanel panel = new ReceivePanel();
 
 		try {
+			/*
 			final String publicKey58 = walletService.getCurrentWallet().getPublicKey();
 			final String address = CryptoUtils.generateUniqueAddressByPublicKey58(publicKey58);
 
@@ -62,7 +53,7 @@ public class ReceiveView {
 				}
 
 			}, BorderLayout.CENTER);
-
+*/
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		}

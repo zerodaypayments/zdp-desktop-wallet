@@ -14,7 +14,9 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
 >
 
-	<context:component-scan base-package="io.zdp" />
+	<context:component-scan base-package="io.zdp.wallet.desktop,io.zdp.client" />
+	
+	<beans:import resource="classpath:/wallet-api-spring-context.xml"/>
 
 	<context:property-placeholder
 		location="classpath:/io/zdp/wallet/desktop/app.properties"
@@ -49,5 +51,5 @@
 	<task:scheduler
 		id="default-task-scheduler"
 		pool-size="8" />
-
+		
 </beans>

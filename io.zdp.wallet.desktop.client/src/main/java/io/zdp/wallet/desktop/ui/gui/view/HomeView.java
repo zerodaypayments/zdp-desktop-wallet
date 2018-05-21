@@ -1,12 +1,10 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.HyperlinkEvent.EventType;
 
@@ -19,7 +17,7 @@ import org.springframework.util.CollectionUtils;
 
 import io.zdp.api.model.v1.GetTransactionDetailsResponse;
 import io.zdp.client.ZdpClient;
-import io.zdp.wallet.api.domain.AccountTransaction;
+import io.zdp.wallet.api.db.domain.AccountTransaction;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -50,7 +48,7 @@ public class HomeView {
 
 		HomePanel homePanel = new HomePanel();
 
-		String balance = walletService.getCurrentWallet().getBalance().toPlainString();
+		String balance = "nan";// walletService.getCurrentWallet().getBalance().toPlainString();
 		homePanel.txtBalance.setText(balance);
 		SwingHelper.setFontForJText(homePanel.events);
 
@@ -59,7 +57,7 @@ public class HomeView {
 		// Show recent transactions
 		if (walletService.getCurrentWallet() != null) {
 
-			List<AccountTransaction> txs = walletService.getCurrentWallet().getTransactions();
+			List<AccountTransaction> txs = Collections.emptyList();
 
 			if (false == CollectionUtils.isEmpty(txs)) {
 
@@ -96,7 +94,7 @@ public class HomeView {
 
 						try {
 
-							AccountTransaction tx = walletService.getCurrentWallet().getTxByUuid(txUuid);
+							AccountTransaction tx = null;// walletService.getCurrentWallet().getTxByUuid(txUuid);
 
 							if (tx != null && tx.hasAllDetails() == false) {
 

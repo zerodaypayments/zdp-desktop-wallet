@@ -1,4 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.zdp</groupId>
 	<artifactId>io.zdp.wallet</artifactId>
@@ -9,7 +13,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>5.0.2.RELEASE</spring.version>
+		<spring.version>5.0.6.RELEASE</spring.version>
 	</properties>
 
 	<modules>
@@ -19,12 +23,12 @@
 	</modules>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>io.zdp</groupId>
 			<artifactId>io.zdp.client</artifactId>
 			<version>1.0</version>
-		</dependency>	
+		</dependency>
 
 		<!-- unit tests -->
 		<dependency>
@@ -34,6 +38,27 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>io.zdp</groupId>
+			<artifactId>io.zdp.crypto</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 </project>

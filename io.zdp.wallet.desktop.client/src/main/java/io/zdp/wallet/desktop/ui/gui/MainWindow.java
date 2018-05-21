@@ -44,7 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.DesktopWallet;
 import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.common.Icons;
@@ -544,6 +544,8 @@ public class MainWindow {
 			frame.remove(toolbar);
 
 			toolbar = null;
+			
+			frame.setTitle(i18n.get("app.window.title"));
 
 		}
 	}

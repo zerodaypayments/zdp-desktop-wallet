@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import io.zdp.api.model.v1.GetBalanceResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.crypto.Curves;
-import io.zdp.wallet.api.domain.Wallet;
-import io.zdp.wallet.api.domain.AccountTransaction;
+import io.zdp.wallet.api.db.domain.AccountTransaction;
+import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
@@ -51,8 +51,10 @@ public class AccountService {
 
 				// Get balance
 				Wallet wallet = walletService.getCurrentWallet();
+				/*
 				GetBalanceResponse balance = zdp.getBalance(wallet.getPrivateKey(),Curves.DEFAULT_CURVE);
 				wallet.setBalance(new BigDecimal(balance.getAmount()));
+				*/
 
 				// Get transactions
 				/*

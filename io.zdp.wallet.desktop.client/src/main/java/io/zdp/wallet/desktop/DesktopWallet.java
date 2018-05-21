@@ -71,6 +71,7 @@ public class DesktopWallet {
 			}
 
 			ctx = new ClassPathXmlApplicationContext("classpath:/io/zdp/wallet/desktop/spring-context.xml");
+			ctx.setDisplayName("DesktopWallet Context");
 
 			ctx.start();
 

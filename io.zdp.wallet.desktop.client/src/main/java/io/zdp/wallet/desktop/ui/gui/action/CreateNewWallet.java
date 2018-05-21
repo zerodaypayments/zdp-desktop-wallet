@@ -1,34 +1,40 @@
 package io.zdp.wallet.desktop.ui.gui.action;
 
-import java.awt.FileDialog;
 import java.awt.Window;
 import java.io.File;
-import java.io.FilenameFilter;
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bitcoinj.core.Base58;
+import org.bouncycastle.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.zdp.common.crypto.CryptoUtils;
-import io.zdp.common.utils.Mnemonics;
-import io.zdp.common.utils.Mnemonics.Language;
-import io.zdp.wallet.api.domain.Wallet;
+import io.zdp.crypto.Curves;
+import io.zdp.crypto.key.ZDPKeyPair;
+import io.zdp.crypto.mnemonics.Mnemonics;
+import io.zdp.crypto.mnemonics.Mnemonics.Language;
+import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.I18n;
 import io.zdp.wallet.desktop.ui.common.QTextComponentContextMenu;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
+import io.zdp.wallet.desktop.ui.common.SynchronousJFXFileChooser;
 import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
+import io.zdp.wallet.desktop.ui.common.model.BooleanWrapper;
+import io.zdp.wallet.desktop.ui.common.model.StringWrapper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
+import io.zdp.wallet.desktop.ui.gui.dialog.PasswordPanel;
 import io.zdp.wallet.desktop.ui.gui.dialog.WalletCreationPanel;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
+import javafx.application.Platform;
+import javafx.stage.FileChooser;
 
 @Component
 public class CreateNewWallet {
@@ -44,114 +50,110 @@ public class CreateNewWallet {
 	@Autowired
 	private MainWindow mainWindow;
 
-	public void create(Window parent) {
+	public void create( Window parent ) {
 
-		WalletCreationPanel panel = new WalletCreationPanel();
+		// Enter DB file password for AES encryption
+		String password = enterPassword(parent);
 
-		new QTextComponentContextMenu(panel.txtSeed);
-		new QTextComponentContextMenu(panel.txtMnemonics);
+		// Looks like the operation was cancelled
+		if (password == null) {
+			log.info("No password entered, cancel");
+			return;
+		}
 
-		panel.txtSeed.addFocusListener(new TextComponentFocuser());
-		panel.txtMnemonics.addFocusListener(new TextComponentFocuser());
+		// File save dialog
+		javafx.embed.swing.JFXPanel dummy = new javafx.embed.swing.JFXPanel();
+		Platform.setImplicitExit(false);
 
-		JDialog newWalletDialog = SwingHelper.dialog(parent, panel);
-		newWalletDialog.setTitle("New wallet");
+		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(() -> {
+			FileChooser ch = new FileChooser();
 
-		generateWalletInfo(panel);
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("ZDP Wallet (*.zdp)", "*.zdp");
+			ch.getExtensionFilters().add(extFilter);
 
-		panel.languageSelector.addItemListener(i -> {
-			generateWalletInfo(panel);
+			ch.setTitle("Save wallet file");
+
+			return ch;
 		});
 
-		panel.btnCreatWallet.addActionListener(ev -> {
+		File walletFile = chooser.showOpenDialog();
 
-			if (false == Alert.confirm("Did you write down the wallet private key or list of words?")) {
-				return;
-			}
+		if (walletFile == null || false == walletFile.canWrite()) {
+			return;
+		}
+/*
+		newWalletDialog.dispose();
 
-			FileDialog fileDialog = new FileDialog(mainWindow.getFrame(), "Save Wallet", FileDialog.SAVE);
-			fileDialog.setFilenameFilter(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
-					return name.endsWith(".wallet");
-				}
-			});
-			fileDialog.setFile("my_new.wallet");
-			fileDialog.setVisible(true);
-
-			File walletFile = new File(fileDialog.getDirectory() + "" + fileDialog.getFile());
-
-			if (fileDialog.getDirectory() == null || fileDialog.getFile() == null) {
-				return;
-			}
-
-			newWalletDialog.dispose();
-
-			log.debug("Save new wallet: " + walletFile);
-
-			try {
-
-				String seed = panel.txtSeed.getText();
-				
-				Wallet w = walletService.create(seed, walletFile);
-
-				walletService.setCurrentWallet(w, walletFile);
-
-				mainWindow.setWallet(w, walletFile);
-
-				if (parent != mainWindow.getFrame()) {
-					parent.dispose();
-				}
-
-				Alert.info("New wallet was created!");
-
-			} catch (Exception e) {
-				log.error("Error: ", e);
-			}
-		});
-
-		panel.btnCancel.addActionListener(e -> {
-			newWalletDialog.dispose();
-		});
-
-		SwingHelper.installEscapeCloseOperation(newWalletDialog);
-
-		newWalletDialog.setVisible(true);
-	}
-
-	private void generateWalletInfo(WalletCreationPanel panel) {
+		log.debug("Save new wallet: " + walletFile);
 
 		try {
-			 BigInteger privateKey = CryptoUtils.generateECPrivateKey();
-			panel.txtSeed.setText(Base58.encode(privateKey.toByteArray()));
 
-			Language l = Language.ENGLISH;
+			String seed = panel.txtSeed.getText();
 
-			if (panel.languageSelector.getSelectedItem().equals("English")) {
-				l = Language.ENGLISH;
-			} else if (panel.languageSelector.getSelectedItem().equals("French")) {
-				l = Language.FRENCH;
-			} else if (panel.languageSelector.getSelectedItem().equals("Italian")) {
-				l = Language.ITALIAN;
-			} else if (panel.languageSelector.getSelectedItem().equals("Japanese")) {
-				l = Language.JAPANESE;
-			} else if (panel.languageSelector.getSelectedItem().equals("Korean")) {
-				l = Language.KOREAN;
-			} else if (panel.languageSelector.getSelectedItem().equals("Spanish")) {
-				l = Language.SPANISH;
-			} else if (panel.languageSelector.getSelectedItem().equals("Chinese Simplified")) {
-				l = Language.CHINESE_SIMPLIFIED;
-			} else if (panel.languageSelector.getSelectedItem().equals("Chinese Traditional")) {
-				l = Language.CHINESE_TRADITIONAL;
+			Wallet w = walletService.create(seed, walletFile);
+
+			walletService.setCurrentWallet(w, walletFile);
+
+			mainWindow.setWallet(w, walletFile);
+
+			if (parent != mainWindow.getFrame()) {
+				parent.dispose();
 			}
 
-			List<String> generateWords = Mnemonics.generateWords(l, privateKey.toByteArray());
-			String words = StringUtils.join(generateWords, IOUtils.LINE_SEPARATOR);
-			panel.txtMnemonics.setText(words);
-			panel.txtMnemonics.setCaretPosition(0);
+			Alert.info("New wallet was created!");
 
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		}
+*/
+	}
+
+	private String enterPassword( Window parent ) {
+
+		StringWrapper password = new StringWrapper();
+
+		final BooleanWrapper cancelled = new BooleanWrapper(false);
+
+		while (password.get() == null && cancelled.isFalse()) {
+
+			PasswordPanel pp = new PasswordPanel();
+
+			JDialog eppDialog = SwingHelper.dialog(parent, pp);
+			SwingHelper.installEscapeCloseOperation(eppDialog, cancelled);
+
+			pp.btnOk.setEnabled(true);
+
+			pp.btnOk.addActionListener(e -> {
+				
+				
+				if (pp.password.getPassword().length == 0 || pp.passwordConfirm.getPassword().length == 0) {
+					
+					JOptionPane.showMessageDialog(parent, "Please, enter passwords", "Warning", JOptionPane.WARNING_MESSAGE);
+					
+				} else if (pp.password.getPassword().length > 0 && Arrays.areEqual(pp.password.getPassword(), pp.passwordConfirm.getPassword())) {
+
+					password.set(new String(pp.password.getPassword()));
+
+					eppDialog.dispose();
+
+				} else {
+
+					JOptionPane.showMessageDialog(parent, "The passwords do not match", "Warning", JOptionPane.WARNING_MESSAGE);
+
+				}
+
+			});
+
+			pp.btnCancel.addActionListener(e -> {
+				cancelled.set(true);
+				eppDialog.dispose();
+			});
+
+			eppDialog.setVisible(true);
+
+		}
+
+		return password.get();
 
 	}
 
