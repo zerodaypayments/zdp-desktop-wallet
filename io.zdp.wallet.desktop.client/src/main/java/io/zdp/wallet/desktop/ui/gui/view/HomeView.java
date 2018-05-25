@@ -109,7 +109,7 @@ public class HomeView {
 									tx.setMemo(details.getMemo());
 									log.debug("Tx: " + tx);
 									
-									walletService.saveCurrentWallet();
+									// walletService.saveCurrentWallet();
 								}
 							}
 

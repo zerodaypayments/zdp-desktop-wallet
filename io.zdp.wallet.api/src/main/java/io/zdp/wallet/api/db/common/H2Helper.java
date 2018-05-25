@@ -4,6 +4,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,10 @@ public class H2Helper {
 
 			Class.forName("org.h2.Driver");
 
-			String url = "jdbc:h2:zdp:" + file.getAbsolutePath() + ";CIPHER=AES;IFEXISTS=TRUE";
+			String url = "jdbc:h2:" + StringUtils.removeEnd( file.getAbsolutePath() , ".mv.db") + ";CIPHER=AES;IFEXISTS=TRUE";
+			
+			log.debug( "Url: " + url );
+			
 			Connection conn = DriverManager.getConnection(url, "zdp", password);
 
 			conn.close();
@@ -34,5 +38,27 @@ public class H2Helper {
 
 		return false;
 
+	}
+	
+	public static void main ( String [ ] args ) throws Exception {
+		
+		File file = new File ("c:/tmp/a");
+		String password = "123 123";
+		Class.forName("org.h2.Driver");
+		String url = "jdbc:h2:" + StringUtils.removeEnd( file.getAbsolutePath() , ".mv.db") + ";CIPHER=AES";
+		
+		System.out.println( "Url: " + url );
+
+		{
+		Connection conn = DriverManager.getConnection(url, "zdp", password );
+		conn.close();
+		}
+
+		{
+		Connection conn = DriverManager.getConnection(url, "zdp", password );
+		conn.close();
+		}
+
+		
 	}
 }

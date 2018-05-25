@@ -9,3 +9,4 @@ io.zdp.wallet.cli/target/
 io.zdp.wallet.desktop.client/target/
 io.zdp.wallet.desktop.client/dist/
 io.zdp.wallet.desktop.client/jre/
+io.zdp.wallet.api/wallet.mv.db

@@ -13,7 +13,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import io.zdp.wallet.desktop.ui.common.Fonts;
-import io.zdp.wallet.desktop.ui.common.Icons;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
 @Component

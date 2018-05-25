@@ -1,6 +1,7 @@
 package io.zdp.wallet.api.db.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +25,9 @@ public class WalletServiceImpl implements WalletService {
 	private AccountDao accountDao;
 
 	@Override
-	@Transactional(readOnly = true)
-	public Wallet load() {
-		if (walletDao.count() == 0) {
+	@Transactional ( readOnly = true )
+	public Wallet load ( ) {
+		if ( walletDao.count() == 0 ) {
 			return null;
 		} else {
 			return walletDao.findAll().iterator().next();
@@ -34,40 +35,48 @@ public class WalletServiceImpl implements WalletService {
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public void create(Wallet w) {
-		walletDao.save(w);
+	@Transactional ( readOnly = false )
+	public void create ( Wallet w ) {
+		walletDao.save( w );
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public void saveAccount(Account a) {
-		accountDao.save(a);
+	@Transactional ( readOnly = false )
+	public void saveAccount ( Account a ) {
+		accountDao.save( a );
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public Account getAccount(String privateKey) {
-		return accountDao.findByPrivateKey(privateKey);
+	@Transactional ( readOnly = true )
+	public Account getAccount ( String privateKey ) {
+		return accountDao.findByPrivateKey( privateKey );
 	}
 
 	@Override
-	@Transactional(readOnly = false)
-	public Account addAccount(Wallet w, String privateKey, String curve) {
+	@Transactional ( readOnly = false )
+	public Account addAccount ( Wallet wa, String privateKey, String curve ) {
 
-		ZDPKeyPair kp = ZDPKeyPair.createFromPrivateKeyBase58(privateKey, curve);
+		Optional < Wallet > wallet = this.walletDao.findById( wa.getId() );
+
+		ZDPKeyPair kp = ZDPKeyPair.createFromPrivateKeyBase58( privateKey, curve );
 
 		Account a = new Account();
-		a.setWallet(w);
-		a.setBalance(BigDecimal.ZERO);
-		a.setCurve(Curves.getCurveIndex(curve));
-		a.setHeight(0);
-		a.setPrivateKey(privateKey);
-		a.setPublicKey(kp.getPublicKeyAsBase58());
-		a.setUuid(kp.getZDPAccount().getPublicKeyHash());
-		a.setZdpUuid(kp.getZDPAccount().getUuid());
-		
-		w.getAccounts().add(a);
+		a.setWallet( wallet.get() );
+		a.setBalance( BigDecimal.ZERO );
+		a.setCurve( Curves.getCurveIndex( curve ) );
+		a.setHeight( 0 );
+		a.setPrivateKey( privateKey );
+		a.setTransferChainHash( new byte [ ] {} );
+		a.setPublicKey( kp.getPublicKeyAsBase58() );
+		a.setUuid( kp.getZDPAccount().getPublicKeyHash() );
+		a.setZdpUuid( kp.getZDPAccount().getUuid() );
+
+		this.accountDao.save( a );
+
+		wa.getAccounts().add( a );
+
+		wallet.get().getAccounts().add( a );
+		this.walletDao.save( wallet.get() );
 
 		return a;
 

@@ -78,8 +78,6 @@ public class AccountService {
 				}
 				*/
 
-				walletService.saveCurrentWallet();
-
 				mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet synchronized");
 
 				if (postSyncFunction != null) {

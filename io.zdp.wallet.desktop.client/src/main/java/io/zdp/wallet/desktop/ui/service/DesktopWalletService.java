@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import io.zdp.api.model.v1.GetTransactionDetailsResponse;
+import io.zdp.crypto.Curves;
+import io.zdp.crypto.key.ZDPKeyPair;
 import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.api.service.ApiService;
 import io.zdp.wallet.desktop.DesktopWallet;
@@ -23,35 +25,35 @@ import io.zdp.wallet.desktop.ui.gui.MainWindow;
 @Service
 public class DesktopWalletService {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger( this.getClass() );
 
-	@Value("${api.central.url}")
+	@Value ( "${api.central.url}" )
 	private String apiCentralUrl;
 
-	@Value("${api.url.wallet.new}")
+	@Value ( "${api.url.wallet.new}" )
 	private String apiUrlWalletNew;
 
-	@Value("${app.version}")
+	@Value ( "${app.version}" )
 	private String appVersion;
 
 	@Autowired
 	private ConfigurationService configurationService;
-	
+
 	@Autowired
 	private MainWindow mainWindow;
 
-	private Map<Wallet, List<GetTransactionDetailsResponse>> walletTransactions = new HashMap<>();
+	private Map < Wallet, List < GetTransactionDetailsResponse > > walletTransactions = new HashMap<>();
 
 	@Autowired
 	private ApiService walletService;
-	
+
 	@PostConstruct
-	public void init() {
+	public void init ( ) {
 	}
 
-	public DesktopWallet getRecentWallet() {
+	public DesktopWallet getRecentWallet ( ) {
 
-		if (StringUtils.isNotBlank(configurationService.getConfiguration().getLastWalletFile())) {
+		if ( StringUtils.isNotBlank( configurationService.getConfiguration().getLastWalletFile() ) ) {
 
 			// TOD ask for password and load
 
@@ -60,24 +62,26 @@ public class DesktopWalletService {
 		return null;
 	}
 
-	public void setCurrentWallet(Wallet w, File file) {
+	public void setCurrentWallet ( Wallet w, File file ) {
 
-		if (file != null) {
-			configurationService.getConfiguration().setLastWalletFile(file.getAbsolutePath());
+		if ( file != null ) {
+			configurationService.getConfiguration().setLastWalletFile( file.getAbsolutePath() );
 			configurationService.saveConfiguration();
 		}
 	}
 
-	public void saveCurrentWallet() throws Exception {
-		//walletService.save(currentWalletFile, currentWallet);
-	}
-
-	public Wallet getCurrentWallet() {
+	public Wallet getCurrentWallet ( ) {
 		return walletService.getCurrentWallet();
 	}
 
-	public Wallet create(String password, File file) throws Exception {
-		return this.walletService.openWallet(file, password);
+	public Wallet create ( String password, File file, ZDPKeyPair kp ) throws Exception {
+
+		Wallet wallet = this.walletService.openWallet( file, password );
+
+		this.walletService.getWalletService().addAccount( wallet, kp.getPrivateKeyAsBase58(), Curves.DEFAULT_CURVE );
+
+		return wallet;
+
 	}
 
 }
