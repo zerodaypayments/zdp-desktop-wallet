@@ -1,5 +1,8 @@
 package io.zdp.wallet.desktop.ui.common;
 
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -7,6 +10,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -64,6 +68,16 @@ public class SynchronousJFXCaller<T> {
         modalBlocker.setModal(true);
         modalBlocker.setUndecorated(true);
         modalBlocker.setOpacity(0.0f);
+        
+		List<Image> icons = new ArrayList<>();
+
+		icons.add(new ImageIcon(this.getClass().getResource("/icons/app/32.png")).getImage());
+		icons.add(new ImageIcon(this.getClass().getResource("/icons/app/64.png")).getImage());
+		icons.add(new ImageIcon(this.getClass().getResource("/icons/app/128.png")).getImage());
+		icons.add(new ImageIcon(this.getClass().getResource("/icons/app/256.png")).getImage());
+		icons.add(new ImageIcon(this.getClass().getResource("/icons/app/512.png")).getImage());
+		
+		modalBlocker.setIconImages(icons);
         modalBlocker.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         final CountDownLatch modalityLatch = new CountDownLatch(1);
         final FutureTask<T> task = new FutureTask<T>(() -> {

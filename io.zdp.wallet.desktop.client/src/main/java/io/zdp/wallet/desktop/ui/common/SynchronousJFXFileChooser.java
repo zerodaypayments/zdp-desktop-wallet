@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javafx.application.Platform;
 import javafx.stage.FileChooser;
 
 /**
@@ -131,24 +130,6 @@ public class SynchronousJFXFileChooser {
 	 */
 	public List<File> showOpenMultipleDialog() {
 		return showDialog(chooser -> chooser.showOpenMultipleDialog(null));
-	}
-
-	public static void main(String[] args) {
-		javafx.embed.swing.JFXPanel dummy = new javafx.embed.swing.JFXPanel();
-		Platform.setImplicitExit(false);
-		try {
-			SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(() -> {
-				FileChooser ch = new FileChooser();
-				ch.setTitle("Open wallet file");
-				return ch;
-			});
-			File file = chooser.showOpenDialog();
-			System.out.println(file);
-			// this will throw an exception:
-			chooser.showDialog(ch -> ch.showOpenDialog(null), 1, TimeUnit.NANOSECONDS);
-		} finally {
-			Platform.exit();
-		}
 	}
 
 }
