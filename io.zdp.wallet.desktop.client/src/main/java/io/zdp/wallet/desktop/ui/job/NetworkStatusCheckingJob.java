@@ -17,7 +17,7 @@ import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 @Component
 public class NetworkStatusCheckingJob {
 
-	private final Logger log = LoggerFactory.getLogger( this.getClass() );
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private MainWindow mainWindow;
@@ -30,12 +30,12 @@ public class NetworkStatusCheckingJob {
 
 	private boolean connected;
 
-	@Scheduled ( fixedDelay = DateUtils.MILLIS_PER_SECOND * 20 )
-	public void check ( ) throws Exception {
+	@Scheduled(fixedDelay = DateUtils.MILLIS_PER_SECOND * 5)
+	public void check() throws Exception {
 
-		if ( connected == false ) {
-			ImageIcon icon = new ImageIcon( this.getClass().getResource( "/icons/ajax-loader.gif" ) );
-			mainWindow.setStatusMessage( "Checking network connection", icon );
+		if (connected == false) {
+			ImageIcon icon = new ImageIcon(this.getClass().getResource("/icons/ajax-loader.gif"));
+			mainWindow.setStatusMessage("Checking network connection (" + zdp.getHostUrl() + ")", icon);
 		}
 
 		try {
@@ -44,17 +44,17 @@ public class NetworkStatusCheckingJob {
 
 			connected = true;
 
-			mainWindow.setStatusMessage( "Connected to network", Icons.getIcon( "check.png" ) );
+			mainWindow.setStatusMessage("Connected to network", Icons.getIcon("check.png"));
 
-		} catch ( Exception e ) {
-			log.error( "Error: " + e.getMessage() );
-			mainWindow.setStatusMessage( "Network not available...", Icons.getIcon( "cancel.png" ) );
+		} catch (Exception e) {
+			log.error("Error: " + e.getMessage());
+			mainWindow.setStatusMessage("Network not available (" + zdp.getHostUrl() + ")", Icons.getIcon("cancel.png"));
 			connected = false;
 		}
 
 	}
 
-	public boolean isConnected ( ) {
+	public boolean isConnected() {
 		return connected;
 	}
 

@@ -39,6 +39,11 @@
 	</bean>
 
 	<context:annotation-config />
+	
+	<beans:bean
+		id="NetworkTopologyService"
+		class="io.zdp.model.network.NetworkTopologyService"
+		init-method="init" />	
 
 	<task:annotation-driven
 		executor="default-task-executor"
@@ -51,5 +56,12 @@
 	<task:scheduler
 		id="default-task-scheduler"
 		pool-size="8" />
+		
+	<task:scheduled-tasks>
+		<task:scheduled
+			ref="NetworkTopologyService"
+			method="init"
+			fixed-delay="60000" />
+	</task:scheduled-tasks>		
 		
 </beans>

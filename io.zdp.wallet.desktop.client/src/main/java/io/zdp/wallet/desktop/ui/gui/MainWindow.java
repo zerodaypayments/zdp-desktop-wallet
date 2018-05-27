@@ -2,7 +2,6 @@ package io.zdp.wallet.desktop.ui.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;

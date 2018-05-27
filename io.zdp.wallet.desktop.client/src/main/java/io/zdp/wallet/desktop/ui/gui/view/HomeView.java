@@ -48,7 +48,7 @@ public class HomeView {
 
 		HomePanel homePanel = new HomePanel();
 
-		String balance = "nan";// walletService.getCurrentWallet().getBalance().toPlainString();
+		String balance = walletService.getCurrentWallet().getAccounts().iterator().next().getBalance().toPlainString();
 		homePanel.txtBalance.setText(balance);
 		SwingHelper.setFontForJText(homePanel.events);
 
