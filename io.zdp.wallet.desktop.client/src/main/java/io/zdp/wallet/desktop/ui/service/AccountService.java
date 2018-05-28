@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import io.zdp.api.model.v1.GetBalanceResponse;
 import io.zdp.client.ZdpClient;
 import io.zdp.crypto.Curves;
+import io.zdp.wallet.api.db.domain.Account;
 import io.zdp.wallet.api.db.domain.AccountTransaction;
 import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
@@ -22,12 +23,12 @@ import io.zdp.wallet.desktop.ui.gui.MainWindow;
 @Service
 public class AccountService {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger( this.getClass() );
 
-	@Value("${api.central.url}")
+	@Value ( "${api.central.url}" )
 	private String apiCentralUrl;
 
-	@Value("${api.url.address.new}")
+	@Value ( "${api.url.address.new}" )
 	private String apiUrlAddressNew;
 
 	@Autowired
@@ -40,54 +41,34 @@ public class AccountService {
 	private ZdpClient zdp;
 
 	@PostConstruct
-	public void init() {
+	public void init ( ) {
 	}
 
-	public void sync(Runnable postSyncFunction) {
+	public void sync ( Runnable postSyncFunction ) {
 
-		SwingHelper.async(mainWindow.getFrame(), "Synchronizing wallet", () -> {
+		SwingHelper.async( mainWindow.getFrame(), "Synchronizing wallet", ( ) -> {
 
 			try {
 
 				// Get balance
 				Wallet wallet = walletService.getCurrentWallet();
-				/*
-				GetBalanceResponse balance = zdp.getBalance(wallet.getPrivateKey(),Curves.DEFAULT_CURVE);
-				wallet.setBalance(new BigDecimal(balance.getAmount()));
-				*/
 
-				// Get transactions
-				/*
-				ListTransactionsResponse transactions = zdp.getTransactions(wallet.getPrivateKey(), 0, 100);
+				Account account = wallet.getAccounts().get( 0 );
+				
+				GetBalanceResponse balance = zdp.getBalance( account.getPrivateKey(), Curves.DEFAULT_CURVE );
 
-				if (transactions != null && transactions.getTransactions().isEmpty() == false) {
+				walletService.saveAccountDetails( account, balance );
 
-					for (Transaction details : transactions.getTransactions()) {
+				mainWindow.showSystemTrayMessage( MessageType.INFO, "Wallet synchronized" );
 
-						if (null == wallet.getTxByUuid(details.getUuid())) {
-
-							WalletTransaction tx = new WalletTransaction();
-
-							tx.setAmount(new BigDecimal(details.getAmount()));
-							tx.setDate(details.getDate());
-							tx.setUuid(details.getUuid());
-
-							wallet.getTransactions().add(tx);
-						}
-					}
-				}
-				*/
-
-				mainWindow.showSystemTrayMessage(MessageType.INFO, "Wallet synchronized");
-
-				if (postSyncFunction != null) {
+				if ( postSyncFunction != null ) {
 					postSyncFunction.run();
 				}
 
-			} catch (Exception e) {
-				log.error("Error: ", e);
+			} catch ( Exception e ) {
+				log.error( "Error: ", e );
 			}
-		});
+		} );
 	}
 
 }

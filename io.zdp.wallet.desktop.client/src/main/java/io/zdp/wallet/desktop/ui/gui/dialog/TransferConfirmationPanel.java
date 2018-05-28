@@ -38,10 +38,8 @@ public class TransferConfirmationPanel extends javax.swing.JPanel {
         txtAmount = new javax.swing.JTextField();
         btnTransfer = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtFrom = new javax.swing.JEditorPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtTo = new javax.swing.JEditorPane();
+        txtFrom = new javax.swing.JTextField();
+        txtTo = new javax.swing.JTextField();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("<html> <h1>Confirm transfer</h1> </html>");
@@ -65,10 +63,8 @@ public class TransferConfirmationPanel extends javax.swing.JPanel {
         btnCancel.setText("Cancel");
 
         txtFrom.setEditable(false);
-        jScrollPane1.setViewportView(txtFrom);
 
         txtTo.setEditable(false);
-        jScrollPane2.setViewportView(txtTo);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -83,15 +79,13 @@ public class TransferConfirmationPanel extends javax.swing.JPanel {
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtMemo)
                     .addComponent(txtAmount)
+                    .addComponent(txtFrom)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtTo)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnCancel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnTransfer))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
+                        .addComponent(btnTransfer)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -102,24 +96,24 @@ public class TransferConfirmationPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtMemo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnTransfer)
-                    .addComponent(btnCancel))
-                .addContainerGap(24, Short.MAX_VALUE))
+                    .addComponent(btnCancel)
+                    .addComponent(btnTransfer))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -133,11 +127,9 @@ public class TransferConfirmationPanel extends javax.swing.JPanel {
     public javax.swing.JLabel jLabel6;
     public javax.swing.JLabel jLabel8;
     public javax.swing.JScrollBar jScrollBar1;
-    public javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JTextField txtAmount;
-    public javax.swing.JEditorPane txtFrom;
+    public javax.swing.JTextField txtFrom;
     public javax.swing.JTextField txtMemo;
-    public javax.swing.JEditorPane txtTo;
+    public javax.swing.JTextField txtTo;
     // End of variables declaration//GEN-END:variables
 }

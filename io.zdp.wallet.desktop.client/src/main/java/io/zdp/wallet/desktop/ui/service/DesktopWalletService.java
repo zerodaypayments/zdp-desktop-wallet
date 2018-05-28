@@ -1,6 +1,7 @@
 package io.zdp.wallet.desktop.ui.service;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.zdp.api.model.v1.GetBalanceResponse;
 import io.zdp.api.model.v1.GetTransactionDetailsResponse;
 import io.zdp.crypto.Curves;
 import io.zdp.crypto.key.ZDPKeyPair;
+import io.zdp.wallet.api.db.domain.Account;
 import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.api.service.ApiService;
 import io.zdp.wallet.desktop.DesktopWallet;
@@ -82,6 +85,10 @@ public class DesktopWalletService {
 
 		return wallet;
 
+	}
+
+	public void saveAccountDetails ( Account account, GetBalanceResponse resp ) {
+		walletService.getWalletService().updateAccountDetails( account, new BigDecimal( resp.getAmount() ), resp.getHeight(), resp.getChainHash() );
 	}
 
 }

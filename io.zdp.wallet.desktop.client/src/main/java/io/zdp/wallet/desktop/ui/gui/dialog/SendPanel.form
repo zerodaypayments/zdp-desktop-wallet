@@ -119,9 +119,13 @@
         <Component class="javax.swing.JTextField" name="txtFromAddress">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtToAddress">
+          <Properties>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -155,12 +159,14 @@
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtFee" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="txtAmount" min="-2" pref="156" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="btnSendMax" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="txtTotalCharge" pref="300" max="32767" attributes="0"/>
+                                  <Component id="txtTotalCharge" pref="141" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -188,6 +194,7 @@
                       <Component id="txtAmount" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtTotalCharge" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnSendMax" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
@@ -247,6 +254,11 @@
         <Component class="javax.swing.JTextField" name="txtTotalCharge">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnSendMax">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Send max"/>
           </Properties>
         </Component>
       </SubComponents>

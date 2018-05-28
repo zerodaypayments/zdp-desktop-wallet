@@ -2,12 +2,14 @@ package io.zdp.wallet.desktop.ui.gui.action;
 
 import java.awt.FileDialog;
 import java.awt.Window;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.bouncycastle.util.Arrays;
 import org.slf4j.Logger;
@@ -62,7 +64,7 @@ public class OpenWallet {
 		}
 
 		log.debug( "Open wallet: " + walletFile );
-		
+
 		// Get password
 		final String password = enterPassword( parent );
 
@@ -70,27 +72,37 @@ public class OpenWallet {
 		if ( password == null ) {
 			log.info( "No password entered, cancel" );
 			return;
-		}		
-
-		Wallet wallet = null;
-
-		try {
-			wallet = walletService.openWallet( walletFile, password );
-		} catch ( Exception e ) {
-			log.error( "Error: ", e );
 		}
 
-		if ( wallet != null ) {
+		SwingHelper.async( parent, "Opening wallet", ( ) -> {
 
-			mainWindow.setWallet( wallet, walletFile );
+			Wallet wallet = null;
 
-			if ( dialog != null ) {
-				dialog.dispose();
+			try {
+				
+				wallet = walletService.openWallet( walletFile, password );
+				
+				final Wallet fw = wallet;
+
+				if ( wallet != null ) {
+
+					SwingUtilities.invokeLater( ( ) -> {
+
+						mainWindow.setWallet( fw, walletFile );
+
+						if ( dialog != null ) {
+							dialog.dispose();
+						}
+					} );
+
+				} else {
+					Alert.error( "Sorry, this wallet can not be loaded" );
+				}
+			} catch ( Exception e ) {
+				log.error( "Error: ", e );
 			}
 
-		} else {
-			Alert.error( "Sorry, this wallet can not be loaded" );
-		}
+		} );
 
 	}
 
@@ -109,13 +121,16 @@ public class OpenWallet {
 
 			pp.btnOk.setEnabled( true );
 
-			pp.btnOk.addActionListener( e -> {
+			ActionListener al = e -> {
 
 				password.set( new String( pp.password.getPassword() ) );
 
 				eppDialog.dispose();
 
-			} );
+			};
+
+			pp.btnOk.addActionListener( al );
+			pp.password.addActionListener( al );
 
 			eppDialog.setVisible( true );
 

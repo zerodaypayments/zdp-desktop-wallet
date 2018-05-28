@@ -82,4 +82,22 @@ public class WalletServiceImpl implements WalletService {
 
 	}
 
+	@Override
+	@Transactional ( readOnly = false )
+	public void updateAccountDetails ( Account account, BigDecimal balance, long height, byte [ ] chainHash ) {
+
+		Optional < Account > acc = this.accountDao.findById( account.getId() );
+
+		acc.get().setBalance( balance );
+		acc.get().setHeight( height );
+		acc.get().setTransferChainHash( chainHash );
+
+		this.accountDao.save( acc.get() );
+
+		account.setBalance( balance );
+		account.setHeight( height );
+		account.setTransferChainHash( chainHash );
+
+	}
+
 }

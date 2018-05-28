@@ -1,5 +1,7 @@
 package io.zdp.wallet.api.db.service;
 
+import java.math.BigDecimal;
+
 import io.zdp.wallet.api.db.domain.Account;
 import io.zdp.wallet.api.db.domain.Wallet;
 
@@ -15,4 +17,6 @@ public interface WalletService {
 
 	void saveAccount(Account a);
 	
-}
+	void updateAccountDetails ( Account account, BigDecimal bigDecimal, long height, byte [ ] chainHash );
+
+}	

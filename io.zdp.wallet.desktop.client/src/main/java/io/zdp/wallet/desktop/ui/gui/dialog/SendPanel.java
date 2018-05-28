@@ -46,6 +46,7 @@ public class SendPanel extends javax.swing.JPanel {
         txtFee = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         txtTotalCharge = new javax.swing.JTextField();
+        btnSendMax = new javax.swing.JButton();
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("<html>\n<h1>Send</h1>\n</html>");
@@ -60,6 +61,9 @@ public class SendPanel extends javax.swing.JPanel {
         jLabel11.setText("From:");
 
         txtFromAddress.setEditable(false);
+        txtFromAddress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        txtToAddress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -110,6 +114,8 @@ public class SendPanel extends javax.swing.JPanel {
 
         txtTotalCharge.setEditable(false);
 
+        btnSendMax.setText("Send max");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -132,10 +138,12 @@ public class SendPanel extends javax.swing.JPanel {
                             .addComponent(txtFee, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnSendMax)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtTotalCharge, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)))))
+                                .addComponent(txtTotalCharge, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -154,7 +162,8 @@ public class SendPanel extends javax.swing.JPanel {
                     .addComponent(jLabel8)
                     .addComponent(txtAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTotalCharge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSendMax))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -195,6 +204,7 @@ public class SendPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnSend;
+    public javax.swing.JButton btnSendMax;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel11;
     public javax.swing.JLabel jLabel14;

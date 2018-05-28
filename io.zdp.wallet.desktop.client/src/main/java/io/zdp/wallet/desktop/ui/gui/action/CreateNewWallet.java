@@ -38,7 +38,7 @@ import javafx.stage.FileChooser;
 @Component
 public class CreateNewWallet {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger( this.getClass() );
 
 	@Autowired
 	private I18n i18n;
@@ -49,248 +49,189 @@ public class CreateNewWallet {
 	@Autowired
 	private MainWindow mainWindow;
 
-	public void create(Window parent) {
+	public void create ( Window parent ) {
 
 		WalletCreationPanel panel = new WalletCreationPanel();
 
-		new QTextComponentContextMenu(panel.txtSeed);
-		new QTextComponentContextMenu(panel.txtMnemonics);
+		new QTextComponentContextMenu( panel.txtSeed );
+		new QTextComponentContextMenu( panel.txtMnemonics );
 
-		panel.txtSeed.addFocusListener(new TextComponentFocuser());
-		panel.txtMnemonics.addFocusListener(new TextComponentFocuser());
+		panel.txtSeed.addFocusListener( new TextComponentFocuser() );
+		panel.txtMnemonics.addFocusListener( new TextComponentFocuser() );
 
-		JDialog newWalletDialog = SwingHelper.dialog(parent, panel);
-		newWalletDialog.setTitle("New wallet");
+		JDialog newWalletDialog = SwingHelper.dialog( parent, panel );
+		newWalletDialog.setTitle( "New wallet" );
 
-		ZDPKeyPair kp = generateWalletInfo(panel);
+		ZDPKeyPair kp = generateWalletInfo( panel );
 
-		panel.languageSelector.addItemListener(i -> {
-			generateWalletInfo(panel);
-		});
+		panel.languageSelector.addItemListener( i -> {
+			generateWalletInfo( panel );
+		} );
 
-		panel.btnCreatWallet.addActionListener(ev -> {
+		panel.btnCreatWallet.addActionListener( ev -> {
 
-			if (false == Alert.confirm("Did you write down the wallet private key or list of words?")) {
+			if ( false == Alert.confirm( "Did you write down the wallet private key or list of words?" ) ) {
 				return;
 			}
 
 			javafx.embed.swing.JFXPanel dummy = new javafx.embed.swing.JFXPanel();
-			Platform.setImplicitExit(false);
+			Platform.setImplicitExit( false );
 
-			SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(() -> {
+			SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser( ( ) -> {
 				FileChooser ch = new FileChooser();
 
-				ch.setTitle("Save wallet file");
+				ch.setTitle( "Save wallet file" );
 
 				return ch;
-			});
+			} );
 
 			File walletFile = chooser.showSaveDialog();
 
-			if (walletFile == null) {
+			if ( walletFile == null ) {
 				return;
 			}
 
 			newWalletDialog.dispose();
 
-			log.debug("Save new wallet: " + walletFile);
-			
+			log.debug( "Save new wallet: " + walletFile );
+
 			// Enter DB file password for AES encryption
-			String password = enterPassword(parent);
+			String password = enterPassword( parent );
 
 			// Looks like the operation was cancelled
-			if (password == null) {
-				log.info("No password entered, cancel");
+			if ( password == null ) {
+				log.info( "No password entered, cancel" );
 				return;
 			}
-			
-			log.debug("Save new wallet: " + walletFile);
+
+			log.debug( "Save new wallet: " + walletFile );
 
 			try {
 
-				Wallet w = walletService.create(password, walletFile, kp);
+				Wallet w = walletService.create( password, walletFile, kp );
 
-				walletService.setCurrentWallet(w, walletFile);
+				walletService.setCurrentWallet( w, walletFile );
 
-				mainWindow.setWallet(w, walletFile);
+				mainWindow.setWallet( w, walletFile );
 
-				if (parent != mainWindow.getFrame()) {
+				if ( parent != mainWindow.getFrame() ) {
 					parent.dispose();
 				}
 
-				Alert.info("New wallet was created!");
+				Alert.info( "New wallet was created!" );
 
-			} catch (Exception e) {
-				log.error("Error: ", e);
-			}			
-			
-
-		});
-
-		panel.btnCancel.addActionListener(e -> {
-			newWalletDialog.dispose();
-		});
-
-		SwingHelper.installEscapeCloseOperation(newWalletDialog);
-
-		newWalletDialog.setVisible(true);
-		
-		
-	}
-	/*
-	{
-
-		
-		// Enter DB file password for AES encryption
-		String password = enterPassword(parent);
-
-		// Looks like the operation was cancelled
-		if (password == null) {
-			log.info("No password entered, cancel");
-			return;
-		}
-
-		// File save dialog
-		javafx.embed.swing.JFXPanel dummy = new javafx.embed.swing.JFXPanel();
-		Platform.setImplicitExit(false);
-
-		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(() -> {
-
-			FileChooser ch = new FileChooser();
-
-			ch.setTitle("Save wallet file");
-
-			return ch;
-		});
-
-		File walletFile = chooser.showSaveDialog();
-
-		log.debug("walletFile: " + walletFile);
-
-		if (walletFile == null) {
-			return;
-		}
-
-		log.debug("Save new wallet: " + walletFile);
-
-		try {
-
-			Wallet w = walletService.create(password, walletFile);
-
-			walletService.setCurrentWallet(w, walletFile);
-
-			mainWindow.setWallet(w, walletFile);
-
-			if (parent != mainWindow.getFrame()) {
-				parent.dispose();
+			} catch ( Exception e ) {
+				log.error( "Error: ", e );
 			}
 
-			Alert.info("New wallet was created!");
+		} );
 
-		} catch (Exception e) {
-			log.error("Error: ", e);
-		}
+		panel.btnCancel.addActionListener( e -> {
+			newWalletDialog.dispose();
+		} );
+
+		SwingHelper.installEscapeCloseOperation( newWalletDialog );
+
+		newWalletDialog.setVisible( true );
 
 	}
-*/
-	private String enterPassword(Window parent) {
+
+	public static String enterPassword ( Window parent ) {
 
 		StringWrapper password = new StringWrapper();
 
-		final BooleanWrapper cancelled = new BooleanWrapper(false);
+		final BooleanWrapper cancelled = new BooleanWrapper( false );
 
-		while (password.get() == null && cancelled.isFalse()) {
+		while ( password.get() == null && cancelled.isFalse() ) {
 
 			PasswordPanel pp = new PasswordPanel();
 
-			JDialog eppDialog = SwingHelper.dialog(parent, pp);
-			SwingHelper.installEscapeCloseOperation(eppDialog, cancelled);
+			JDialog eppDialog = SwingHelper.dialog( parent, pp );
+			SwingHelper.installEscapeCloseOperation( eppDialog, cancelled );
 
-			pp.btnOk.setEnabled(true);
+			pp.btnOk.setEnabled( true );
 
-			pp.btnOk.addActionListener(e -> {
+			pp.btnOk.addActionListener( e -> {
 
-				if (pp.password.getPassword().length == 0 || pp.passwordConfirm.getPassword().length == 0) {
+				if ( pp.password.getPassword().length == 0 || pp.passwordConfirm.getPassword().length == 0 ) {
 
-					JOptionPane.showMessageDialog(parent, "Please, enter passwords", "Warning", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog( parent, "Please, enter passwords", "Warning", JOptionPane.WARNING_MESSAGE );
 
-				} else if (pp.password.getPassword().length > 0 && Arrays.areEqual(pp.password.getPassword(), pp.passwordConfirm.getPassword())) {
-					
+				} else if ( pp.password.getPassword().length > 0 && Arrays.areEqual( pp.password.getPassword(), pp.passwordConfirm.getPassword() ) ) {
+
 					// Empty?
 
-					String pass = new String(pp.password.getPassword());
-					
-					if (StringUtils.isBlank( pass ) || StringUtils.contains( pass, ' ' )) {
-						JOptionPane.showMessageDialog(parent, "Sorry, spaces/tabs are not allowed", "Warning", JOptionPane.WARNING_MESSAGE);	
+					String pass = new String( pp.password.getPassword() );
+
+					if ( StringUtils.isBlank( pass ) || StringUtils.contains( pass, ' ' ) ) {
+						JOptionPane.showMessageDialog( parent, "Sorry, spaces/tabs are not allowed", "Warning", JOptionPane.WARNING_MESSAGE );
 						return;
 					}
-					
-					password.set(pass);
-					
+
+					password.set( pass );
+
 					eppDialog.dispose();
 
 				} else {
 
-					JOptionPane.showMessageDialog(parent, "The passwords do not match", "Warning", JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog( parent, "The passwords do not match", "Warning", JOptionPane.WARNING_MESSAGE );
 
 				}
 
-			});
+			} );
 
-			pp.btnCancel.addActionListener(e -> {
-				cancelled.set(true);
+			pp.btnCancel.addActionListener( e -> {
+				cancelled.set( true );
 				eppDialog.dispose();
-			});
+			} );
 
-			eppDialog.setVisible(true);
+			eppDialog.setVisible( true );
 
 		}
 
 		return password.get();
 
 	}
-	
-	private ZDPKeyPair generateWalletInfo(WalletCreationPanel panel) {
 
-		ZDPKeyPair kp = ZDPKeyPair.createRandom(Curves.DEFAULT_CURVE);
-		
+	private ZDPKeyPair generateWalletInfo ( WalletCreationPanel panel ) {
+
+		ZDPKeyPair kp = ZDPKeyPair.createRandom( Curves.DEFAULT_CURVE );
+
 		try {
 
-
-			panel.txtSeed.setText(kp.getPrivateKeyAsBase58());
+			panel.txtSeed.setText( kp.getPrivateKeyAsBase58() );
 
 			Language l = Language.ENGLISH;
 
-			if (panel.languageSelector.getSelectedItem().equals("English")) {
+			if ( panel.languageSelector.getSelectedItem().equals( "English" ) ) {
 				l = Language.ENGLISH;
-			} else if (panel.languageSelector.getSelectedItem().equals("French")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "French" ) ) {
 				l = Language.FRENCH;
-			} else if (panel.languageSelector.getSelectedItem().equals("Italian")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "Italian" ) ) {
 				l = Language.ITALIAN;
-			} else if (panel.languageSelector.getSelectedItem().equals("Japanese")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "Japanese" ) ) {
 				l = Language.JAPANESE;
-			} else if (panel.languageSelector.getSelectedItem().equals("Korean")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "Korean" ) ) {
 				l = Language.KOREAN;
-			} else if (panel.languageSelector.getSelectedItem().equals("Spanish")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "Spanish" ) ) {
 				l = Language.SPANISH;
-			} else if (panel.languageSelector.getSelectedItem().equals("Chinese Simplified")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "Chinese Simplified" ) ) {
 				l = Language.CHINESE_SIMPLIFIED;
-			} else if (panel.languageSelector.getSelectedItem().equals("Chinese Traditional")) {
+			} else if ( panel.languageSelector.getSelectedItem().equals( "Chinese Traditional" ) ) {
 				l = Language.CHINESE_TRADITIONAL;
 			}
 
-			List<String> generateWords = Mnemonics.generateWords(l, kp.getPrivateKeyAsBase58());
-			String words = StringUtils.join(generateWords, IOUtils.LINE_SEPARATOR);
-			panel.txtMnemonics.setText(words);
-			panel.txtMnemonics.setCaretPosition(0);
+			List < String > generateWords = Mnemonics.generateWords( l, kp.getPrivateKeyAsBase58() );
+			String words = StringUtils.join( generateWords, IOUtils.LINE_SEPARATOR );
+			panel.txtMnemonics.setText( words );
+			panel.txtMnemonics.setCaretPosition( 0 );
 
-		} catch (Exception e) {
-			log.error("Error: ", e);
+		} catch ( Exception e ) {
+			log.error( "Error: ", e );
 		}
-		
+
 		return kp;
 
 	}
-	
 
 }
