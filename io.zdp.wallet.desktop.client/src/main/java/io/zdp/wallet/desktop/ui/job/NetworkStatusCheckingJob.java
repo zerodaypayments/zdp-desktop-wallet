@@ -1,6 +1,10 @@
 package io.zdp.wallet.desktop.ui.job;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -38,6 +42,12 @@ public class NetworkStatusCheckingJob {
 
 	private NetworkNode node;
 
+	private ImageIcon icon = new ImageIcon( this.getClass().getResource( "/icons/ajax-loader.gif" ) );
+
+	private Icon checkIcon = Icons.getIcon( "check.png" );
+
+	private Icon cancelIcon = Icons.getIcon( "cancel.png" );
+
 	@PostConstruct
 	public void init ( ) {
 
@@ -50,7 +60,6 @@ public class NetworkStatusCheckingJob {
 	public void check ( ) throws Exception {
 
 		if ( connected == false ) {
-			ImageIcon icon = new ImageIcon( this.getClass().getResource( "/icons/ajax-loader.gif" ) );
 			mainWindow.setStatusMessage( "Checking network connection (" + zdp.getHostUrl() + ")", icon );
 		}
 
@@ -60,22 +69,36 @@ public class NetworkStatusCheckingJob {
 
 			connected = true;
 
-			mainWindow.setStatusMessage( "Connected to network (" + zdp.getHostUrl() + ")", Icons.getIcon( "check.png" ) );
+			mainWindow.setStatusMessage( "Connected to network (" + zdp.getHostUrl() + ")", checkIcon );
 
 		} catch ( Exception e ) {
 
 			log.error( "Error: " + e.getMessage() );
 
-			mainWindow.setStatusMessage( "Network not available (" + zdp.getHostUrl() + ")", Icons.getIcon( "cancel.png" ) );
+			mainWindow.setStatusMessage( "Network not available (" + zdp.getHostUrl() + ")", cancelIcon );
 
 			connected = false;
 
-			NetworkNode newNode = node;
-			while ( newNode != null && newNode.equals( node ) ) {
-				node = networkService.getRandomNode();
+			// Go throught all the nodes, find the one that can be pinged
+			List < NetworkNode > allNodes = this.networkService.getAllNodes();
+
+			Collections.shuffle( allNodes );
+
+			for ( NetworkNode node : allNodes ) {
 				zdp.setNetworkNode( node );
-				check();
+				try {
+					log.debug( "Connect to: " + node );
+					mainWindow.setStatusMessage( "Checking network connection (" + zdp.getHostUrl() + ")", icon );
+					zdp.ping();
+					log.debug( "Connected to: " + node );
+					return;
+				} catch ( Exception e1 ) {
+					log.error( "Can't connect to: " + node );
+				}
+				
 			}
+			
+			mainWindow.setStatusMessage( "Network not available, will re-try shortly...", cancelIcon );
 		}
 
 	}
