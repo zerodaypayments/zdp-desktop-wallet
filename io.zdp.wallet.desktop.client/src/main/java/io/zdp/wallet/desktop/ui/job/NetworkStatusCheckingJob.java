@@ -85,17 +85,26 @@ public class NetworkStatusCheckingJob {
 			Collections.shuffle( allNodes );
 
 			for ( NetworkNode node : allNodes ) {
+				
 				zdp.setNetworkNode( node );
+				
 				try {
+					
 					log.debug( "Connect to: " + node );
+					
 					mainWindow.setStatusMessage( "Checking network connection (" + zdp.getHostUrl() + ")", icon );
+					
 					zdp.ping();
+					
 					log.debug( "Connected to: " + node );
+					
 					return;
+					
 				} catch ( Exception e1 ) {
 					log.error( "Can't connect to: " + node );
+					Thread.sleep( 1000 );
 				}
-				
+
 			}
 			
 			mainWindow.setStatusMessage( "Network not available, will re-try shortly...", cancelIcon );
