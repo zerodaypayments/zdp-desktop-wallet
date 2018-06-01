@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.zdp.wallet.api.db.domain.Wallet;
-import io.zdp.wallet.api.service.ApiService;
+import io.zdp.wallet.api.service.WalletApiService;
 import io.zdp.wallet.desktop.ui.common.Alert;
 import io.zdp.wallet.desktop.ui.common.SwingHelper;
 import io.zdp.wallet.desktop.ui.common.SynchronousJFXFileChooser;
@@ -40,7 +40,7 @@ public class OpenWallet {
 	private MainWindow mainWindow;
 
 	@Autowired
-	private ApiService walletService;
+	private WalletApiService walletService;
 
 	public void open ( Window parent, JDialog dialog ) {
 

@@ -21,7 +21,7 @@ import io.zdp.crypto.Curves;
 import io.zdp.crypto.key.ZDPKeyPair;
 import io.zdp.wallet.api.db.domain.Account;
 import io.zdp.wallet.api.db.domain.Wallet;
-import io.zdp.wallet.api.service.ApiService;
+import io.zdp.wallet.api.service.WalletApiService;
 import io.zdp.wallet.desktop.DesktopWallet;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 
@@ -48,7 +48,7 @@ public class DesktopWalletService {
 	private Map < Wallet, List < GetTransactionDetailsResponse > > walletTransactions = new HashMap<>();
 
 	@Autowired
-	private ApiService walletService;
+	private WalletApiService walletService;
 
 	@PostConstruct
 	public void init ( ) {

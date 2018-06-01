@@ -1,7 +1,6 @@
 package io.zdp.wallet.api.service.impl;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,13 +14,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
 import io.zdp.wallet.api.db.common.H2Helper;
-import io.zdp.wallet.api.db.domain.Account;
 import io.zdp.wallet.api.db.domain.Wallet;
 import io.zdp.wallet.api.db.service.WalletService;
-import io.zdp.wallet.api.service.ApiService;
+import io.zdp.wallet.api.service.WalletApiService;
 
 @Service
-public class ApiServiceImpl implements ApiService {
+public class WalletApiServiceImpl implements WalletApiService {
 
 	private final Logger log = LoggerFactory.getLogger( this.getClass() );
 
@@ -35,6 +33,11 @@ public class ApiServiceImpl implements ApiService {
 	private String walletApiVersion;
 
 	@Override
+	public boolean isWalletFile ( File file, String password ) {
+		return H2Helper.isValidH2Database( file, password );
+	}
+
+	@Override
 	public Wallet openWallet ( File file, String password ) throws Exception {
 
 		password = password + " " + password;
@@ -43,7 +46,7 @@ public class ApiServiceImpl implements ApiService {
 		closeWallet();
 
 		// Validate DB
-		if ( false == H2Helper.isValidH2Database( file, password ) ) {
+		if ( false == this.isWalletFile( file, password ) ) {
 			throw new IllegalArgumentException( "Not an H2 database" );
 		}
 
