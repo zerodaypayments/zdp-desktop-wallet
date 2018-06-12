@@ -1,17 +1,12 @@
 package io.zdp.wallet.desktop.ui.gui.action;
 
-import java.awt.FileDialog;
 import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FilenameFilter;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.bouncycastle.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +21,9 @@ import io.zdp.wallet.desktop.ui.common.model.BooleanWrapper;
 import io.zdp.wallet.desktop.ui.common.model.StringWrapper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.EnterPasswordPanel;
-import io.zdp.wallet.desktop.ui.gui.dialog.PasswordPanel;
+import io.zdp.wallet.desktop.ui.service.ConfigurationService;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 
 @Component
 public class OpenWallet {
@@ -42,13 +36,24 @@ public class OpenWallet {
 	@Autowired
 	private WalletApiService walletService;
 
+	@Autowired
+	private ConfigurationService configurationService;
+
 	public void open ( Window parent, JDialog dialog ) {
 
 		javafx.embed.swing.JFXPanel dummy = new javafx.embed.swing.JFXPanel();
+
 		Platform.setImplicitExit( false );
 
 		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser( ( ) -> {
+
 			FileChooser ch = new FileChooser();
+
+			File initialFolderFile = configurationService.getConfiguration().getFileDialogFolder();
+
+			if ( initialFolderFile != null ) {
+				ch.setInitialDirectory( initialFolderFile );
+			}
 
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter( "ZDP Wallet (*.db)", "*.db" );
 			ch.getExtensionFilters().add( extFilter );
@@ -62,6 +67,9 @@ public class OpenWallet {
 		if ( walletFile == null || false == walletFile.canRead() ) {
 			return;
 		}
+
+		configurationService.getConfiguration().setFileDialogFolder( walletFile.getParent() );
+		configurationService.saveConfiguration();
 
 		log.debug( "Open wallet: " + walletFile );
 
@@ -79,9 +87,9 @@ public class OpenWallet {
 			Wallet wallet = null;
 
 			try {
-				
+
 				wallet = walletService.openWallet( walletFile, password );
-				
+
 				final Wallet fw = wallet;
 
 				if ( wallet != null ) {

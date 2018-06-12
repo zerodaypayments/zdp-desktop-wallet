@@ -154,9 +154,9 @@ public class MainWindow {
 			}
 		});
 
-		bgPanel = new AnimatedNetworkPanel();
+//		bgPanel = new AnimatedNetworkPanel();
 
-		// bgPanel = new JPanel();
+		 bgPanel = new JPanel();
 
 		mainPanel = new JPanel(new BorderLayout());
 
@@ -185,7 +185,7 @@ public class MainWindow {
 				}
 			}
 		}).start();
-
+/*
 		FreshStart freshStartPanel = new FreshStart();
 
 		JDialog startDialog = SwingHelper.dialog(frame, freshStartPanel);
@@ -201,7 +201,7 @@ public class MainWindow {
 
 		SwingHelper.installEscapeCloseOperation(startDialog);
 		startDialog.setVisible(true);
-
+*/
 	}
 
 	private void setupStatusBar() {

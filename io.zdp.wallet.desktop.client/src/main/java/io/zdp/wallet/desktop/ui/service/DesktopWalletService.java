@@ -88,7 +88,9 @@ public class DesktopWalletService {
 	}
 
 	public void saveAccountDetails ( Account account, GetBalanceResponse resp ) {
-		walletService.getWalletService().updateAccountDetails( account, new BigDecimal( resp.getAmount() ), resp.getHeight(), resp.getChainHash() );
+		if ( resp != null && StringUtils.isNotBlank( resp.getAmount() ) ) {
+			walletService.getWalletService().updateAccountDetails( account, new BigDecimal( resp.getAmount() ), resp.getHeight(), resp.getChainHash() );
+		}
 	}
 
 }

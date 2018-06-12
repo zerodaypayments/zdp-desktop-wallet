@@ -31,6 +31,7 @@ import io.zdp.wallet.desktop.ui.common.model.StringWrapper;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.PasswordPanel;
 import io.zdp.wallet.desktop.ui.gui.dialog.WalletCreationPanel;
+import io.zdp.wallet.desktop.ui.service.ConfigurationService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
@@ -43,6 +44,9 @@ public class CreateNewWallet {
 	@Autowired
 	private I18n i18n;
 
+	@Autowired
+	private ConfigurationService configurationService;
+	
 	@Autowired
 	private DesktopWalletService walletService;
 

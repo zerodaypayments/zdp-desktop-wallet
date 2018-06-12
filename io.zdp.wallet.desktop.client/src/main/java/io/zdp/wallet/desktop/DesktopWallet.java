@@ -25,9 +25,10 @@ public class DesktopWallet {
 	public static void main(String[] args) {
 
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			// UIManager.setLookAndFeel(new SubstanceOfficeSilver2007LookAndFeel());
-
+/*
 			if (SystemUtils.IS_OS_WINDOWS) {
 
 				UIManager.setLookAndFeel(new SubstanceMarinerLookAndFeel());
@@ -53,7 +54,7 @@ public class DesktopWallet {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
 			}
-
+*/
 		} catch (Exception e1) {
 			log.error("Error: ", e1);
 		}
@@ -63,7 +64,7 @@ public class DesktopWallet {
 			// Override fonts
 			if (SystemUtils.IS_OS_WINDOWS) {
 				try {
-					setUIFont(new javax.swing.plaf.FontUIResource(Fonts.getMainFont()));
+					//setUIFont(new javax.swing.plaf.FontUIResource(Fonts.getMainFont()));
 				} catch (Exception e) {
 					log.error("Error: ", e);
 				}

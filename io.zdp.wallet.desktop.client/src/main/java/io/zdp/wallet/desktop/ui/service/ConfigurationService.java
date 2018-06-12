@@ -2,6 +2,7 @@ package io.zdp.wallet.desktop.ui.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 
@@ -18,38 +19,41 @@ import io.zdp.wallet.desktop.ui.domain.Configuration;
 @Service
 public class ConfigurationService {
 
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = LoggerFactory.getLogger( this.getClass() );
 
 	private Configuration config;
 
-	@Value("${config.location}")
+	@Value ( "${config.location}" )
 	private String configLocation;
 
 	private File configFile;
 
 	@PostConstruct
-	public void init() {
+	public void init ( ) {
 
-		log.debug("Config location: " + configLocation);
-		
-		configFile = new File(configLocation);
+		log.debug( "Config location: " + configLocation );
+
+		configFile = new File( configLocation );
 
 		getConfiguration();
 	}
 
-	public Configuration getConfiguration() {
+	public Configuration getConfiguration ( ) {
 
-		if (config == null) {
+		if ( config == null ) {
 
-			if (configFile.exists()) {
+			if ( configFile.exists() ) {
 
 				try {
-					final String json = FileUtils.readFileToString(configFile);
-					config = new ObjectMapper().readValue(json, Configuration.class);
 
-					log.debug("Loaded config: " + config);
-				} catch (IOException e) {
-					log.error("Error: ", e);
+					final String json = FileUtils.readFileToString( configFile, StandardCharsets.UTF_8 );
+
+					config = new ObjectMapper().readValue( json, Configuration.class );
+
+					log.debug( "Loaded config: " + config );
+					
+				} catch ( IOException e ) {
+					log.error( "Error: ", e );
 				}
 			}
 
@@ -60,18 +64,18 @@ public class ConfigurationService {
 		return config;
 	}
 
-	public void saveConfiguration() {
+	public void saveConfiguration ( ) {
 
 		try {
 
 			// Json
-			String json = new ObjectMapper().writeValueAsString(config);
+			String json = new ObjectMapper().writeValueAsString( config );
 
 			// Save to user home location
-			FileUtils.writeStringToFile(configFile, json);
+			FileUtils.writeStringToFile( configFile, json, StandardCharsets.UTF_8 );
 
-		} catch (Exception e) {
-			log.error("Error: ", e);
+		} catch ( Exception e ) {
+			log.error( "Error: ", e );
 		}
 
 	}

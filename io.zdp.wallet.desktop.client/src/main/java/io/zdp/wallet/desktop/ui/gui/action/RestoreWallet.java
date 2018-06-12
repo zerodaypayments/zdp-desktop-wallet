@@ -26,6 +26,7 @@ import io.zdp.wallet.desktop.ui.common.SynchronousJFXFileChooser;
 import io.zdp.wallet.desktop.ui.common.TextComponentFocuser;
 import io.zdp.wallet.desktop.ui.gui.MainWindow;
 import io.zdp.wallet.desktop.ui.gui.dialog.WalletRestorationPanel;
+import io.zdp.wallet.desktop.ui.service.ConfigurationService;
 import io.zdp.wallet.desktop.ui.service.DesktopWalletService;
 import javafx.application.Platform;
 import javafx.stage.FileChooser;
@@ -40,6 +41,9 @@ public class RestoreWallet {
 
 	@Autowired
 	private MainWindow mainWindow;
+
+	@Autowired
+	private ConfigurationService configurationService;
 
 	public void restore ( Window parent ) {
 
