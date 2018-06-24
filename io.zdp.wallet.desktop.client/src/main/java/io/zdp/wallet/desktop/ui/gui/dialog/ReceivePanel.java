@@ -60,6 +60,7 @@ public class ReceivePanel extends javax.swing.JPanel {
             .addGap(0, 608, Short.MAX_VALUE)
         );
 
+        txtAddress.setEditable(false);
         txtAddress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

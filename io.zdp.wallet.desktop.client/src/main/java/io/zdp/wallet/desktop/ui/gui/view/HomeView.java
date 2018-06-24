@@ -1,13 +1,18 @@
 package io.zdp.wallet.desktop.ui.gui.view;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JPanel;
 import javax.swing.event.HyperlinkEvent.EventType;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +54,34 @@ public class HomeView {
 		HomePanel homePanel = new HomePanel();
 
 		String balance = walletService.getCurrentWallet().getAccounts().iterator().next().getBalance().toPlainString();
-		homePanel.txtBalance.setText(balance);
+
+		String firstPart = "";
+		String secondPart = "";
+
+		if (balance.contains(".")) {
+
+			firstPart = balance.split("\\.")[0];
+			secondPart = balance.split("\\.")[1];
+
+		} else {
+
+			firstPart = balance;
+
+		}
+
+		secondPart = StringUtils.rightPad(secondPart, 8, "0");
+
+		DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+		DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+
+		symbols.setGroupingSeparator(' ');
+		formatter.setDecimalFormatSymbols(symbols);
+
+		firstPart = formatter.format(Long.parseLong(firstPart));
+
+		String balanceText = firstPart + "." + secondPart;
+
+		homePanel.txtBalance.setText(balanceText);
 		SwingHelper.setFontForJText(homePanel.events);
 
 		new QTextComponentContextMenu(homePanel.events);
@@ -99,7 +131,7 @@ public class HomeView {
 							if (tx != null && tx.hasAllDetails() == false) {
 
 								log.debug("Get tx details from network: " + txUuid);
-								
+
 								GetTransactionDetailsResponse details = zdp.getTransactionDetails(txUuid);
 
 								if (tx != null && details != null) {
@@ -108,7 +140,7 @@ public class HomeView {
 									tx.setTo(details.getTo());
 									tx.setMemo(details.getMemo());
 									log.debug("Tx: " + tx);
-									
+
 									// walletService.saveCurrentWallet();
 								}
 							}

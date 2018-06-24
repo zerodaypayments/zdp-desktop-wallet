@@ -28,15 +28,15 @@ import io.zdp.wallet.desktop.ui.gui.MainWindow;
 @Service
 public class DesktopWalletService {
 
-	private final Logger log = LoggerFactory.getLogger( this.getClass() );
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Value ( "${api.central.url}" )
+	@Value("${api.central.url}")
 	private String apiCentralUrl;
 
-	@Value ( "${api.url.wallet.new}" )
+	@Value("${api.url.wallet.new}")
 	private String apiUrlWalletNew;
 
-	@Value ( "${app.version}" )
+	@Value("${app.version}")
 	private String appVersion;
 
 	@Autowired
@@ -45,18 +45,18 @@ public class DesktopWalletService {
 	@Autowired
 	private MainWindow mainWindow;
 
-	private Map < Wallet, List < GetTransactionDetailsResponse > > walletTransactions = new HashMap<>();
+	private Map<Wallet, List<GetTransactionDetailsResponse>> walletTransactions = new HashMap<>();
 
 	@Autowired
 	private WalletApiService walletService;
 
 	@PostConstruct
-	public void init ( ) {
+	public void init() {
 	}
 
-	public DesktopWallet getRecentWallet ( ) {
+	public DesktopWallet getRecentWallet() {
 
-		if ( StringUtils.isNotBlank( configurationService.getConfiguration().getLastWalletFile() ) ) {
+		if (StringUtils.isNotBlank(configurationService.getConfiguration().getLastWalletFile())) {
 
 			// TOD ask for password and load
 
@@ -65,31 +65,36 @@ public class DesktopWalletService {
 		return null;
 	}
 
-	public void setCurrentWallet ( Wallet w, File file ) {
+	public void setCurrentWallet(Wallet w, File file) {
 
-		if ( file != null ) {
-			configurationService.getConfiguration().setLastWalletFile( file.getAbsolutePath() );
+		if (file != null) {
+			configurationService.getConfiguration().setLastWalletFile(file.getAbsolutePath());
 			configurationService.saveConfiguration();
 		}
 	}
 
-	public Wallet getCurrentWallet ( ) {
+	public Wallet getCurrentWallet() {
 		return walletService.getCurrentWallet();
 	}
 
-	public Wallet create ( String password, File file, ZDPKeyPair kp ) throws Exception {
+	public Wallet create(String password, File file, ZDPKeyPair kp) throws Exception {
 
-		Wallet wallet = this.walletService.openWallet( file, password );
+		Wallet wallet = this.walletService.openWallet(file, password);
 
-		this.walletService.getWalletService().addAccount( wallet, kp.getPrivateKeyAsBase58(), Curves.DEFAULT_CURVE );
+		this.walletService.getWalletService().addAccount(wallet, kp.getPrivateKeyAsBase58(), Curves.DEFAULT_CURVE);
 
 		return wallet;
 
 	}
 
-	public void saveAccountDetails ( Account account, GetBalanceResponse resp ) {
-		if ( resp != null && StringUtils.isNotBlank( resp.getAmount() ) ) {
-			walletService.getWalletService().updateAccountDetails( account, new BigDecimal( resp.getAmount() ), resp.getHeight(), resp.getChainHash() );
+	public void saveAccountDetails(Account account, GetBalanceResponse resp) {
+		if (resp != null) {
+
+			if (StringUtils.isNotBlank(resp.getAmount())) {
+				walletService.getWalletService().updateAccountDetails(account, new BigDecimal(resp.getAmount()), resp.getHeight(), resp.getChainHash());
+			} else {
+				walletService.getWalletService().updateAccountDetails(account, BigDecimal.ZERO, 0, new byte[] {});
+			}
 		}
 	}
 
